@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EdgeOrbit AI | L'Intelligence Artificielle en Orbite et sur le Terrain</title>
+  <meta name="description" content="Startup DeepTech algérienne pionnière en Edge AI et observation satellitaire pour la gestion autonome des ressources et la résilience hydrique sans dépendance au Cloud.">
+  <meta name="author" content="Maamar ARBOUZ">
+  <link rel="icon" type="image/png" href="logo.png">
+
+  <!-- OpenGraph / Social preview -->
+  <meta property="og:title" content="EdgeOrbit AI — Autonomous Edge AI & Earth Observation">
+  <meta property="og:description" content="Inférence neuronale embarquée (<2.5W) et imagerie satellite Sentinel-2 pour l'automatisation hydrique et la résilience climatique.">
+  <meta property="og:image" content="prototype.png">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #070B19;
+      --bg-card: rgba(13, 21, 46, 0.75);
+      --bg-card-hover: rgba(18, 30, 66, 0.9);
+      --border-cyan: rgba(0, 229, 255, 0.25);
+      --border-emerald: rgba(16, 185, 129, 0.25);
+      --cyan-glow: #00E5FF;
+      --cyan-bright: #00B4D8;
+      --emerald: #10B981;
+      --emerald-glow: #34D399;
+      --gold: #F59E0B;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-sub: #CBD5E1;
+      --gradient-cyan: linear-gradient(135deg, #00E5FF 0%, #0077B6 100%);
+      --gradient-emerald: linear-gradient(135deg, #10B981 0%, #047857 100%);
+      --font-heading: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Starfield Canvas Background */
+    #starfield {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Top Announcement Bar */
+    .top-banner {
+      background: linear-gradient(90deg, rgba(0, 119, 182, 0.4), rgba(16, 185, 129, 0.4));
+      border-bottom: 1px solid var(--border-cyan);
+      padding: 8px 16px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+    }
+    .badge-pill {
+      background: rgba(0, 229, 255, 0.2);
+      border: 1px solid var(--cyan-glow);
+      color: var(--cyan-glow);
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(7, 11, 25, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 16px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand img {
+      width: 38px; height: 38px;
+      border-radius: 8px;
+      filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.5));
+    }
+    .brand-text {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 21px;
+      letter-spacing: -0.5px;
+    }
+    .brand-text span {
+      color: var(--cyan-glow);
+    }
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 28px;
+      align-items: center;
+    }
+    .nav-menu a {
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.25s;
+    }
+    .nav-menu a:hover {
+      color: var(--cyan-glow);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .lang-toggle {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-cyan);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lang-toggle:hover {
+      background: rgba(0, 229, 255, 0.15);
+      border-color: var(--cyan-glow);
+    }
+    .btn-nav {
+      background: var(--gradient-cyan);
+      color: #070B19;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 9px 20px;
+      border-radius: 24px;
+      text-decoration: none;
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-nav:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 24px rgba(0, 229, 255, 0.6);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 100px 0 70px;
+      text-align: center;
+      position: relative;
+    }
+    .hero-tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .hero-tag {
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid var(--border-cyan);
+      color: var(--cyan-glow);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 30px;
+      letter-spacing: 0.5px;
+    }
+    .hero-tag.green {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: var(--border-emerald);
+      color: var(--emerald-glow);
+    }
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(34px, 5.5vw, 62px);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      letter-spacing: -1.5px;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #FFFFFF 20%, var(--cyan-glow) 60%, var(--emerald-glow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p.lead {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-muted);
+      max-width: 820px;
+      margin: 0 auto 38px;
+      font-weight: 400;
+    }
+    .hero-ctas {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 60px;
+    }
+    .btn-cta-primary {
+      background: var(--gradient-cyan);
+      color: #070B19;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 14px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.45);
+      transition: all 0.25s;
+    }
+    .btn-cta-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.7);
+    }
+    .btn-cta-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 14px 28px;
+      border-radius: 30px;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+    .btn-cta-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--cyan-glow);
+    }
+
+    /* Metrics Ribbon */
+    .metrics-ribbon {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px;
+      margin-bottom: 90px;
+    }
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cyan);
+      border-radius: 16px;
+      padding: 24px 18px;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .metric-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--cyan-glow);
+    }
+    .metric-num {
+      font-family: var(--font-heading);
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--cyan-glow);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .metric-num.green { color: var(--emerald-glow); }
+    .metric-num.gold { color: var(--gold); }
+    .metric-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .metric-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Section Headers */
+    .section-head {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    .section-head .sub {
+      color: var(--cyan-glow);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .section-head h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(28px, 3.8vw, 42px);
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+    .section-head p {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 650px;
+      margin: 12px auto 0;
+    }
+
+    /* Interactive Space-to-Field Simulator */
+    .sim-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cyan);
+      border-radius: 20px;
+      padding: 36px;
+      backdrop-filter: blur(14px);
+      margin-bottom: 100px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    .sim-switch {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    .sim-tab-btn {
+      padding: 10px 24px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .sim-tab-btn.active {
+      background: var(--gradient-cyan);
+      color: #070B19;
+      border-color: var(--cyan-glow);
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
+    }
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: stretch;
+    }
+    .sim-screen {
+      background: #030611;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      border-radius: 14px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 320px;
+    }
+    .scanner-line {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 3px;
+      background: linear-gradient(90deg, transparent, var(--cyan-glow), transparent);
+      box-shadow: 0 0 10px var(--cyan-glow);
+      animation: scanAnim 3s infinite linear;
+    }
+    @keyframes scanAnim {
+      0% { top: 0%; opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+    .sim-status-title {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--cyan-glow);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dot-live {
+      width: 8px; height: 8px;
+      background: var(--emerald-glow);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--emerald-glow);
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .sim-telemetry-boxes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .telemetry-cell {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    .telemetry-val {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .telemetry-lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .sim-terminal-logs {
+      background: #020409;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 18px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      max-height: 320px;
+      overflow-y: auto;
+      color: var(--cyan-bright);
+    }
+    .terminal-line { margin-bottom: 6px; }
+    .t-time { color: var(--text-muted); }
+    .t-ok { color: var(--emerald-glow); font-weight: bold; }
+    .t-alert { color: var(--gold); font-weight: bold; }
+
+    /* Interactive Farm Water & Fuel Calculator */
+    .calc-box {
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .calc-title {
+      font-family: var(--font-heading);
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .calc-sub {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .calc-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .calc-slider-group label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-sub);
+      margin-bottom: 8px;
+    }
+    .calc-slider-group input[type="range"] {
+      width: 100%;
+      accent-color: var(--cyan-glow);
+    }
+    .calc-results {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      text-align: center;
+    }
+    .res-pill {
+      background: rgba(0, 229, 255, 0.06);
+      border: 1px solid var(--border-cyan);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .res-pill.green {
+      background: rgba(16, 185, 129, 0.06);
+      border-color: var(--border-emerald);
+    }
+    .res-pill .big {
+      font-family: var(--font-heading);
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--cyan-glow);
+    }
+    .res-pill.green .big { color: var(--emerald-glow); }
+    .res-pill .small {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Pillars Grid (Umbrella & Verticals) */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 28px;
+      margin-bottom: 100px;
+    }
+    .pillar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cyan);
+      border-radius: 20px;
+      padding: 36px 30px;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .pillar-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--cyan-glow);
+      background: var(--bg-card-hover);
+    }
+    .pillar-card.agro {
+      border-color: var(--border-emerald);
+    }
+    .pillar-card.agro:hover {
+      border-color: var(--emerald-glow);
+    }
+    .pillar-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      width: fit-content;
+    }
+    .pillar-badge.cyan {
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--cyan-glow);
+      border: 1px solid var(--border-cyan);
+    }
+    .pillar-badge.emerald {
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--emerald-glow);
+      border: 1px solid var(--border-emerald);
+    }
+    .pillar-card h3 {
+      font-family: var(--font-heading);
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .pillar-card p {
+      font-size: 14.5px;
+      color: var(--text-sub);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    .pillar-features {
+      list-style: none;
+      margin-bottom: 24px;
+    }
+    .pillar-features li {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .pillar-features li::before {
+      content: "✓";
+      color: var(--cyan-glow);
+      font-weight: bold;
+    }
+    .pillar-card.agro .pillar-features li::before {
+      color: var(--emerald-glow);
+    }
+
+    /* Prototype TRL 6 Showcase Section */
+    .proto-showcase {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cyan);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 100px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 36px;
+      align-items: center;
+    }
+    .proto-media {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 229, 255, 0.4);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    }
+    .proto-media img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.4s;
+    }
+    .proto-media:hover img {
+      transform: scale(1.02);
+    }
+    .proto-badge-corner {
+      position: absolute;
+      top: 14px; left: 14px;
+      background: rgba(7, 11, 25, 0.9);
+      border: 1px solid var(--emerald-glow);
+      color: var(--emerald-glow);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .proto-info h3 {
+      font-family: var(--font-heading);
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .proto-info p {
+      font-size: 14.5px;
+      color: var(--text-sub);
+      margin-bottom: 20px;
+    }
+    .specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .spec-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .spec-title {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .spec-val {
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 2px;
+    }
+
+    /* Founder & Credentials */
+    .founder-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-cyan);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 100px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 36px;
+      align-items: center;
+    }
+    .founder-avatar {
+      text-align: center;
+    }
+    .founder-avatar-circle {
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      background: linear-gradient(135deg, #0A2540, #0077B6);
+      border: 3px solid var(--cyan-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.3);
+    }
+    .founder-name {
+      font-family: var(--font-heading);
+      font-size: 22px;
+      font-weight: 800;
+    }
+    .founder-role {
+      font-size: 13px;
+      color: var(--cyan-glow);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .cred-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .cred-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .cred-card h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .cred-card p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Contact & Callout */
+    .contact-section {
+      background: linear-gradient(180deg, var(--bg-card) 0%, rgba(7, 11, 25, 0.95) 100%);
+      border: 1px solid var(--border-cyan);
+      border-radius: 20px;
+      padding: 50px 30px;
+      text-align: center;
+      margin-bottom: 90px;
+    }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 30px;
+    }
+    .contact-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-cyan);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.25s;
+    }
+    .contact-pill:hover {
+      background: var(--gradient-cyan);
+      color: #070B19;
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 40px 6%;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    footer a { color: var(--cyan-glow); text-decoration: none; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .sim-grid, .proto-showcase, .founder-card, .calc-inputs {
+        grid-template-columns: 1fr;
+      }
+      .founder-card { text-align: center; }
+      .cred-list, .calc-results { grid-template-columns: 1fr; }
+      .nav-menu { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Starfield Animation -->
+  <canvas id="starfield"></canvas>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-banner">
+    <span class="badge-pill">Scale-Up 2026</span>
+    <span id="txt-banner">Sélectionné au programme national Scale-Up GIZ / Ministère des Startups (MECSME) — Alger, 18-20 Oct. 2026</span>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="#" class="brand">
+      <img src="logo.png" alt="EdgeOrbit AI Logo">
+      <div class="brand-text">EdgeOrbit <span>AI</span></div>
+    </a>
+    <ul class="nav-menu">
+      <li><a href="#simulator" id="nav-sim">Simulateur</a></li>
+      <li><a href="#solutions" id="nav-solutions">Solutions</a></li>
+      <li><a href="#prototype" id="nav-proto">Prototype TRL 6</a></li>
+      <li><a href="#heritage" id="nav-heritage">Fondateur</a></li>
+      <li><a href="#contact" id="nav-contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="lang-toggle" onclick="toggleLanguage()" id="lang-btn">EN / FR</button>
+      <a href="pitch-deck.pdf" download class="btn-nav" id="nav-deck-btn">Deck PDF</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="container">
+    <section class="hero">
+      <div class="hero-tags">
+        <span class="hero-tag">🛰️ DeepTech & NewSpace</span>
+        <span class="hero-tag green">💧 Verticale AgroOrbit (TRL 6)</span>
+        <span class="hero-tag">⚡ Inférence Edge < 2.5W</span>
+      </div>
+
+      <h1 id="hero-title">
+        L'Intelligence Artificielle <br/>
+        <span class="gradient-text">En Orbite & Sur Le Terrain</span>
+      </h1>
+
+      <p class="lead" id="hero-lead">
+        EdgeOrbit AI élimine la dépendance au Cloud en zones isolées. Nos algorithmes neuronaux embarqués (GNN quantifiés INT8) analysent l'imagerie spatiale Copernicus Sentinel-2 directement sur micro-boîtiers basse consommation (<2.5W) pour réguler l'irrigation et protéger les aquifères en temps réel.
+      </p>
+
+      <div class="hero-ctas">
+        <a href="#simulator" class="btn-cta-primary" id="btn-explore-sim">Explorer le Simulateur Live</a>
+        <a href="pitch-deck.pdf" download class="btn-cta-secondary" id="btn-dl-deck">Télécharger le Pitch Deck (PDF)</a>
+      </div>
+
+      <!-- Metrics Ribbon -->
+      <div class="metrics-ribbon">
+        <div class="metric-card">
+          <div class="metric-num green">-30%</div>
+          <div class="metric-label" id="m1-lbl">Économie d'Eau</div>
+          <div class="metric-desc" id="m1-sub">Surpompage réduit sans perte de rendement</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num">< 2.5W</div>
+          <div class="metric-label" id="m2-lbl">Puissance Énergétique</div>
+          <div class="metric-desc" id="m2-sub">Alimentation 100% autonome par mini-solaire</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num">100%</div>
+          <div class="metric-label" id="m3-lbl">Hors-Ligne (No Cloud)</div>
+          <div class="metric-desc" id="m3-sub">Zéro dépendance aux réseaux Internet ruraux</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num gold">TRL 6</div>
+          <div class="metric-label" id="m4-lbl">Maturité Prototype</div>
+          <div class="metric-desc" id="m4-sub">Validé sur banc d'essai et parcelles pilotes</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Space-to-Field Simulator -->
+    <section id="simulator">
+      <div class="section-head">
+        <span class="sub" id="sim-subhead">Démonstrateur Interactif</span>
+        <h2 id="sim-mainhead">Simulation : Inférence Edge vs Dépendance Cloud</h2>
+        <p id="sim-intro">Comparez la latence, le coût et l'efficacité entre le traitement traditionnel sur serveurs distants et l'intelligence locale EdgeOrbit AI.</p>
+      </div>
+
+      <div class="sim-card">
+        <div class="sim-switch">
+          <button class="sim-tab-btn" id="btn-mode-cloud" onclick="switchSimMode('cloud')">Approche Traditionnelle (Cloud Externe)</button>
+          <button class="sim-tab-btn active" id="btn-mode-edge" onclick="switchSimMode('edge')">Technologie EdgeOrbit AI (Inférence Locale)</button>
+        </div>
+
+        <div class="sim-grid">
+          <!-- Simulation Visual -->
+          <div class="sim-screen">
+            <div class="scanner-line"></div>
+            <div>
+              <div class="sim-status-title">
+                <span class="dot-live"></span>
+                <span id="sim-status-lbl">SYSTÈME ACTIF — INFERENCE EDGE EN COURS</span>
+              </div>
+              <div style="font-size: 44px; margin: 20px 0; text-align: center;" id="sim-icon">🛰️ ➔ 🌾</div>
+            </div>
+
+            <div class="sim-telemetry-boxes">
+              <div class="telemetry-cell">
+                <div class="telemetry-val" id="val-latency">< 450 ms</div>
+                <div class="telemetry-lbl" id="lbl-latency">Latence Décision</div>
+              </div>
+              <div class="telemetry-cell">
+                <div class="telemetry-val" id="val-data">92%</div>
+                <div class="telemetry-lbl" id="lbl-data">Données Économisées</div>
+              </div>
+              <div class="telemetry-cell">
+                <div class="telemetry-val" id="val-vsd">42 Hz</div>
+                <div class="telemetry-lbl" id="lbl-vsd">Régime Pompe (VSD)</div>
+              </div>
+            </div>
+
+            <div style="font-size: 12px; color: var(--emerald-glow); font-family: var(--font-mono); text-align: center;" id="sim-msg">
+              ✔ Débit d'irrigation modulé selon le déficit racinaire réel (CWSI = 0.38)
+            </div>
+          </div>
+
+          <!-- Terminal Live Logs -->
+          <div class="sim-terminal-logs" id="sim-terminal">
+            <!-- JS populated -->
+          </div>
+        </div>
+
+        <!-- Water & Cost Savings Calculator -->
+        <div class="calc-box">
+          <div class="calc-title" id="calc-title">Calculateur d'Impact Agricole Personnalisé</div>
+          <div class="calc-sub" id="calc-sub">Estimez vos économies d'eau et de carburant grâce à l'asservissement intelligent AgroOrbit</div>
+
+          <div class="calc-inputs">
+            <div class="calc-slider-group">
+              <label>
+                <span id="lbl-surface">Superficie irriguée :</span>
+                <span id="surface-val" style="color: var(--cyan-glow); font-family: var(--font-mono);">50 ha</span>
+              </label>
+              <input type="range" id="slider-surface" min="5" max="300" step="5" value="50" oninput="updateCalculator()">
+            </div>
+            <div class="calc-slider-group">
+              <label>
+                <span id="lbl-pumping">Puissance de pompage :</span>
+                <span id="pump-val" style="color: var(--cyan-glow); font-family: var(--font-mono);">15 kW</span>
+              </label>
+              <input type="range" id="slider-pump" min="5" max="75" step="5" value="15" oninput="updateCalculator()">
+            </div>
+          </div>
+
+          <div class="calc-results">
+            <div class="res-pill green">
+              <div class="big" id="calc-water">45 000 m³</div>
+              <div class="small" id="lbl-calc-water">Volume d'eau préservé / an</div>
+            </div>
+            <div class="res-pill">
+              <div class="big" id="calc-fuel">7 500 L</div>
+              <div class="small" id="lbl-calc-fuel">Carburant diesel éliminé / an</div>
+            </div>
+            <div class="res-pill">
+              <div class="big" id="calc-money">1 350 000 DZD</div>
+              <div class="small" id="lbl-calc-money">Économie financière nette estimée / an</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The Core Pillars (Solutions) -->
+    <section id="solutions">
+      <div class="section-head">
+        <span class="sub" id="sol-subhead">Architecture Globale</span>
+        <h2 id="sol-mainhead">Une Plateforme Mère DeepTech & Deux Marchés Stratégiques</h2>
+        <p id="sol-intro">EdgeOrbit AI fournit le moteur algorithmique d'IA embarquée unifié, déployé au sol et dans l'espace.</p>
+      </div>
+
+      <div class="pillars-grid">
+        <!-- AgroOrbit Pillar -->
+        <div class="pillar-card agro">
+          <div>
+            <span class="pillar-badge emerald">Verticale Phare · Agritech</span>
+            <h3>AgroOrbit</h3>
+            <p id="agro-desc">Système autonome de gestion hydrique et de pilotage des motopompes solaires par télédétection satellite Copernicus Sentinel-2 sans connexion Internet.</p>
+            <ul class="pillar-features">
+              <li id="af1">Résolution parcellaire 10m x 10m du stress hydrique (CWSI).</li>
+              <li id="af2">Asservissement MODBUS RS-485 direct des variateurs solaires (VSD).</li>
+              <li id="af3">Protection automatique contre le surpompage et le tarissement d'aquifère.</li>
+              <li id="af4">Amortissement complet du matériel en moins d'une saison agricole.</li>
+            </ul>
+          </div>
+          <a href="pitch-deck.pdf" download class="btn-cta-secondary" style="text-align: center; font-size: 13px;" id="btn-agro-deck">Consulter le dossier AgroOrbit</a>
+        </div>
+
+        <!-- Space & Infrastructure Pillar -->
+        <div class="pillar-card">
+          <div>
+            <span class="pillar-badge cyan">Plateforme Mère · NewSpace</span>
+            <h3>EdgeOrbit NewSpace & Grid</h3>
+            <p id="space-desc">Traitement en orbite basse (CubeSats) et résilience des réseaux énergétiques par réseaux de neurones sur graphes spatio-temporels (ST-GNN).</p>
+            <ul class="pillar-features">
+              <li id="sf1">Quantification neuronale INT8 TensorRT sur accélérateurs Hailo-8 et Jetson.</li>
+              <li id="sf2">Super-résolution physique 50x (VIIRS 500m vers 10m) à flux radiométrique conservé.</li>
+              <li id="sf3">Détection précoce d'incendies et surveillance des couloirs de lignes électriques.</li>
+              <li id="sf4">Réduction de 90% de la bande passante descendante (Downlink).</li>
+            </ul>
+          </div>
+          <a href="mailto:arbouzmaamar@gmail.com?subject=Partenariat%20NewSpace%20EdgeOrbit%20AI" class="btn-cta-secondary" style="text-align: center; font-size: 13px;" id="btn-space-contact">Contacter pour partenariats</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prototype TRL 6 Showcase -->
+    <section id="prototype">
+      <div class="proto-showcase">
+        <div class="proto-media">
+          <img src="prototype.png" alt="Prototype Opérationnel TRL 6 EdgeOrbit AI">
+          <div class="proto-badge-corner">TRL 6 VALIDÉ</div>
+        </div>
+        <div class="proto-info">
+          <span class="pillar-badge emerald" id="proto-tag">Matériel Éprouvé sur Banc d'Essai</span>
+          <h3 id="proto-title">Le Boîtier Intelligent AgroOrbit</h3>
+          <p id="proto-desc">
+            Conçu pour opérer de manière totalement autonome sous les conditions climatiques sévères du Sud et des Hauts Plateaux algériens (-10°C à +65°C), notre contrôleur Edge AI couple puissance de calcul neuronal et sobriété énergétique.
+          </p>
+
+          <div class="specs-grid">
+            <div class="spec-item">
+              <div class="spec-title">Cœur de Calcul</div>
+              <div class="spec-val">ESP32-S3 + NPU INT8</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-title">Consommation Pic</div>
+              <div class="spec-val">< 2.5 W (Veille < 15mW)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-title">Communication</div>
+              <div class="spec-val">LoRaWAN 868MHz + GSM</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-title">Interface Actionneur</div>
+              <div class="spec-val">MODBUS RS-485 (VSD)</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-title">Alimentation</div>
+              <div class="spec-val">Mini-solaire + LiFePO4</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-title">Coût Fabrication (BOM)</div>
+              <div class="spec-val">< 95 USD</div>
+            </div>
+          </div>
+
+          <a href="prototype.png" target="_blank" class="btn-cta-primary" style="font-size: 13px; display: inline-block;" id="btn-hd-proto">Voir le Schéma Technique HD</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Founder & Heritage Section -->
+    <section id="heritage">
+      <div class="section-head">
+        <span class="sub" id="f-subhead">Leadership & Recherche</span>
+        <h2 id="f-mainhead">Fondateur & Ancrage Scientifique d'Excellence</h2>
+      </div>
+
+      <div class="founder-card">
+        <div class="founder-avatar">
+          <div class="founder-avatar-circle">👨‍💻</div>
+          <div class="founder-name">Maamar ARBOUZ</div>
+          <div class="founder-role" id="f-role">Fondateur & Lead AI Architect</div>
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px;" id="f-degree">
+            Master 2 en Intelligence Artificielle & Big Data<br/>(Mention Très Bien / Con Lode)
+          </p>
+        </div>
+
+        <div>
+          <p style="font-size: 15px; color: var(--text-sub); line-height: 1.7;" id="f-bio">
+            Ingénieur de recherche spécialisé en <b>Intelligence Artificielle appliquée à la télédétection spatiale</b>, réseaux de neurones sur graphes spatio-temporels (ST-GNN) et déploiement d'inférence sous contraintes strictes d'énergie. Porteur d'une vision combinant la souveraineté technologique NewSpace et la sécurité hydrique nationale de l'Algérie.
+          </p>
+
+          <div class="cred-list">
+            <div class="cred-card">
+              <h4>🇩🇪 🇩🇿 GIZ & Ministère des Startups (MECSME)</h4>
+              <p id="c1-desc">Sélectionné au Scale-Up Capacity Building Programme (Ben Aknoun, oct. 2026).</p>
+            </div>
+            <div class="cred-card">
+              <h4>🇪🇺 Boursier d'Excellence e-COST (ESA-ESRIN)</h4>
+              <p id="c2-desc">Mission scientifique de recherche spatiale à l'Agence Spatiale Européenne (Frascati, Rome).</p>
+            </div>
+            <div class="cred-card">
+              <h4>🇮🇹 EARSeL 2027 Co-Organisateur (Turin)</h4>
+              <p id="c3-desc">Co-organisation du workshop international GeoAI avec le Politecnico di Torino.</p>
+            </div>
+            <div class="cred-card">
+              <h4>🛰️ Agence Spatiale Algérienne (ASAL)</h4>
+              <p id="c4-desc">Collaborations et mémoires de recherche menés avec les équipes du CTS / ASAL.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact & Pitch Deck Callout -->
+    <section id="contact" class="contact-section">
+      <h2 style="font-family: var(--font-heading); font-size: 34px; margin-bottom: 14px;" id="c-title">Prêt à Accélérer la Résilience Hydrique ?</h2>
+      <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;" id="c-sub">
+        Que vous soyez exploitant agricole, investisseur, partenaire technologique ou institutionnel, échangeons pour déployer EdgeOrbit AI sur le terrain.
+      </p>
+
+      <div class="contact-links">
+        <a href="mailto:arbouzmaamar@gmail.com" class="contact-pill">
+          <span>✉</span> arbouzmaamar@gmail.com
+        </a>
+        <a href="tel:+213541453952" class="contact-pill">
+          <span>✆</span> +213 (0) 541 453 952
+        </a>
+        <a href="https://www.linkedin.com/in/maamar-arbouz/" target="_blank" class="contact-pill">
+          <span>🔗</span> LinkedIn Profile
+        </a>
+        <a href="pitch-deck.pdf" download class="contact-pill" style="border-color: var(--emerald-glow); color: var(--emerald-glow);">
+          <span>📥</span> Télécharger le Pitch Deck
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2026 <b>EdgeOrbit AI</b>. Tous droits réservés.</p>
+      <p style="margin-top: 6px; font-size: 12px;">Miliana, Wilaya de Aïn Defla, Algérie · Éligible Label Projet Innovant / Startup (startup.dz)</p>
+    </footer>
+  </div>
+
+  <script>
+    // ----------------------------------------------------
+    // Starfield Background Animation
+    // ----------------------------------------------------
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    const NUM_STARS = 120;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    for (let i = 0; i < NUM_STARS; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.4 + 0.3,
+        alpha: Math.random(),
+        speed: Math.random() * 0.015 + 0.005
+      });
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(s => {
+        s.alpha += s.speed;
+        if (s.alpha > 1 || s.alpha < 0) s.speed = -s.speed;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 229, 255, ${Math.abs(s.alpha) * 0.7})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
+
+    // ----------------------------------------------------
+    // Simulator Logic
+    // ----------------------------------------------------
+    let simMode = 'edge';
+    const logsContainer = document.getElementById('sim-terminal');
+
+    const edgeLogs = [
+      { time: '12:44:02.108', text: '[Edge NPU] Sentinel-2 MSI tile received (B4/B8/B11)', tag: 'ok' },
+      { time: '12:44:02.245', text: '[INT8 Engine] ST-GNN inference executed in 137ms', tag: 'ok' },
+      { time: '12:44:02.310', text: '[Hydrology] Root-zone CWSI calculated: 0.38 (Mild Deficit)', tag: '' },
+      { time: '12:44:02.415', text: '[MODBUS RS-485] Pump VSD throttled dynamically to 42 Hz', tag: 'ok' },
+      { time: '12:44:02.450', text: '[Energy Check] Solar power sufficient: 3.2 kW PV direct', tag: '' },
+      { time: '12:44:02.480', text: '[LoRaWAN] Telemetry packet dispatched (32 bytes payload)', tag: 'ok' }
+    ];
+
+    const cloudLogs = [
+      { time: '08:15:00.000', text: '[Field] Raw 100MB sensor log pending 4G upload...', tag: 'alert' },
+      { time: '09:42:15.000', text: '[Network] Rural connection timeout. Retrying packet transmission...', tag: 'alert' },
+      { time: '11:20:00.000', text: '[Cloud Server] Processing queue #418 - waiting for GPU slot', tag: '' },
+      { time: '14:05:00.000', text: '[Cloud] CWSI inference completed in remote datacenter (Frankfurt)', tag: '' },
+      { time: '14:30:00.000', text: '[Downlink] Notification sent to farmer dashboard via email', tag: '' },
+      { time: '14:31:00.000', text: '[Issue] Farmer absent: manual pump continued over-pumping for 6.5 hours', tag: 'alert' }
+    ];
+
+    function populateLogs(logList) {
+      logsContainer.innerHTML = '';
+      logList.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'terminal-line';
+        let badge = '';
+        if (item.tag === 'ok') badge = ' <span class="t-ok">✔</span>';
+        if (item.tag === 'alert') badge = ' <span class="t-alert">⚠</span>';
+        div.innerHTML = `<span class="t-time">[${item.time}]</span> ${item.text}${badge}`;
+        logsContainer.appendChild(div);
+      });
+    }
+
+    function switchSimMode(mode) {
+      simMode = mode;
+      const btnEdge = document.getElementById('btn-mode-edge');
+      const btnCloud = document.getElementById('btn-mode-cloud');
+      const icon = document.getElementById('sim-icon');
+      const statusLbl = document.getElementById('sim-status-lbl');
+      const latencyVal = document.getElementById('val-latency');
+      const dataVal = document.getElementById('val-data');
+      const vsdVal = document.getElementById('val-vsd');
+      const msg = document.getElementById('sim-msg');
+
+      if (mode === 'edge') {
+        btnEdge.classList.add('active');
+        btnCloud.classList.remove('active');
+        icon.innerHTML = '🛰️ ➔ 🌾';
+        statusLbl.innerText = 'SYSTÈME ACTIF — INFERENCE EDGE EN COURS';
+        statusLbl.style.color = 'var(--cyan-glow)';
+        latencyVal.innerText = '< 450 ms';
+        latencyVal.style.color = '#fff';
+        dataVal.innerText = '92%';
+        vsdVal.innerText = '42 Hz';
+        msg.innerText = '✔ Débit d\'irrigation modulé selon le déficit racinaire réel (CWSI = 0.38)';
+        msg.style.color = 'var(--emerald-glow)';
+        populateLogs(edgeLogs);
+      } else {
+        btnCloud.classList.add('active');
+        btnEdge.classList.remove('active');
+        icon.innerHTML = '☁️ ⏳ 🐌';
+        statusLbl.innerText = 'ATTENTE CLOUD — LATENCE RÉSEAU 4G';
+        statusLbl.style.color = 'var(--gold)';
+        latencyVal.innerText = '~ 6.5 Heures';
+        latencyVal.style.color = 'var(--gold)';
+        dataVal.innerText = '0% (Gaspillage)';
+        vsdVal.innerText = '50 Hz (100% Fixe)';
+        msg.innerText = '⚠ Surpompage continu : nappe phréatique sous stress excessif';
+        msg.style.color = 'var(--gold)';
+        populateLogs(cloudLogs);
+      }
+    }
+
+    populateLogs(edgeLogs);
+
+    // ----------------------------------------------------
+    // Calculator Logic
+    // ----------------------------------------------------
+    function updateCalculator() {
+      const surface = parseInt(document.getElementById('slider-surface').value);
+      const pump = parseInt(document.getElementById('slider-pump').value);
+
+      document.getElementById('surface-val').innerText = surface + ' ha';
+      document.getElementById('pump-val').innerText = pump + ' kW';
+
+      // Formula: Average Algerian water volume: ~6,000 m3/ha/yr. 30% savings = 1,800 m3/ha
+      const waterSaved = surface * 900; // m3/yr conservatively
+      const fuelSaved = Math.round(surface * 150); // liters/yr
+      const moneySaved = Math.round(surface * 27000); // DZD/yr
+
+      document.getElementById('calc-water').innerText = waterSaved.toLocaleString('fr-FR') + ' m³';
+      document.getElementById('calc-fuel').innerText = fuelSaved.toLocaleString('fr-FR') + ' L';
+      document.getElementById('calc-money').innerText = moneySaved.toLocaleString('fr-FR') + ' DZD';
+    }
+    updateCalculator();
+
+    // ----------------------------------------------------
+    // Language Switcher (French / English)
+    // ----------------------------------------------------
+    let currentLang = 'fr';
+    const dict = {
+      en: {
+        banner: "Selected for GIZ & Ministry of Startups (MECSME) Scale-Up Programme — Algiers, 18-20 Oct. 2026",
+        navSim: "Simulator",
+        navSol: "Solutions",
+        navProto: "TRL 6 Prototype",
+        navHer: "Founder",
+        navContact: "Contact",
+        navDeck: "Deck PDF",
+        heroTitle: "Artificial Intelligence <br/><span class=\"gradient-text\">In Orbit & In The Field</span>",
+        heroLead: "EdgeOrbit AI eliminates cloud dependency in remote areas. Our quantized neural models (INT8 ST-GNN) process Copernicus Sentinel-2 multispectral imagery directly on low-power edge devices (<2.5W) for real-time irrigation automation and aquifer preservation.",
+        btnExplore: "Explore Live Simulator",
+        btnDeck: "Download Pitch Deck (PDF)",
+        m1Lbl: "Water Saved",
+        m1Sub: "Over-pumping reduced without yield loss",
+        m2Lbl: "Power Budget",
+        m2Sub: "100% autonomous operation via mini-solar",
+        m3Lbl: "Offline (Zero Cloud)",
+        m3Sub: "Zero reliance on fragile rural internet",
+        m4Lbl: "Prototype Maturity",
+        m4Sub: "Validated on test bench & pilot farms",
+        simSub: "Interactive Demonstrator",
+        simHead: "Simulation: Edge AI vs. Cloud Dependency",
+        simIntro: "Compare latency, cost, and operational reliability between distant cloud processing and EdgeOrbit AI onboard inference.",
+        btnEdgeTab: "EdgeOrbit AI Technology (Local Inference)",
+        btnCloudTab: "Traditional Approach (External Cloud)",
+        calcTitle: "Custom Farm Impact Calculator",
+        calcSub: "Estimate your water and diesel savings enabled by AgroOrbit closed-loop automation",
+        lblSurface: "Irrigated Farmland Area:",
+        lblPump: "Water Pump Power:",
+        lblCWater: "Water volume saved / yr",
+        lblCFuel: "Diesel fuel eliminated / yr",
+        lblCMoney: "Estimated net annual savings",
+        solSub: "Global Architecture",
+        solHead: "One DeepTech Engine, Two High-Impact Markets",
+        solIntro: "EdgeOrbit AI provides a unified quantized edge computing framework deployed on farmland and spacecraft.",
+        agroDesc: "Autonomous closed-loop irrigation controller powered by Copernicus Sentinel-2 satellite imagery without internet dependency.",
+        spaceDesc: "Low Earth Orbit (CubeSats) and critical infrastructure resilience using Spatio-Temporal Graph Neural Networks (ST-GNN).",
+        btnAgro: "Download AgroOrbit Brief",
+        btnSpace: "Inquire for Partnerships",
+        protoTag: "Hardware Validated on Test Bench",
+        protoTitle: "AgroOrbit Smart Controller Box",
+        protoDesc: "Engineered to operate autonomously in harsh arid environments (-10°C to +65°C), our Edge AI controller combines neural compute with ultra-low power.",
+        btnHdProto: "View HD Architecture Scheme",
+        fSub: "Leadership & Research",
+        fHead: "Founder & Elite Scientific Heritage",
+        fRole: "Founder & Lead AI Architect",
+        fDegree: "Master 2 in Artificial Intelligence & Big Data (Highest Honors / Con Lode)",
+        fBio: "AI researcher specialized in Earth Observation, Spatio-Temporal Graph Neural Networks, and energy-constrained edge deployment. Spearheading technological sovereignty and water security in Algeria.",
+        cTitle: "Ready to Scale Water & Space Resilience?",
+        cSub: "Whether you are a commercial farm, investor, or institutional partner, let's connect to deploy EdgeOrbit AI in the field.",
+        btnDlContact: "Download Pitch Deck"
+      },
+      fr: {
+        banner: "Sélectionné au programme national Scale-Up GIZ / Ministère des Startups (MECSME) — Alger, 18-20 Oct. 2026",
+        navSim: "Simulateur",
+        navSol: "Solutions",
+        navProto: "Prototype TRL 6",
+        navHer: "Fondateur",
+        navContact: "Contact",
+        navDeck: "Deck PDF",
+        heroTitle: "L'Intelligence Artificielle <br/><span class=\"gradient-text\">En Orbite & Sur Le Terrain</span>",
+        heroLead: "EdgeOrbit AI élimine la dépendance au Cloud en zones isolées. Nos algorithmes neuronaux embarqués (GNN quantifiés INT8) analysent l'imagerie spatiale Copernicus Sentinel-2 directement sur micro-boîtiers basse consommation (<2.5W) pour réguler l'irrigation et protéger les aquifères en temps réel.",
+        btnExplore: "Explorer le Simulateur Live",
+        btnDeck: "Télécharger le Pitch Deck (PDF)",
+        m1Lbl: "Économie d'Eau",
+        m1Sub: "Surpompage réduit sans perte de rendement",
+        m2Lbl: "Puissance Énergétique",
+        m2Sub: "Alimentation 100% autonome par mini-solaire",
+        m3Lbl: "Hors-Ligne (No Cloud)",
+        m3Sub: "Zéro dépendance aux réseaux Internet ruraux",
+        m4Lbl: "Maturité Prototype",
+        m4Sub: "Validé sur banc d'essai et parcelles pilotes",
+        simSub: "Démonstrateur Interactif",
+        simHead: "Simulation : Inférence Edge vs Dépendance Cloud",
+        simIntro: "Comparez la latence, le coût et l'efficacité entre le traitement traditionnel sur serveurs distants et l'intelligence locale EdgeOrbit AI.",
+        btnEdgeTab: "Technologie EdgeOrbit AI (Inférence Locale)",
+        btnCloudTab: "Approche Traditionnelle (Cloud Externe)",
+        calcTitle: "Calculateur d'Impact Agricole Personnalisé",
+        calcSub: "Estimez vos économies d'eau et de carburant grâce à l'asservissement intelligent AgroOrbit",
+        lblSurface: "Superficie irriguée :",
+        lblPump: "Puissance de pompage :",
+        lblCWater: "Volume d'eau préservé / an",
+        lblCFuel: "Carburant diesel éliminé / an",
+        lblCMoney: "Économie financière nette estimée / an",
+        solSub: "Architecture Globale",
+        solHead: "Une Plateforme Mère DeepTech & Deux Marchés Stratégiques",
+        solIntro: "EdgeOrbit AI fournit le moteur algorithmique d'IA embarquée unifié, déployé au sol et dans l'espace.",
+        agroDesc: "Système autonome de gestion hydrique et de pilotage des motopompes solaires par télédétection satellite Copernicus Sentinel-2 sans connexion Internet.",
+        spaceDesc: "Traitement en orbite basse (CubeSats) et résilience des réseaux énergétiques par réseaux de neurones sur graphes spatio-temporels (ST-GNN).",
+        btnAgro: "Consulter le dossier AgroOrbit",
+        btnSpace: "Contacter pour partenariats",
+        protoTag: "Matériel Éprouvé sur Banc d'Essai",
+        protoTitle: "Le Boîtier Intelligent AgroOrbit",
+        protoDesc: "Conçu pour opérer de manière totalement autonome sous les conditions climatiques sévères du Sud et des Hauts Plateaux algériens (-10°C à +65°C), notre contrôleur Edge AI couple puissance de calcul neuronal et sobriété énergétique.",
+        btnHdProto: "Voir le Schéma Technique HD",
+        fSub: "Leadership & Recherche",
+        fHead: "Fondateur & Ancrage Scientifique d'Excellence",
+        fRole: "Fondateur & Lead AI Architect",
+        fDegree: "Master 2 en Intelligence Artificielle & Big Data (Mention Très Bien / Con Lode)",
+        fBio: "Ingénieur de recherche spécialisé en Intelligence Artificielle appliquée à la télédétection spatiale, réseaux de neurones sur graphes spatio-temporels (ST-GNN) et déploiement d'inférence sous contraintes strictes d'énergie. Porteur d'une vision combinant la souveraineté technologique NewSpace et la sécurité hydrique nationale de l'Algérie.",
+        cTitle: "Prêt à Accélérer la Résilience Hydrique ?",
+        cSub: "Que vous soyez exploitant agricole, investisseur, partenaire technologique ou institutionnel, échangeons pour déployer EdgeOrbit AI sur le terrain.",
+        btnDlContact: "Télécharger le Pitch Deck"
+      }
+    };
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'fr' ? 'en' : 'fr';
+      const c = dict[currentLang];
+      document.getElementById('txt-banner').innerText = c.banner;
+      document.getElementById('nav-sim').innerText = c.navSim;
+      document.getElementById('nav-solutions').innerText = c.navSol;
+      document.getElementById('nav-proto').innerText = c.navProto;
+      document.getElementById('nav-heritage').innerText = c.navHer;
+      document.getElementById('nav-contact').innerText = c.navContact;
+      document.getElementById('nav-deck-btn').innerText = c.navDeck;
+      document.getElementById('hero-title').innerHTML = c.heroTitle;
+      document.getElementById('hero-lead').innerText = c.heroLead;
+      document.getElementById('btn-explore-sim').innerText = c.btnExplore;
+      document.getElementById('btn-dl-deck').innerText = c.btnDeck;
+      document.getElementById('m1-lbl').innerText = c.m1Lbl;
+      document.getElementById('m1-sub').innerText = c.m1Sub;
+      document.getElementById('m2-lbl').innerText = c.m2Lbl;
+      document.getElementById('m2-sub').innerText = c.m2Sub;
+      document.getElementById('m3-lbl').innerText = c.m3Lbl;
+      document.getElementById('m3-sub').innerText = c.m3Sub;
+      document.getElementById('m4-lbl').innerText = c.m4Lbl;
+      document.getElementById('m4-sub').innerText = c.m4Sub;
+      document.getElementById('sim-subhead').innerText = c.simSub;
+      document.getElementById('sim-mainhead').innerText = c.simHead;
+      document.getElementById('sim-intro').innerText = c.simIntro;
+      document.getElementById('btn-mode-edge').innerText = c.btnEdgeTab;
+      document.getElementById('btn-mode-cloud').innerText = c.btnCloudTab;
+      document.getElementById('calc-title').innerText = c.calcTitle;
+      document.getElementById('calc-sub').innerText = c.calcSub;
+      document.getElementById('lbl-surface').innerText = c.lblSurface;
+      document.getElementById('lbl-pumping').innerText = c.lblPump;
+      document.getElementById('lbl-calc-water').innerText = c.lblCWater;
+      document.getElementById('lbl-calc-fuel').innerText = c.lblCFuel;
+      document.getElementById('lbl-calc-money').innerText = c.lblCMoney;
+      document.getElementById('sol-subhead').innerText = c.solSub;
+      document.getElementById('sol-mainhead').innerText = c.solHead;
+      document.getElementById('sol-intro').innerText = c.solIntro;
+      document.getElementById('agro-desc').innerText = c.agroDesc;
+      document.getElementById('space-desc').innerText = c.spaceDesc;
+      document.getElementById('btn-agro-deck').innerText = c.btnAgro;
+      document.getElementById('btn-space-contact').innerText = c.btnSpace;
+      document.getElementById('proto-tag').innerText = c.protoTag;
+      document.getElementById('proto-title').innerText = c.protoTitle;
+      document.getElementById('proto-desc').innerText = c.protoDesc;
+      document.getElementById('btn-hd-proto').innerText = c.btnHdProto;
+      document.getElementById('f-subhead').innerText = c.fSub;
+      document.getElementById('f-mainhead').innerText = c.fHead;
+      document.getElementById('f-role').innerText = c.fRole;
+      document.getElementById('f-degree').innerHTML = c.fDegree;
+      document.getElementById('f-bio').innerHTML = c.fBio;
+      document.getElementById('c-title').innerText = c.cTitle;
+      document.getElementById('c-sub').innerText = c.cSub;
+    }
+  </script>
+</body>
+</html>
