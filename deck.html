@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<title>Pitch Deck Synthétique — AgroOrbit (EdgeOrbit AI) · GIZ & MECSME</title>
+<style>
+  @page {
+    size: 16in 9in;
+    margin: 0;
+  }
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  html, body {
+    width: 16in;
+    height: 9in;
+    background: #061019;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: #ffffff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .slide {
+    width: 16in;
+    height: 9in;
+    page-break-after: always;
+    page-break-inside: avoid;
+    position: relative;
+    overflow: hidden;
+    padding: 0.65in 0.9in;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(145deg, #06111C 0%, #0B1D2A 55%, #081622 100%);
+  }
+
+  /* Decorative Orbs */
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: -15%;
+    right: -10%;
+    width: 7in;
+    height: 7in;
+    background: radial-gradient(circle, rgba(76, 187, 178, 0.12) 0%, transparent 65%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .slide::after {
+    content: '';
+    position: absolute;
+    bottom: -10%;
+    left: -5%;
+    width: 5in;
+    height: 5in;
+    background: radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 65%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* Grid Overlay */
+  .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(76, 187, 178, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(76, 187, 178, 0.035) 1px, transparent 1px);
+    background-size: 0.5in 0.5in;
+    pointer-events: none;
+  }
+
+  /* Header */
+  .slide-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid rgba(76, 187, 178, 0.25);
+    padding-bottom: 0.18in;
+    position: relative;
+    z-index: 10;
+  }
+  .brand-area {
+    display: flex;
+    flex-direction: column;
+    gap: 0.04in;
+  }
+  .program-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.14in;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #4CBBB2;
+  }
+  .slide-title {
+    font-size: 0.38in;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.1;
+  }
+  .slide-title span {
+    background: linear-gradient(90deg, #4CBBB2, #22C55E);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .slide-number {
+    font-size: 0.16in;
+    font-family: monospace;
+    font-weight: 700;
+    color: rgba(76, 187, 178, 0.6);
+    letter-spacing: 1.5px;
+  }
+
+  /* Body Content */
+  .slide-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 10;
+    margin: 0.22in 0;
+  }
+
+  /* Footer */
+  .slide-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 0.12in;
+    font-size: 0.13in;
+    color: rgba(255, 255, 255, 0.45);
+    position: relative;
+    z-index: 10;
+  }
+  .footer-left {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+  }
+  .footer-badge {
+    background: rgba(76, 187, 178, 0.12);
+    border: 1px solid rgba(76, 187, 178, 0.3);
+    color: #4CBBB2;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.11in;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Grid Layouts */
+  .g-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35in; }
+  .g-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.28in; }
+  .g-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.22in; }
+
+  /* Cards */
+  .card {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(76, 187, 178, 0.2);
+    border-radius: 14px;
+    padding: 0.25in 0.28in;
+    position: relative;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #4CBBB2, #22C55E);
+    border-radius: 14px 14px 0 0;
+  }
+  .card.accent-orange::before {
+    background: linear-gradient(90deg, #F09235, #EAB308);
+  }
+  .card-title {
+    font-size: 0.22in;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.1in;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-text {
+    font-size: 0.16in;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.72);
+  }
+  .card-text strong {
+    color: #ffffff;
+  }
+
+  /* Metric Blocks */
+  .metric-card {
+    background: rgba(76, 187, 178, 0.06);
+    border: 1px solid rgba(76, 187, 178, 0.25);
+    border-radius: 14px;
+    padding: 0.24in;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .metric-val {
+    font-size: 0.52in;
+    font-weight: 900;
+    font-family: monospace;
+    color: #4CBBB2;
+    line-height: 1;
+    margin-bottom: 0.06in;
+    text-shadow: 0 0 20px rgba(76, 187, 178, 0.35);
+  }
+  .metric-val.orange {
+    color: #F09235;
+    text-shadow: 0 0 20px rgba(240, 146, 53, 0.35);
+  }
+  .metric-val.green {
+    color: #22C55E;
+    text-shadow: 0 0 20px rgba(34, 197, 94, 0.35);
+  }
+  .metric-unit {
+    font-size: 0.13in;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.06in;
+  }
+  .metric-label {
+    font-size: 0.15in;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.25;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.155in;
+  }
+  th {
+    text-align: left;
+    padding: 0.12in 0.16in;
+    background: rgba(76, 187, 178, 0.1);
+    color: #4CBBB2;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid rgba(76, 187, 178, 0.3);
+  }
+  td {
+    padding: 0.13in 0.16in;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.8);
+  }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; color: #ffffff; }
+
+  /* Lists */
+  .check-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1in;
+  }
+  .check-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.16in;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .check-list li::before {
+    content: '✔';
+    color: #22C55E;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+
+  /* Pill badges */
+  .pill {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.13in;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .pill-teal { background: rgba(76, 187, 178, 0.15); color: #4CBBB2; border: 1px solid rgba(76, 187, 178, 0.4); }
+  .pill-green { background: rgba(34, 197, 94, 0.15); color: #22C55E; border: 1px solid rgba(34, 197, 94, 0.4); }
+  .pill-orange { background: rgba(240, 146, 53, 0.15); color: #F09235; border: 1px solid rgba(240, 146, 53, 0.4); }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 1 : COUVERTURE & VISION
+══════════════════════════════════════════════════════ -->
+<div class="slide" style="justify-content: center; align-items: flex-start; padding: 1in 1.2in;">
+  <div class="grid-bg"></div>
+  <div style="display: flex; gap: 12px; margin-bottom: 0.25in; z-index: 10;">
+    <span class="pill pill-teal">Projet DGA · GIZ Algérie & MECSME</span>
+    <span class="pill pill-green">GreenTech & DeepTech IA</span>
+    <span class="pill pill-orange">Finaliste INNOspace Masters (DLR / OHB SE)</span>
+  </div>
+  <h1 style="font-size: 0.75in; font-weight: 900; line-height: 1.05; margin-bottom: 0.18in; z-index: 10;">
+    AgroOrbit <span style="font-weight: 300; color: rgba(255,255,255,0.65);">by EdgeOrbit AI</span><br/>
+    <span style="background: linear-gradient(90deg, #4CBBB2, #22C55E); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">L'IA Satellitaire au Service de l'Irrigation de Précision</span>
+  </h1>
+  <p style="font-size: 0.24in; color: rgba(255, 255, 255, 0.75); max-width: 11in; line-height: 1.45; margin-bottom: 0.45in; z-index: 10;">
+    Solution GeoAI frugale transformant les constellations satellitaires Copernicus en prescriptions d'irrigation quotidiennes par SMS/WhatsApp — avec <strong>zéro capteur au sol</strong> et jusqu'à <strong>32 % d'économie d'eau mesurée</strong>.
+  </p>
+  <div style="display: flex; gap: 0.4in; border-top: 1px solid rgba(76, 187, 178, 0.3); padding-top: 0.25in; width: 100%; z-index: 10;">
+    <div>
+      <div style="font-size: 0.12in; color: rgba(76, 187, 178, 0.8); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;">Fondateur & CEO</div>
+      <div style="font-size: 0.18in; font-weight: 800; color: #fff;">Ing. Maamar Omar ARBOUZ</div>
+      <div style="font-size: 0.13in; color: rgba(255,255,255,0.5);">Ingénieur d'État Topographe · Master 2 IA & Big Data</div>
+    </div>
+    <div>
+      <div style="font-size: 0.12in; color: rgba(76, 187, 178, 0.8); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;">Implantation</div>
+      <div style="font-size: 0.18in; font-weight: 800; color: #fff;">Miliana (Aïn Defla) / Alger</div>
+      <div style="font-size: 0.13in; color: rgba(255,255,255,0.5);">Décret exécutif n° 20-254 (Label Startup)</div>
+    </div>
+    <div>
+      <div style="font-size: 0.12in; color: rgba(76, 187, 178, 0.8); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;">Contact & Réseau</div>
+      <div style="font-size: 0.18in; font-weight: 800; color: #4CBBB2;">arbouzmaamar@gmail.com</div>
+      <div style="font-size: 0.13in; color: rgba(255,255,255,0.5);">+213 541 453 952 · linkedin.com/in/maamar-arbouz</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 2 : LE PROBLÈME
+══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="grid-bg"></div>
+  <div class="slide-header">
+    <div class="brand-area">
+      <div class="program-badge">01 · Défi Climatique & Agricole</div>
+      <div class="slide-title">La Crise Hydrique en Algérie & Méditerranée : <span>L'Irrigation à l'Aveugle</span></div>
+    </div>
+    <div class="slide-number">02 / 10</div>
+  </div>
+  <div class="slide-body">
+    <div class="g-4" style="margin-bottom: 0.3in;">
+      <div class="metric-card">
+        <div class="metric-val orange">70%</div>
+        <div class="metric-unit">Consommation Eau</div>
+        <div class="metric-label">Accaparée par l'agriculture en zone aride & semi-aride</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val orange">40%</div>
+        <div class="metric-unit">Gaspillage d'Eau</div>
+        <div class="metric-label">Perdu par sur-irrigation non calibrée ou fuites</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">>2 500 €</div>
+        <div class="metric-unit">Par Hectare</div>
+        <div class="metric-label">Coût prohibitif des sondes capacitives IoT au sol</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">3 à 7 j</div>
+        <div class="metric-unit">Latence Satellitaire</div>
+        <div class="metric-label">Délais cloud classiques : stress hydrique irréversible</div>
+      </div>
+    </div>
+    <div class="g-2">
+      <div class="card accent-orange">
+        <div class="card-title">⚠️ Les Limites Critiques des Outils Actuels</div>
+        <p class="card-text">
+          • <strong>Barrière d'investissement insurmontable :</strong> Les petits et moyens exploitants algériens ne peuvent amortir 2 500 €/ha d'équipements électroniques vulnérables (poussière, vol, maintenance, batteries).<br/>
+          • <strong>Cécité face aux nuages :</strong> Les solutions optiques traditionnelles sont aveugles en période couverte, au moment précis où le pilotage de l'irrigation est le plus critique.
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-title">🎯 L'Urgence Nationale & Régionale</div>
+        <p class="card-text">
+          • <strong>45 millions d'hectares menacés</strong> en Algérie et Méditerranée.<br/>
+          • L'épuisement des nappes phréatiques dans la Mitidja, le Chlef et les Hauts-Plateaux impose une transition immédiate vers une <strong>gestion hydrique frugale pilotée par la donnée</strong>.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="footer-left"><span>Formation « From Startup to Scale-Up »</span><span class="footer-badge">Projet DGA</span></div>
+    <div>EdgeOrbit AI · AgroOrbit</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 3 : LA SOLUTION
+══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="grid-bg"></div>
+  <div class="slide-header">
+    <div class="brand-area">
+      <div class="program-badge">02 · Proposition de Valeur</div>
+      <div class="slide-title">AgroOrbit : <span>Intelligence Géospatiale Frugale Zéro-Hardware</span></div>
+    </div>
+    <div class="slide-number">03 / 10</div>
+  </div>
+  <div class="slide-body">
+    <div class="g-3" style="margin-bottom: 0.25in;">
+      <div class="card">
+        <div class="card-title">🛰️ 1. Fusion Radar (SAR) & Optique</div>
+        <p class="card-text">
+          Association du radar <strong>Sentinel-1</strong> (bande C pénétrant 100% des nuages) et de l'optique <strong>Sentinel-2</strong>. Sondage diélectrique du sol jusqu'à 30 cm de profondeur, <strong>365 jours/an, par tous les temps</strong>.
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-title">⚡ 2. Inférence Edge-AI Ultra-Légère</div>
+        <p class="card-text">
+          Réseau de neurones sur graphes spatio-temporels (<strong>st-GNN</strong>) quantifié en <strong>INT8</strong>. Calcul de l'humidité volumique du sol à <strong>10 m de résolution parcellaire en <45 ms</strong> sous une puissance <2W.
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-title">📱 3. Prescription Directe par SMS</div>
+        <p class="card-text">
+          Couplage direct avec les modèles d'évapotranspiration physique (van Genuchten). L'agriculteur reçoit des <strong>recommandations d'irrigation en millimètres par SMS/WhatsApp</strong>, sans nécessiter d'Internet haut débit.
+        </p>
+      </div>
+    </div>
+    <div class="card" style="background: rgba(34, 197, 94, 0.06); border-color: rgba(34, 197, 94, 0.3);">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="font-size: 0.22in; font-weight: 800; color: #22C55E; margin-bottom: 0.04in;">Impact Concret Validé sur Parcelles Pilotes :</div>
+          <div style="font-size: 0.16in; color: rgba(255,255,255,0.85);">
+            <strong>28 à 32 % d'économie d'eau d'irrigation</strong> et réduction directe de 25% des coûts de carburant de pompage, sans aucun euro investi en matériel au sol.
+          </div>
+        </div>
+        <div class="pill pill-green" style="font-size: 0.16in; padding: 8px 20px;">TRL 5-6 Validé</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="footer-left"><span>Formation « From Startup to Scale-Up »</span><span class="footer-badge">Projet DGA</span></div>
+    <div>EdgeOrbit AI · AgroOrbit</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 4 : DEEPTECH & ARCHITECTURE
+══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="grid-bg"></div>
+  <div class="slide-header">
+    <div class="brand-area">
+      <div class="program-badge">03 · Rigueur Scientifique</div>
+      <div class="slide-title">Architecture DeepTech & <span>Performances Validées</span></div>
+    </div>
+    <div class="slide-number">04 / 10</div>
+  </div>
+  <div class="slide-body">
+    <div class="g-2">
+      <div>
+        <table style="margin-bottom: 0.2in;">
+          <thead>
+            <tr>
+              <th>Indicateur Clé (KPI)</th>
+              <th style="color: #22C55E;">Performance Mesurée</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Corrélation Vérité Terrain (R²)</td>
+              <td style="font-family: monospace; font-weight: 700; color: #4CBBB2;">> 0,85 vs sondes physiques</td>
+            </tr>
+            <tr>
+              <td>Erreur Quadratique Moyenne (RMSE)</td>
+              <td style="font-family: monospace; font-weight: 700; color: #4CBBB2;">< 3,2 % humidité volumique</td>
+            </tr>
+            <tr>
+              <td>Disponibilité Tout-Temps</td>
+              <td style="font-weight: 700; color: #22C55E;">100 % (Inversion radar SAR)</td>
+            </tr>
+            <tr>
+              <td>Économie d'Eau Mesurée</td>
+              <td style="font-weight: 700; color: #22C55E;">28 à 32 % en parcelles réelles</td>
+            </tr>
+            <tr>
+              <td>Latence d'Inférence</td>
+              <td style="font-family: monospace; font-weight: 700; color: #4CBBB2;">< 45 ms / bloc de 10 ha</td>
+            </tr>
+            <tr>
+              <td>Consommation Énergétique Embarquée</td>
+              <td style="font-family: monospace; font-weight: 700; color: #4CBBB2;">< 2,0 Watts (compatible solaire)</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="card" style="padding: 0.18in;">
+          <div style="font-size: 0.15in; color: rgba(255,255,255,0.7);">
+            <strong>Compatibilité Matérielle Polyvalente :</strong> Modèles déployables sur microprocesseurs industriels ARM Cortex-A55, STM32MP1 ou accélérateurs NVIDIA Jetson Orin sous ONNX Runtime / TensorRT.
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">⚙️ Pipeline d'Exécution en 5 Étapes</div>
+        <div style="display: flex; flex-direction: column; gap: 0.12in; margin-top: 0.12in;">
+          <div style="background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 8px;">
+            <strong style="color: #4CBBB2;">1. Ingestion Automatisée :</strong> Flux continu des données ouvertes Copernicus Sentinel-1C et Sentinel-2.
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 8px;">
+            <strong style="color: #4CBBB2;">2. Prétraitement Radiométrique :</strong> Correction topographique SRTM et filtrage adaptatif du speckle radar.
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 8px;">
+            <strong style="color: #4CBBB2;">3. Fusion Multimodale :</strong> Corrélation des indices de végétation optiques (NDVI/NDWI) et de la rétrodiffusion radar.
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 8px;">
+            <strong style="color: #4CBBB2;">4. Inférence GNN INT8 :</strong> Déduction de la teneur en eau volumique à 10 mètres de résolution.
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 8px;">
+            <strong style="color: #22C55E;">5. Moteur Agronomique :</strong> Modélisation physique de van Genuchten pour calculer la dose exacte d'irrigation déficitaire.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="footer-left"><span>Formation « From Startup to Scale-Up »</span><span class="footer-badge">Projet DGA</span></div>
+    <div>EdgeOrbit AI · AgroOrbit</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 5 : AVANTAGE CONCURRENTIEL
+══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="grid-bg"></div>
+  <div class="slide-header">
+    <div class="brand-area">
+      <div class="program-badge">04 · Positionnement Stratégique</div>
+      <div class="slide-title">Pourquoi AgroOrbit Gagne sur le Terrain : <span>Avantage Concurrentiel</span></div>
+    </div>
+    <div class="slide-number">05 / 10</div>
+  </div>
+  <div class="slide-body">
+    <table style="margin-bottom: 0.3in;">
+      <thead>
+        <tr>
+          <th>Fonctionnalité Clé</th>
+          <th>Sondes IoT Physiques</th>
+          <th>Satellites Cloud Classiques</th>
+          <th style="color: #22C55E; background: rgba(34, 197, 94, 0.15);">AgroOrbit (EdgeOrbit AI)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Pénétration Nuageuse</td>
+          <td>✔ Indépendante</td>
+          <td style="color: #EF4444;">✖ Aveugle sous les nuages</td>
+          <td style="color: #22C55E; font-weight: 700;">✔ 100 % (Fusion radar SAR)</td>
+        </tr>
+        <tr>
+          <td>Investissement Initial (CapEx)</td>
+          <td style="color: #EF4444;">✖ > 2 500 € / hectare</td>
+          <td>✔ Faible</td>
+          <td style="color: #22C55E; font-weight: 700;">✔ ZÉRO CapEx (Aucun matériel)</td>
+        </tr>
+        <tr>
+          <td>Maintenance & Logistique</td>
+          <td style="color: #EF4444;">✖ Élevée (Piles, casse, vol)</td>
+          <td>✔ Nulle</td>
+          <td style="color: #22C55E; font-weight: 700;">✔ ZÉRO maintenance terrain</td>
+        </tr>
+        <tr>
+          <td>Connectivité Requise</td>
+          <td style="color: #EF4444;">✖ SIM / LoRa par sonde</td>
+          <td style="color: #EF4444;">✖ Connexion Internet requise</td>
+          <td style="color: #22C55E; font-weight: 700;">✔ Fonctionne hors-ligne / SMS</td>
+        </tr>
+        <tr>
+          <td>Souveraineté des Données</td>
+          <td style="color: #EF4444;">✖ Serveurs cloud propriétaires</td>
+          <td style="color: #EF4444;">✖ Serveurs cloud étrangers</td>
+          <td style="color: #22C55E; font-weight: 700;">✔ Déploiement souverain / local</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="g-3">
+      <div class="card">
+        <div class="card-title">🛡️ Barrière Technologique</div>
+        <p class="card-text">Algorithmes propriétaires d'inversion radar et de quantification INT8 issus de la recherche aérospatiale de pointe.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">💰 Accessibilité Totale</div>
+        <p class="card-text">Un coût 10 fois inférieur aux standards européens, démocratisant l'agriculture de précision pour les exploitations du Sud.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">🌍 Frugalité Digitale</div>
+        <p class="card-text">Alignement parfait avec le projet DGA (Digital & Vert) : zéro déchet électronique, économie d'eau et d'énergie.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="footer-left"><span>Formation « From Startup to Scale-Up »</span><span class="footer-badge">Projet DGA</span></div>
+    <div>EdgeOrbit AI · AgroOrbit</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 6 : OPPORTUNITÉ DE MARCHÉ
+══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="grid-bg"></div>
+  <div class="slide-header">
+    <div class="brand-area">
+      <div class="program-badge">05 · Potentiel Économique</div>
+      <div class="slide-title">Un Marché Adressable de <span>1,8 Milliard d'Euros</span></div>
+    </div>
+    <div class="slide-number">06 / 10</div>
+  </div>
+  <div class="slide-body">
+    <div class="g-3" style="margin-bottom: 0.3in;">
+      <div class="card accent-orange">
+        <div class="metric-val orange">1,8 Md€</div>
+        <div class="metric-unit">Marché Total (TAM)</div>
+        <p class="card-text">Marché global de la résilience hydrique et de l'irrigation de précision en Méditerranée et Afrique du Nord.</p>
+      </div>
+      <div class="card">
+        <div class="metric-val">45 M ha</div>
+        <div class="metric-unit">Surface Cible (SAM)</div>
+        <p class="card-text">Terres agricoles irriguées ou menacées par le stress hydrique en Algérie, Tunisie, Maroc et Égypte.</p>
+      </div>
+      <div class="card">
+        <div class="metric-val green">500 000 ha</div>
+        <div class="metric-unit">Objectif 2028 (SOM)</div>
+        <p class="card-text">Part de marché visée sur les coopératives céréalières et arboricoles en Algérie et au Maghreb.</p>
+      </div>
+    </div>
+    <div class="g-3">
+      <div class="card">
+        <div class="card-title">🌾 Coopératives Agricoles (B2B)</div>
+        <p class="card-text">Gestion mutualisée de l'irrigation sur des centaines d'exploitations affiliées. Optimisation des calendriers de pompage collectifs.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">🫒 Grandes Exploitations (B2B)</div>
+        <p class="card-text">Filières à haute valeur ajoutée (oliviers, palmiers-dattiers, agrumes, vignobles) cherchant à sécuriser les rendements et réduire les factures énergétiques.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">🏛️ Agences de Bassins (B2G)</div>
+        <p class="card-text">Ministères de l'Agriculture et de l'Hydraulique (ANRH, ABH) pour le monitoring systémique de la sécheresse et la gestion des quotas d'eau.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="footer-left"><span>Formation « From Startup to Scale-Up »</span><span class="footer-badge">Projet DGA</span></div>
+    <div>EdgeOrbit AI · AgroOrbit</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 7 : MODÈLE ÉCONOMIQUE & SCALABILITÉ
+══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="grid-bg"></div>
+  <div class="slide-header">
+    <div class="brand-area">
+      <div class="program-badge">06 · Modèle d'Affaires</div>
+      <div class="slide-title">Modèle Économique Récurrent & <span>Forte Scalabilité</span></div>
+    </div>
+    <div class="slide-number">07 / 10</div>
+  </div>
+  <div class="slide-body">
+    <div class="g-2" style="margin-bottom: 0.3in;">
+      <div class="card">
+        <div class="card-title">💰 1. Abonnement SaaS B2B par Hectare</div>
+        <div style="font-size: 0.34in; font-weight: 900; color: #4CBBB2; font-family: monospace; margin: 0.08in 0;">
+          4,50 € à 12,00 € <span style="font-size: 0.18in; font-weight: 500; color: rgba(255,255,255,0.6);">/ ha / an</span>
+        </div>
+        <p class="card-text">
+          • Tarification modulée selon la culture (grandes cultures vs arboriculture intensive) et la fréquence d'actualisation.<br/>
+          • <strong>Retour sur investissement de 8 pour 1 :</strong> L'agriculteur compense largement son abonnement dès le premier mois grâce aux économies d'eau et de carburant de pompage.
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-title">🏛️ 2. Licences Tableaux de Bord B2G</div>
+        <div style="font-size: 0.34in; font-weight: 900; color: #F09235; font-family: monospace; margin: 0.08in 0;">
+          15 000 € à 50 000 € <span style="font-size: 0.18in; font-weight: 500; color: rgba(255,255,255,0.6);">/ an / bassin</span>
+        </div>
+        <p class="card-text">
+          • Tableaux de bord macro-géographiques pour les agences de bassins hydrographiques et compagnies d'assurance agricole.<br/>
+          • Cartographie en temps réel du stress hydrique et détection précoce des anomalies régionales de sécheresse.
+        </p>
+      </div>
+    </div>
+    <div class="g-3">
+      <div class="metric-card">
+        <div class="metric-val green">> 85%</div>
+        <div class="metric-unit">Marge Brute</div>
+        <div class="metric-label">Traitement d'imagerie satellitaire 100% automatisé sans CapEx</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">0 €</div>
+        <div class="metric-unit">Coût Matériel Marginal</div>
+        <div class="metric-label">L'ajout de nouveaux hectares n'implique aucun achat de sonde</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val orange">8x ROI</div>
+        <div class="metric-unit">Rentabilité Immédiate</div>
+        <div class="metric-label">Pour chaque euro investi, l'agriculteur économise 8 euros</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="footer-left"><span>Formation « From Startup to Scale-Up »</span><span class="footer-badge">Projet DGA</span></div>
+    <div>EdgeOrbit AI · AgroOrbit</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 8 : TRACTION & VALIDATION
+══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="grid-bg"></div>
+  <div class="slide-header">
+    <div class="brand-area">
+      <div class="program-badge">07 · Crédibilité & Traction</div>
+      <div class="slide-title">Validation Internationale & <span>Ancrage Institutionnel</span></div>
+    </div>
+    <div class="slide-number">08 / 10</div>
+  </div>
+  <div class="slide-body">
+    <div class="g-2" style="margin-bottom: 0.25in;">
+      <div class="card" style="border-color: rgba(240, 146, 53, 0.4);">
+        <div class="card-title">🇩🇪 🏆 Finaliste INNOspace Masters 2026 (Allemagne)</div>
+        <p class="card-text">
+          Sélectionné parmi plus de 200 candidatures internationales par le constructeur spatial allemand <strong>OHB SE</strong> et l'agence spatiale allemande <strong>DLR</strong>. Soutenance du pitch devant le jury d'experts OHB le 16 juin 2026. Preuve directe de validation technologique de haut niveau.
+        </p>
+      </div>
+      <div class="card" style="border-color: rgba(76, 187, 178, 0.4);">
+        <div class="card-title">📄 Publication Scientifique ISPRS (SCOPUS)</div>
+        <p class="card-text">
+          Premier auteur de l'article de recherche <em>UrbanGraphSAGE</em> publié aux archives de l'<strong>ISPRS (FOSS4G 2026)</strong>, indexé <strong>SCOPUS et Web of Science</strong>. Démontre la rigueur scientifique de nos modèles de réseaux de neurones sur graphes appliqués aux images satellitaires.
+        </p>
+      </div>
+    </div>
+    <div class="g-3">
+      <div class="card">
+        <div class="card-title">🛰️ Expérience ASAL</div>
+        <p class="card-text">Ingénieur de recherche à l'Agence Spatiale Algérienne (2024–2025) : conception de pipelines de segmentation sur les données Alsat-1B/2.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">🌍 Réseau Européen</div>
+        <p class="card-text">Conférencier plénier ESWW 2026 Florence, participant ASI Matera, boursier ETH Zurich et EUMaster4HPC (Luxembourg).</p>
+      </div>
+      <div class="card">
+        <div class="card-title">📜 4 Actions COST</div>
+        <p class="card-text">Membre actif des Actions européennes CA22136 (PANGEOS - Télédétection agricole), CA23118, CA24136 et CA24153.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="footer-left"><span>Formation « From Startup to Scale-Up »</span><span class="footer-badge">Projet DGA</span></div>
+    <div>EdgeOrbit AI · AgroOrbit</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 9 : OBJECTIFS SCALE-UP & ASC 2026
+══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="grid-bg"></div>
+  <div class="slide-header">
+    <div class="brand-area">
+      <div class="program-badge">08 · Feuille de Route & Attentes GIZ</div>
+      <div class="slide-title">Plan de Scale-Up & <span>Objectifs pour l'ASC 2026</span></div>
+    </div>
+    <div class="slide-number">09 / 10</div>
+  </div>
+  <div class="slide-body">
+    <div class="g-2" style="margin-bottom: 0.25in;">
+      <div class="card">
+        <div class="card-title">🎯 Ce que nous attendons de la formation GIZ :</div>
+        <ul class="check-list">
+          <li><strong>Stratégie de passage à l'échelle :</strong> Structurer l'onboarding commercial massif des coopératives agricoles en Algérie.</li>
+          <li><strong>Préparation à la levée de fonds :</strong> Consolider notre deck investisseur et modéliser nos métriques financières en vue de l'<strong>Algerian Startup Conference (ASC 2026)</strong>.</li>
+          <li><strong>Synergies écosystème :</strong> Rencontrer les fonds de capital-risque (ASF, fonds régionaux) et les décideurs publics du MECSME.</li>
+        </ul>
+      </div>
+      <div class="card accent-orange">
+        <div class="card-title">🚀 Jalons de Croissance 2026–2028 :</div>
+        <ul class="check-list">
+          <li><strong>Q4 2026 :</strong> Extension des pilotes en Algérie de 120 ha à 500 ha · Présentation CIHEAM Bari.</li>
+          <li><strong>S1 2027 :</strong> Signature de 3 contrats cadres avec des coopératives agricoles majeures en Algérie.</li>
+          <li><strong>S2 2027 :</strong> 5 000 ha sous contrat payant · Clôture d'une levée Seed de <strong>200 000 €</strong>.</li>
+          <li><strong>2028 :</strong> Déploiement sur 25 000+ ha (Algérie, Tunisie, Maroc) · <strong>350k+ € d'ARR</strong>.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="background: rgba(76, 187, 178, 0.05); border-color: rgba(76, 187, 178, 0.3);">
+      <div style="font-size: 0.16in; color: rgba(255,255,255,0.85); text-align: center;">
+        🤝 <strong>Adéquation Parfaite avec le Projet DGA :</strong> AgroOrbit incarne l'alliance de la <em>technologie numérique avancée</em> et de la <em>transition écologique</em> pour préserver la ressource en eau et renforcer la souveraineté alimentaire nationale.
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="footer-left"><span>Formation « From Startup to Scale-Up »</span><span class="footer-badge">Projet DGA</span></div>
+    <div>EdgeOrbit AI · AgroOrbit</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 10 : ÉQUIPE & CONTACT
+══════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="grid-bg"></div>
+  <div class="slide-header">
+    <div class="brand-area">
+      <div class="program-badge">09 · Équipe & Gouvernance</div>
+      <div class="slide-title">Équipe Fondatrice & <span>Mentors Scientifiques</span></div>
+    </div>
+    <div class="slide-number">10 / 10</div>
+  </div>
+  <div class="slide-body">
+    <div class="g-3" style="margin-bottom: 0.3in;">
+      <div class="card" style="border-color: rgba(76, 187, 178, 0.5);">
+        <div style="width: 0.7in; height: 0.7in; border-radius: 50%; background: linear-gradient(135deg, #4CBBB2, #22C55E); display: flex; align-items: center; justify-content: center; font-size: 0.3in; font-weight: 900; color: #061019; margin-bottom: 0.12in;">MA</div>
+        <div style="font-size: 0.22in; font-weight: 800; color: #fff;">Ing. Maamar Omar ARBOUZ</div>
+        <div style="font-size: 0.14in; color: #4CBBB2; font-weight: 700; margin-bottom: 0.08in; text-transform: uppercase;">Fondateur & CEO / Lead IA</div>
+        <p class="card-text">
+          Ingénieur d'État en Topographie et Géodésie, Master 2 en IA & Big Data (Mention Très Bien). Ancien ingénieur d'études à l'Agence Spatiale Algérienne (ASAL).
+        </p>
+      </div>
+      <div class="card">
+        <div style="width: 0.7in; height: 0.7in; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 0.25in; font-weight: 800; color: #4CBBB2; margin-bottom: 0.12in;">PB</div>
+        <div style="font-size: 0.22in; font-weight: 800; color: #fff;">Prof. Piero BOCCARDO</div>
+        <div style="font-size: 0.14in; color: #4CBBB2; font-weight: 700; margin-bottom: 0.08in; text-transform: uppercase;">Conseiller Scientifique Senior</div>
+        <p class="card-text">
+          Président de l'institut ITHACA, Professeur au Politecnico di Torino. Expert internationalement reconnu en géomatique spatiale et gestion des risques de catastrophes.
+        </p>
+      </div>
+      <div class="card">
+        <div style="width: 0.7in; height: 0.7in; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 0.25in; font-weight: 800; color: #4CBBB2; margin-bottom: 0.12in;">BB</div>
+        <div style="font-size: 0.22in; font-weight: 800; color: #fff;">Dr. Belahcene BAHLOUL</div>
+        <div style="font-size: 0.14in; color: #4CBBB2; font-weight: 700; margin-bottom: 0.08in; text-transform: uppercase;">Conseiller Télédétection & Terrain</div>
+        <p class="card-text">
+          Enseignant-chercheur senior à l'Université de Khemis Miliana. Spécialiste de la vérité terrain, de l'imagerie hyperspectrale et du suivi des sols agricoles.
+        </p>
+      </div>
+    </div>
+    <div class="card" style="text-align: center; background: rgba(255,255,255,0.03);">
+      <div style="font-size: 0.22in; font-weight: 800; color: #fff; margin-bottom: 0.06in;">Bâtissons Ensemble l'Agriculture Résiliente de Demain</div>
+      <div style="font-size: 0.15in; color: rgba(255,255,255,0.7);">
+        📧 <strong>arbouzmaamar@gmail.com</strong> &nbsp;·&nbsp; 📱 <strong>+213 541 453 952</strong> &nbsp;·&nbsp; 🌐 <strong>www.edgeorbit.ai</strong> &nbsp;·&nbsp; 📍 <strong>Miliana / Alger, Algérie</strong>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <div class="footer-left"><span>Formation « From Startup to Scale-Up »</span><span class="footer-badge">Projet DGA</span></div>
+    <div>EdgeOrbit AI · AgroOrbit</div>
+  </div>
+</div>
+
+</body>
+</html>
