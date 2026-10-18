@@ -440,7 +440,121 @@
 
         @media (max-width: 1024px) {
             .hero-banner { flex-direction: column; align-items: flex-start; }
-            .duo-grid, .expansion-grid { grid-template-columns: 1fr; }
+            .duo-grid, .expansion-grid, .cs-timeline-grid { grid-template-columns: 1fr; }
+        }
+
+        /* 5. CASE STUDY STYLES */
+        .case-study-card {
+            background: linear-gradient(145deg, rgba(10, 37, 64, 0.95) 0%, rgba(5, 12, 28, 0.98) 100%);
+            border: 1px solid var(--border-emerald);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 40px;
+            box-shadow: 0 14px 35px rgba(16, 185, 129, 0.12);
+        }
+        .cs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .cs-title h3 {
+            font-family: var(--font-head);
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .cs-title p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        .cs-timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .cs-step {
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .cs-step.active {
+            border-color: var(--border-emerald);
+            background: rgba(16, 185, 129, 0.05);
+        }
+        .cs-year {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--cyan);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        .cs-step.active .cs-year { color: var(--emerald); }
+        .cs-name {
+            font-family: var(--font-head);
+            font-size: 14.5px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .cs-desc {
+            font-size: 12px;
+            color: var(--text-sub);
+            line-height: 1.4;
+            margin-bottom: 12px;
+            flex-grow: 1;
+        }
+        .cs-finance {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 8px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .cs-rev { color: var(--emerald); font-weight: 700; }
+        .cs-cost { color: var(--gold); }
+
+        .cs-summary-banner {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-cyan);
+            border-radius: 12px;
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .cs-metric-item {
+            text-align: center;
+        }
+        .cs-metric-val {
+            font-family: var(--font-mono);
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .cs-metric-val.green { color: var(--emerald); }
+        .cs-metric-val.gold { color: var(--gold); }
+        .cs-metric-val.cyan { color: var(--cyan); }
+        .cs-metric-lbl {
+            font-size: 10.5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: 3px;
         }
     </style>
 </head>
@@ -725,6 +839,104 @@
                 <div class="exp-foot">
                     <span class="exp-val">+ 10 000 € / an</span>
                     <span class="badge">+33% ACV</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. ÉTUDE DE CAS RÉELLE -->
+        <div class="section-title">5. Étude de Cas Réelle : LTV de l'Agence de Bassin Hydrographique Chéliff-Zahrez (ABH-CZ)</div>
+
+        <div class="case-study-card">
+            <div class="cs-header">
+                <div class="cs-title">
+                    <h3>Cas Client Institutionnel : Agence de Bassin Hydrographique Chéliff-Zahrez (ABH-CZ)</h3>
+                    <p>Périmètre : 120 000 ha de plaines agricoles irriguées · Suivi du Barrage Sidi M'Hamed Ben Taiba · Durée d'Engagement : 3 ans</p>
+                </div>
+                <span class="badge green">LTV Réalisée : 102 500 €</span>
+            </div>
+
+            <div class="cs-timeline-grid">
+                <!-- Étape 0 : Acquisition -->
+                <div class="cs-step">
+                    <div>
+                        <div class="cs-year">Phase 0 · Mois 1 à 4</div>
+                        <div class="cs-name">Acquisition &amp; PoC</div>
+                        <div class="cs-desc">
+                            Envoi du pré-audit Sentinel-2 montrant 31% de surpompage illégal. Réalisation d'un pilote gratuit 30j sur 500 ha. Signature de la convention cadre 3 ans.
+                        </div>
+                    </div>
+                    <div class="cs-finance">
+                        <span>Investissement CAC</span>
+                        <span class="cs-cost">3 500 €</span>
+                    </div>
+                </div>
+
+                <!-- Étape 1 : Année 1 -->
+                <div class="cs-step active">
+                    <div>
+                        <div class="cs-year">Année 1 · Socle Hydrique</div>
+                        <div class="cs-name">Surveillance Sécheresse</div>
+                        <div class="cs-desc">
+                            Cartographie bimensuelle du stress hydrique et détection des puits clandestins. Livraison du tableau de bord d'aide à la décision. 30% d'eau économisée.
+                        </div>
+                    </div>
+                    <div class="cs-finance">
+                        <span>CA : <strong class="cs-rev">30 000 €</strong></span>
+                        <span>Marge : <strong class="cs-rev">27 000 €</strong></span>
+                    </div>
+                </div>
+
+                <!-- Étape 2 : Année 2 -->
+                <div class="cs-step active">
+                    <div>
+                        <div class="cs-year">Année 2 · Upsell +26%</div>
+                        <div class="cs-name">Radar Crues Sentinel-1</div>
+                        <div class="cs-desc">
+                            L'agence active le module optionnel de détection radar des inondations de l'Oued Chéliff en automne à travers les nuages. Avenant signé sans renégociation.
+                        </div>
+                    </div>
+                    <div class="cs-finance">
+                        <span>CA : <strong class="cs-rev">38 000 €</strong></span>
+                        <span>Marge : <strong class="cs-rev">34 500 €</strong></span>
+                    </div>
+                </div>
+
+                <!-- Étape 3 : Année 3 -->
+                <div class="cs-step active">
+                    <div>
+                        <div class="cs-year">Année 3 · Upsell +18%</div>
+                        <div class="cs-name">Envasement Barrage</div>
+                        <div class="cs-desc">
+                            Ajout de la bathymétrie satellitaire pour estimer la perte de capacité de stockage du barrage de Sidi M'Hamed Ben Taiba. Reconduction automatique.
+                        </div>
+                    </div>
+                    <div class="cs-finance">
+                        <span>CA : <strong class="cs-rev">45 000 €</strong></span>
+                        <span>Marge : <strong class="cs-rev">41 000 €</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cs-summary-banner">
+                <div class="cs-metric-item">
+                    <div class="cs-metric-val">113 000 €</div>
+                    <div class="cs-metric-lbl">CA Total Encaissé (TCV)</div>
+                </div>
+                <div class="cs-metric-item">
+                    <div class="cs-metric-val gold">10 500 €</div>
+                    <div class="cs-metric-lbl">COGS Total (9,3%)</div>
+                </div>
+                <div class="cs-metric-item">
+                    <div class="cs-metric-val green">102 500 €</div>
+                    <div class="cs-metric-lbl">LTV Nette Réalisée</div>
+                </div>
+                <div class="cs-metric-item">
+                    <div class="cs-metric-val cyan">29.3 x</div>
+                    <div class="cs-metric-lbl">Ratio LTV / CAC Réel</div>
+                </div>
+                <div class="cs-metric-item">
+                    <div class="cs-metric-val gold">1.5 Mois</div>
+                    <div class="cs-metric-lbl">Payback du CAC</div>
                 </div>
             </div>
         </div>
