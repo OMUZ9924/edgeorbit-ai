@@ -374,7 +374,93 @@
         @media (max-width: 1024px) {
             .bmc-grid { grid-template-columns: 1fr; }
             .bmc-partners, .bmc-activities, .bmc-resources, .bmc-value, .bmc-relations, .bmc-channels, .bmc-segments { grid-column: auto; grid-row: auto; }
-            .personas-grid, .metrics-row, .timeline-grid, .bmc-bottom { grid-template-columns: 1fr; }
+            .personas-grid, .metrics-row, .timeline-grid, .clients-grid, .bmc-bottom { grid-template-columns: 1fr; }
+        }
+
+        /* 5. CLIENT REFERENCES */
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 45px;
+        }
+        .client-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-cyan);
+            border-radius: 14px;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+        .client-card:hover {
+            border-color: var(--cyan);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 229, 255, 0.15);
+        }
+        .client-card.gold { border-color: var(--border-gold); }
+        .client-card.gold:hover { border-color: var(--gold); box-shadow: 0 10px 25px rgba(245, 158, 11, 0.15); }
+        .client-card.green { border-color: var(--border-emerald); }
+        .client-card.green:hover { border-color: var(--emerald); box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15); }
+        
+        .client-badge-tag {
+            display: inline-block;
+            font-size: 10.5px;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 12px;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--cyan);
+            border: 1px solid var(--border-cyan);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+        .client-card.gold .client-badge-tag {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--gold);
+            border-color: var(--border-gold);
+        }
+        .client-card.green .client-badge-tag {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--emerald);
+            border-color: var(--border-emerald);
+        }
+        .client-title {
+            font-family: var(--font-head);
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        .client-desc {
+            font-size: 12.5px;
+            color: var(--text-sub);
+            margin-bottom: 15px;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+        .client-meta {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+        .client-amount {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--emerald);
+            font-size: 15px;
+        }
+        .client-status {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -606,8 +692,67 @@
             </div>
         </div>
 
-        <!-- 4. TIMELINE / ROADMAP (2026-2028) -->
-        <div class="section-title">4. Feuille de Route de Passage à l'Échelle (Scale-Up Roadmap 2026–2028)</div>
+        <!-- 4. CLIENTS & TRACTION INITIALE (B2R & PILOTES B2B) -->
+        <div class="section-title">4. Références Clients & Traction Initiale (B2R & Pilotes B2B)</div>
+
+        <div class="clients-grid">
+            <!-- Client 1 : B2R Research Lab EO Data -->
+            <div class="client-card">
+                <div>
+                    <span class="client-badge-tag">B2R · Laboratoire de Recherche Européen</span>
+                    <div class="client-title">Unité de Recherche en Télédétection & Agronomie Numérique</div>
+                    <div class="client-desc">
+                        Développement et livraison d'un pipeline automatisé de traitement d'images satellitaires (Copernicus Sentinel-2) pour le suivi temporel haute fréquence du stress hydrique et des indices foliaires (NDVI, NDWI, ET0) sur parcelles expérimentales.
+                    </div>
+                </div>
+                <div class="client-meta">
+                    <div>
+                        <div class="client-status">Prestation Logiciel & Données</div>
+                        <div class="client-amount">3 200 €</div>
+                    </div>
+                    <span class="badge green">Livré & Validé</span>
+                </div>
+            </div>
+
+            <!-- Client 2 : B2R HPC & Edge AI Lab -->
+            <div class="client-card gold">
+                <div>
+                    <span class="client-badge-tag">B2R · Équipe IA & Calcul Embarqué</span>
+                    <div class="client-title">Laboratoire Universitaire de Calcul Scientifique & IA Spatiale</div>
+                    <div class="client-desc">
+                        Optimisation algorithmique, quantification INT8 (TensorRT) et portage de modèles deep learning de segmentation d'images sur cartes embarquées faible consommation (NVIDIA Jetson) pour l'inférence satellite temps réel.
+                    </div>
+                </div>
+                <div class="client-meta">
+                    <div>
+                        <div class="client-status">R&D Sous Contrat & Optimisation</div>
+                        <div class="client-amount">2 800 €</div>
+                    </div>
+                    <span class="badge green">Livré & Intégré</span>
+                </div>
+            </div>
+
+            <!-- Client 3 : Pilote Exploitations B2B -->
+            <div class="client-card green">
+                <div>
+                    <span class="client-badge-tag">Pilote Commercial B2B · Exploitations</span>
+                    <div class="client-title">Domaine Agricole & Exploitations Pilotes (Mitidja / Chéliff)</div>
+                    <div class="client-desc">
+                        Audit spatialisé de pré-saison et surveillance continue de 350 hectares d'arboriculture et maraîchage. Détection précoce du stress hydrique et alertes automatiques pour l'optimisation des tours d'arrosage.
+                    </div>
+                </div>
+                <div class="client-meta">
+                    <div>
+                        <div class="client-status">Audit Satellitaire Payant</div>
+                        <div class="client-amount">2 400 €</div>
+                    </div>
+                    <span class="badge green">Clôturé & Témoignage</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. TIMELINE / ROADMAP (2026-2028) -->
+        <div class="section-title">5. Feuille de Route de Passage à l'Échelle (Scale-Up Roadmap 2026–2028)</div>
 
         <div class="timeline-grid">
             <div class="time-box">
