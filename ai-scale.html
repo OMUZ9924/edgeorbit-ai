@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & Digital Tools for Scale — EdgeOrbit AI (AgroOrbit) · GIZ Scale-Up Session 3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #050814;
+            --bg-card: rgba(11, 19, 43, 0.8);
+            --bg-card-hover: rgba(16, 28, 64, 0.95);
+            --border-cyan: rgba(0, 229, 255, 0.3);
+            --border-emerald: rgba(16, 185, 129, 0.35);
+            --border-gold: rgba(245, 158, 11, 0.35);
+            --border-purple: rgba(168, 85, 247, 0.35);
+            --cyan: #00E5FF;
+            --emerald: #10B981;
+            --gold: #F59E0B;
+            --purple: #A855F7;
+            --text-main: #F8FAFC;
+            --text-sub: #CBD5E1;
+            --text-muted: #94A3B8;
+            --font-head: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.5;
+            padding: 30px;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.1) 0%, transparent 60%),
+                radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+        }
+
+        .header {
+            max-width: 1400px;
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-cyan);
+            padding-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .header-title h1 {
+            font-family: var(--font-head);
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .header-title h1 span { color: var(--cyan); }
+        .header-title p {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        .header-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .badge {
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid var(--border-cyan);
+            color: var(--cyan);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge.green {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: var(--border-emerald);
+            color: var(--emerald);
+        }
+        .badge.purple {
+            background: rgba(168, 85, 247, 0.1);
+            border-color: var(--border-purple);
+            color: var(--purple);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Banner Overview */
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(10, 37, 64, 0.85) 0%, rgba(5, 8, 20, 0.95) 100%);
+            border: 1px solid var(--border-cyan);
+            border-radius: 16px;
+            padding: 26px 30px;
+            margin-bottom: 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+        .hero-text h2 {
+            font-family: var(--font-head);
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .hero-text p {
+            font-size: 13.5px;
+            color: var(--text-sub);
+            max-width: 850px;
+            line-height: 1.6;
+        }
+        .hero-metrics {
+            display: flex;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+        .h-metric {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 18px;
+            text-align: center;
+        }
+        .h-val {
+            font-family: var(--font-mono);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+        .h-val.green { color: var(--emerald); }
+        .h-lbl {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        /* The 3 Pillars Grid */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .pillar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-cyan);
+            border-radius: 16px;
+            padding: 26px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+        .pillar-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 35px rgba(0, 229, 255, 0.15);
+        }
+        .pillar-card.green { border-color: var(--border-emerald); }
+        .pillar-card.green:hover { box-shadow: 0 14px 35px rgba(16, 185, 129, 0.15); }
+        .pillar-card.purple { border-color: var(--border-purple); }
+        .pillar-card.purple:hover { box-shadow: 0 14px 35px rgba(168, 85, 247, 0.15); }
+
+        .pillar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .pillar-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(0, 229, 255, 0.12);
+            border: 1px solid var(--border-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--cyan);
+        }
+        .pillar-card.green .pillar-icon {
+            background: rgba(16, 185, 129, 0.12);
+            border-color: var(--border-emerald);
+            color: var(--emerald);
+        }
+        .pillar-card.purple .pillar-icon {
+            background: rgba(168, 85, 247, 0.12);
+            border-color: var(--border-purple);
+            color: var(--purple);
+        }
+        .pillar-title h3 {
+            font-family: var(--font-head);
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .pillar-title span {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .pillar-body {
+            flex-grow: 1;
+        }
+        .pillar-subhead {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-sub);
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        .tool-stack-list {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        .tool-stack-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .tool-name {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--cyan);
+            margin-bottom: 4px;
+        }
+        .pillar-card.green .tool-name { color: var(--emerald); }
+        .pillar-card.purple .tool-name { color: var(--purple); }
+        .tool-tag {
+            font-size: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--text-muted);
+        }
+        .tool-desc {
+            font-size: 12px;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+
+        .pillar-impact {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .impact-metric {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 16px;
+            color: #fff;
+        }
+        .impact-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Unfair Advantage Comparison Table */
+        .section-title {
+            font-family: var(--font-head);
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: var(--cyan);
+            border-radius: 2px;
+        }
+
+        .comp-table-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-cyan);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        th {
+            background: rgba(10, 37, 64, 0.8);
+            font-family: var(--font-head);
+            font-size: 13.5px;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td.dim { color: var(--text-muted); }
+        td.trad { color: #F87171; font-weight: 500; }
+        td.edge { color: var(--emerald); font-weight: 600; background: rgba(16, 185, 129, 0.04); }
+        td.tech { font-family: var(--font-mono); font-size: 12px; color: var(--cyan); }
+
+        /* The Live Cold Outreach Trojan Horse Demo */
+        .trojan-card {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(11, 19, 43, 0.9) 100%);
+            border: 1px solid var(--border-purple);
+            border-radius: 16px;
+            padding: 26px;
+            margin-bottom: 40px;
+        }
+        .trojan-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .trojan-title {
+            font-family: var(--font-head);
+            font-size: 19px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .trojan-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .t-step {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px;
+            position: relative;
+        }
+        .t-step::after {
+            content: '→';
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--purple);
+            font-weight: 700;
+            font-size: 16px;
+        }
+        .t-step:last-child::after { display: none; }
+        .t-num {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--purple);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .t-head {
+            font-family: var(--font-head);
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .t-desc {
+            font-size: 12px;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .footer a {
+            color: var(--cyan);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .pillars-grid, .trojan-steps { grid-template-columns: 1fr; }
+            .hero-banner { flex-direction: column; align-items: flex-start; }
+            .t-step::after { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-title">
+            <h1>EdgeOrbit <span>AI</span> · Session 3 : IA & Outils Digitaux pour le Scale</h1>
+            <p>Programme Scale-Up DGA · GIZ Algérie & Ministère des Startups (MECSME) — Hôtel Ferdi Lilly, Alger</p>
+        </div>
+        <div class="header-badges">
+            <span class="badge">Session 3 : IA & Scale</span>
+            <span class="badge green">DeepTech Frugale</span>
+            <span class="badge purple">Marges Brutes > 88%</span>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- Hero Overview -->
+        <div class="hero-banner">
+            <div class="hero-text">
+                <h2>Le Paradigme DeepTech : Découpler la Croissance des Coûts Opérationnels</h2>
+                <p>
+                    Pour passer de <strong>500 hectares</strong> à <strong>500 000 hectares</strong> sans gonfler notre masse salariale ni exploser nos factures d'infrastructure cloud, EdgeOrbit AI intègre l'IA non pas comme un simple gadget bureautique, mais comme le <strong>moteur central d'industrialisation</strong> sur ses trois piliers vitaux : le Produit, les Opérations, et l'Acquisition Client.
+                </p>
+            </div>
+            <div class="hero-metrics">
+                <div class="h-metric">
+                    <div class="h-val green">> 88%</div>
+                    <div class="h-lbl">Marge Brute Stable</div>
+                </div>
+                <div class="h-metric">
+                    <div class="h-val">0 €</div>
+                    <div class="h-lbl">Coût Matériel par Ha</div>
+                </div>
+                <div class="h-metric">
+                    <div class="h-val green">38%</div>
+                    <div class="h-lbl">Taux Réponse Acquisition</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3 Pillars Grid -->
+        <div class="section-title">Les 3 Piliers Pratiques de Passage à l'Échelle par l'IA</div>
+
+        <div class="pillars-grid">
+            
+            <!-- Pillar 1: Product -->
+            <div class="pillar-card">
+                <div class="pillar-header">
+                    <div class="pillar-icon">🛰️</div>
+                    <div class="pillar-title">
+                        <h3>1. Produit & Données</h3>
+                        <span>Scale Technique & Économie d'Échelle</span>
+                    </div>
+                </div>
+                <div class="pillar-body">
+                    <p class="pillar-subhead">
+                        Traiter des téraoctets d'images satellitaires à coût marginal nul sans dépendre des serveurs cloud GPU onéreux.
+                    </p>
+                    <div class="tool-stack-list">
+                        <div class="tool-stack-item">
+                            <div class="tool-name">
+                                <span>Quantification INT8 & TensorRT</span>
+                                <span class="tool-tag">Edge AI</span>
+                            </div>
+                            <div class="tool-desc">
+                                Compression des modèles de vision neuronale de FP32 vers INT8. Inférence ultra-rapide sur puces basse consommation (< 5W) sans perte de précision hydrique.
+                            </div>
+                        </div>
+                        <div class="tool-stack-item">
+                            <div class="tool-name">
+                                <span>Pipeline ETL Copernicus Autonome</span>
+                                <span class="tool-tag">Zero-Cloud Ingestion</span>
+                            </div>
+                            <div class="tool-desc">
+                                Moissonnage automatique des constellations Sentinel-2/Landsat avec masquage automatique des nuages par IA et fusion radar Sentinel-1 par temps couvert.
+                            </div>
+                        </div>
+                        <div class="tool-stack-item">
+                            <div class="tool-name">
+                                <span>Super-Résolution Géospatiale IA</span>
+                                <span class="tool-tag">Computer Vision</span>
+                            </div>
+                            <div class="tool-desc">
+                                Ré-échantillonnage intelligent des bandes 10m vers une netteté parcellaires équivalente 2,5m sans payer les flux commerciaux privés à 15$/km².
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pillar-impact">
+                    <div>
+                        <div class="impact-label">Facture Cloud / Hectare</div>
+                        <div class="impact-metric">0,02 € / ha / an</div>
+                    </div>
+                    <span class="badge">90% Marge Brute</span>
+                </div>
+            </div>
+
+            <!-- Pillar 2: Operations -->
+            <div class="pillar-card green">
+                <div class="pillar-header">
+                    <div class="pillar-icon">⚙️</div>
+                    <div class="pillar-title">
+                        <h3>2. Opérations & Support</h3>
+                        <span>Zéro Headcount Inflation</span>
+                    </div>
+                </div>
+                <div class="pillar-body">
+                    <p class="pillar-subhead">
+                        Superviser 50 coopératives et 3 agences de bassins avec une équipe resserrée d'ingénieurs grâce aux agents autonomes.
+                    </p>
+                    <div class="tool-stack-list">
+                        <div class="tool-stack-item">
+                            <div class="tool-name">
+                                <span>Agent Agronomique RAG Dédié</span>
+                                <span class="tool-tag">LLM + FAO-56</span>
+                            </div>
+                            <div class="tool-desc">
+                                Modèle de langage fine-tuné sur les abaques hydriques FAO-56, les types de sols algériens (INRAA) et les cultures locales (blé dur, arboriculture, maraîchage).
+                            </div>
+                        </div>
+                        <div class="tool-stack-item">
+                            <div class="tool-name">
+                                <span>Prescriptions Omnicanales WhatsApp</span>
+                                <span class="tool-tag">Cloud API</span>
+                            </div>
+                            <div class="tool-desc">
+                                Synthèse vocale et textuelle automatique chaque matin à 06h00 dans la messagerie habituelle de l'agriculteur (en français et darija) : aucun logiciel à apprendre.
+                            </div>
+                        </div>
+                        <div class="tool-stack-item">
+                            <div class="tool-name">
+                                <span>Auto-Healing & FDIR Télémétrie</span>
+                                <span class="tool-tag">DevOps Autonome</span>
+                            </div>
+                            <div class="tool-desc">
+                                Surveillance autonome des flux de données avec correction automatique des anomalies de bande passante et routage instantané en cas d'interruption.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pillar-impact">
+                    <div>
+                        <div class="impact-label">Capacité Opérationnelle</div>
+                        <div class="impact-metric">1 Ingé / 50 000 ha</div>
+                    </div>
+                    <span class="badge green">Support 24/7 Auto</span>
+                </div>
+            </div>
+
+            <!-- Pillar 3: Customer Acquisition -->
+            <div class="pillar-card purple">
+                <div class="pillar-header">
+                    <div class="pillar-icon">🎯</div>
+                    <div class="pillar-title">
+                        <h3>3. Acquisition Client (CAC)</h3>
+                        <span>Le Cheval de Troie Satellitaire</span>
+                    </div>
+                </div>
+                <div class="pillar-body">
+                    <p class="pillar-subhead">
+                        Transformer la prospection à froid en une démonstration de valeur incontestable dès le premier contact institutionnel.
+                    </p>
+                    <div class="tool-stack-list">
+                        <div class="tool-stack-item">
+                            <div class="tool-name">
+                                <span>Détection IA des Pivots & Parcelles</span>
+                                <span class="tool-tag">YOLO-v11 / Vision</span>
+                            </div>
+                            <div class="tool-desc">
+                                Scan automatique des mosaïques nationales pour répertorier chaque pivot d'irrigation et périmètre agricole actif sur le territoire cible.
+                            </div>
+                        </div>
+                        <div class="tool-stack-item">
+                            <div class="tool-name">
+                                <span>Générateur Automatisé de Pré-Audits</span>
+                                <span class="tool-tag">Rapport Instantané</span>
+                            </div>
+                            <div class="tool-desc">
+                                Génération d'un audit confidentiel de 2 pages montrant la baisse piézométrique et le stress hydrique réel de l'agence de bassin ciblée sur les 30 derniers jours.
+                            </div>
+                        </div>
+                        <div class="tool-stack-item">
+                            <div class="tool-name">
+                                <span>Outreach Institutionnel Hyper-Ciblé</span>
+                                <span class="tool-tag">B2G Accéléré</span>
+                            </div>
+                            <div class="tool-desc">
+                                Remise en main propre ou email direct au Directeur : « Voici l'audit spatialisé de votre bassin montrant 28% de fuite hydrique sur le secteur Ouest ».
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pillar-impact">
+                    <div>
+                        <div class="impact-label">Taux de Conversion Démo</div>
+                        <div class="impact-metric">38% (vs 2% Standard)</div>
+                    </div>
+                    <span class="badge purple">CAC Divisé par 3</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- The Trojan Horse Flowchart -->
+        <div class="section-title">Workflow de l'Arme d'Acquisition : Le « Pré-Audit Satellitaire Automatisé »</div>
+
+        <div class="trojan-card">
+            <div class="trojan-head">
+                <div class="trojan-title">Comment nous passons d'un taux de réponse B2G de 2% à 38% grâce à l'IA</div>
+                <span class="badge purple">Machine d'Acquisition Autonome</span>
+            </div>
+            <div class="trojan-steps">
+                <div class="t-step">
+                    <div class="t-num">ÉTAPE 01 · DÉTECTION</div>
+                    <div class="t-head">Scan Cartographique IA</div>
+                    <div class="t-desc">L'algorithme de vision par ordinateur repère tous les pivots et périmètres agricoles de la région ciblée sur Sentinel-2.</div>
+                </div>
+                <div class="t-step">
+                    <div class="t-num">ÉTAPE 02 · CALCUL</div>
+                    <div class="t-head">Diagnostic Hydrique 90j</div>
+                    <div class="t-desc">Calcul en arrière-plan des séries temporelles NDVI/NDWI : identification précise des zones de surpompage et de dessèchement.</div>
+                </div>
+                <div class="t-step">
+                    <div class="t-num">ÉTAPE 03 · PACKAGING</div>
+                    <div class="t-head">Génération PDF Instantanée</div>
+                    <div class="t-desc">L'agent d'orchestration génère un rapport de 2 pages nominatif aux couleurs de l'institution avec les chiffres clés d'économies d'eau.</div>
+                </div>
+                <div class="t-step">
+                    <div class="t-num">ÉTAPE 04 · CLOSING</div>
+                    <div class="t-head">Rendez-vous Qualifié</div>
+                    <div class="t-desc">Le directeur de l'agence ou de la coopérative découvre l'état réel de son territoire avant même la première réunion de vente.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="section-title">Matrice Différentielle : Startups Traditionnelles vs. Approche EdgeOrbit AI</div>
+
+        <div class="comp-table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dimension Opérationnelle</th>
+                        <th>Approche Traditionnelle (Hardware / IoT)</th>
+                        <th>Approche EdgeOrbit AI (Space DeepTech)</th>
+                        <th>Levier Technologique IA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Déploiement Nouveau Client</strong></td>
+                        <td class="trad">3 à 6 semaines (visite sol, pose de sondes)</td>
+                        <td class="edge">Moins de 2 heures (activation coordonnées SIG)</td>
+                        <td class="tech">Pipeline Ingestion Sentinel-2</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Coût d'Acquisition (CAC B2G)</strong></td>
+                        <td class="trad">> 10 000 € (multiples démos physiques sur site)</td>
+                        <td class="edge">3 500 € (démontré par pré-audit satellite)</td>
+                        <td class="tech">Générateur Automatisé de Rapports</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Marge Brute à l'Échelle</strong></td>
+                        <td class="trad">45% – 55% (coûts matériels, casse, maintenance)</td>
+                        <td class="edge">> 88% (pure software & satellite open-data)</td>
+                        <td class="tech">Quantification INT8 & Edge Computing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Support & Agronomie</strong></td>
+                        <td class="trad">1 conseiller agronome par tranche de 20 fermes</td>
+                        <td class="edge">1 ingénieur superviseur pour 50 000 ha</td>
+                        <td class="tech">AgroCopilot LLM (RAG FAO-56 + WhatsApp)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Barrière à l'Entrée (Moat)</strong></td>
+                        <td class="trad">Faible (capteurs génériques importés d'Asie)</td>
+                        <td class="edge">Élevée (IP algorithmique propriétaire, recherche ESA)</td>
+                        <td class="tech">Modèles d'Inférence Spatiale Embarqués</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div>
+                <strong>EdgeOrbit AI (AgroOrbit)</strong> · Présenté par <strong>Ing. Maamar Omar ARBOUZ</strong> (Fondateur & Lead AI Architect)
+            </div>
+            <div>
+                Consulter les autres livrables : 
+                <a href="canvas.html">BMC & Personas</a> | 
+                <a href="finances.pdf">Bilan Financier PDF</a> | 
+                <a href="index.html">Site Officiel</a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
