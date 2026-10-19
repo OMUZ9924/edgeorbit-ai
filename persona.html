@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URBA Mobility — Fiche Buyer Persona B2B (Alger)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #070D1E;
+            --card-bg: rgba(18, 30, 60, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+            --cyan: #00F2FE;
+            --magenta: #EC008B;
+            --emerald: #10B981;
+            --text-main: #FFFFFF;
+            --text-sub: #CBD5E1;
+            --text-muted: #94A3B8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding: 30px 20px 80px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(0, 242, 254, 0.15);
+            color: var(--cyan);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #00F2FE, #4FACFE);
+            color: #070D1E;
+            font-weight: 800;
+            font-size: 13px;
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+        .btn-download:hover {
+            transform: translateY(-2px);
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--cyan);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quote-box {
+            background: rgba(236, 0, 139, 0.08);
+            border-left: 4px solid var(--magenta);
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-style: italic;
+            color: #F1F5F9;
+            font-size: 14.5px;
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--text-sub);
+        }
+
+        li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--cyan);
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        li b {
+            color: #FFFFFF;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 13.5px;
+        }
+
+        th, td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        td {
+            color: var(--text-sub);
+        }
+
+        td.highlight {
+            color: var(--emerald);
+            font-weight: 700;
+        }
+
+        /* Print formatting */
+        @media print {
+            body { background: #fff; color: #000; padding: 0; }
+            .card { background: #fff; border: 1px solid #ccc; color: #000; page-break-inside: avoid; }
+            .btn-download { display: none; }
+            .card-title { color: #006699; }
+            li b, h1 { color: #000; }
+            li { color: #333; }
+            .quote-box { background: #f9f9f9; border-left: 4px solid #cc0066; color: #111; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="top-nav">
+        <span class="badge">URBA Mobility · Dossier B2B</span>
+        <a href="https://github.com/OMUZ9924/edgeorbit-ai/raw/main/URBA_B2B_Buyer_Persona_Algiers.pdf" class="btn-download" target="_blank">
+            ⬇️ Télécharger le PDF Officiel
+        </a>
+    </div>
+
+    <h1>Fiche Buyer Persona B2B · URBA Mobility</h1>
+    <p class="subtitle">Segment cible : DRH & Responsable Moyens Généraux · PME & Entreprises de Services (Grand Alger)</p>
+
+    <!-- SECTION 1: PROFIL -->
+    <div class="card">
+        <div class="card-title">1. Profil Décideur</div>
+        <div class="grid-2">
+            <div>
+                <p><b>Prénom, Âge :</b> Yacine, 42 ans</p>
+                <p><b>Localisation :</b> Quartier d'Affaires de Bab Ezzouar, Alger</p>
+            </div>
+            <div>
+                <p><b>Rôle & Entreprise :</b> DRH & Moyens Généraux d'une entreprise IT & Centre d'appels B2B (180 collaborateurs)</p>
+                <p><b>Flotte actuelle :</b> 3 minibus privés en location (600 000 DZD/mois) + 35 places de parking saturées</p>
+            </div>
+        </div>
+
+        <div class="quote-box">
+            <b>« Une phrase entendue d'un vrai client » :</b><br>
+            « Chaque matin, j'ai 25% de mes équipes qui arrivent avec 45 minutes de retard à cause des bouchons monstres sur la rocade Sud ou des bus bondés. On paie des fortunes pour louer des minibus privés qui tournent à moitié vides le soir, nos salariés réclament des indemnités en cash, et nos parkings débordent. C'est un gouffre financier pour l'entreprise et une source constante de démissions des talents. »
+        </div>
+    </div>
+
+    <!-- SECTIONS 2 & 3: OBJECTIFS & PAINS -->
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-title">2. Objectifs Métier (Goals)</div>
+            <ul>
+                <li><b>Éliminer les retards pendulaires matinaux :</b> Sécuriser la ponctualité grâce à des itinéraires multimodaux optimisés en temps réel.</li>
+                <li><b>Réduire les coûts de transport de 25% à 35% :</b> Remplacer les forfaits rigides de navettes par une consommation flexible à l'usage réel.</li>
+                <li><b>Digitaliser & supprimer les notes de frais :</b> En finir avec le cash liquide et obtenir une facture B2B unique déductible avec TVA.</li>
+                <li><b>Renforcer la rétention des talents :</b> Proposer le Pass Mobilité URBA sur smartphone comme avantage social moderne pour les jeunes cadres.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-title">3. Pains (Douleurs Quotidiennes)</div>
+            <ul>
+                <li><b>Le gouffre financier des minibus :</b> Payer 180 000 à 250 000 DZD/mois par minibus de 30 places roulant souvent à 30% de sa capacité.</li>
+                <li><b>Pénibilité extrême des trajets :</b> Des collaborateurs épuisés par 1h30 à 2h de trajet quotidien depuis Blida, Boumerdès ou Chéraga.</li>
+                <li><b>Saturation totale des parkings :</b> 35 places disponibles pour 180 salariés, déclenchant des conflits quotidiens dès 8h30.</li>
+                <li><b>Opacité comptable :</b> Reçus de taxis égarés, litiges sur les kilomètres déclarés et suspicion de fraudes aux indemnités.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- SECTIONS 4 & 5: DÉCLENCHEURS & CRITÈRES -->
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-title">4. Déclencheurs d'Achat (Triggers)</div>
+            <ul>
+                <li><b>Déménagement de siège :</b> L'entreprise s'installe à Bab Ezzouar, Sidi Abdellah ou Rouiba ; 40% des salariés menacent de partir.</li>
+                <li><b>Hausse tarifaire du transporteur (+30%) :</b> Renégociation annuelle brutale imposée par les loueurs de minibus privés.</li>
+                <li><b>Directive OPEX de la Direction Générale :</b> Exigence impérative de couper 20% dans les frais généraux sans toucher aux salaires.</li>
+                <li><b>Audit RSE / Directive Internationale :</b> Obligation de mettre en place un plan de mobilité d'entreprise durable.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-title">5. Critères de Choix Décisifs</div>
+            <ul>
+                <li><b>Dashboard SaaS RH en Dinars (DZD) :</b> Allocation et plafonnement des budgets mobilité par salarié (ex: 5 000 DZD juniors, 12 000 DZD managers).</li>
+                <li><b>Multimodalité complète intégrée :</b> Métro d'Alger + Tramway + bus publics/privés partenaires + VTC sur un seul pass.</li>
+                <li><b>Facture unique avec TVA récupérable :</b> Conformité fiscale algérienne absolue et suppression des remboursements en espèces.</li>
+                <li><b>Technologie fiable hors-ligne (Offline) :</b> QR code de validation fonctionnant même lors des coupures de réseau 4G.</li>
+                <li><b>Support client local à Alger :</b> Assistance réactive et déploiement en une demi-journée.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- SECTION 6: OBJECTIONS & FREINS -->
+    <div class="card">
+        <div class="card-title">6. Objections & Freins à l'Adoption</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 35%;">Objection Fréquente</th>
+                    <th style="width: 65%;">Réponse Stratégique URBA Mobility</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>« Nos salariés préfèrent recevoir du cash sur leur salaire. »</b></td>
+                    <td>Le cash est grignoté par l'inflation et ne garantit pas la ponctualité. Avec le Pass URBA, le salarié gagne en confort, choisit son transport sans avancer d'argent de sa poche, et l'entreprise économise 30%.</td>
+                </tr>
+                <tr>
+                    <td><b>« Le transport à Alger est trop chaotique et informel. »</b></td>
+                    <td>URBA utilise une cartographie SIG propriétaire et des standards ouverts (GTFS/GBFS) qui connectent les lignes régulières et les transporteurs privés par simple QR code sans investissement matériel lourd.</td>
+                </tr>
+                <tr>
+                    <td><b>« Peur du flicage ou de la géolocalisation continue. »</b></td>
+                    <td>URBA respecte rigoureusement la vie privée : aucune géolocalisation continue en dehors de la validation ponctuelle du trajet domicile-travail.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- SECTIONS 7 & 8: CANAUX & BUDGET -->
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-title">7. Canaux & Sources d'Information</div>
+            <ul>
+                <li><b>LinkedIn B2B Algérie :</b> Ciblage précis des DRH, Directeurs Généraux et DAF du Grand Alger.</li>
+                <li><b>Clubs Patronaux & RH :</b> ALGRH (Association des DRH), CAPC, CREA, JCI Alger.</li>
+                <li><b>Salons Professionnels (SAFEX) :</b> Emploitic Connect, Careerdz, Salon International de la Logistique & Mobilité.</li>
+                <li><b>Bouche-à-oreille inter-entreprises :</b> Recommandation directe entre dirigeants de Bab Ezzouar et d'Hydra.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-title">8. Parcours d'Achat & Budget Moyen</div>
+            <ul>
+                <li><b>Comité de Décision :</b> DRH (Initiateur) + DAF (Validation ROI) + DG (Signature finale).</li>
+                <li><b>Cycle de Vente :</b> 3 à 5 semaines (Audit mobilité offert > Démo live > Pilote 30j sur 25 salariés).</li>
+                <li><b>Abonnement Logiciel SaaS :</b> <b>350 à 500 DZD HT / salarié / mois</b>.</li>
+                <li><b>Budget Mobilité Salarié :</b> 3 500 à 7 000 DZD / mois alloués par collaborateur.</li>
+                <li><b>Gain Financier Net :</b> <span style="color:var(--emerald); font-weight:800;">200 000 à 450 000 DZD d'économies nettes mensuelles</span> par rapport aux minibus privés.</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
