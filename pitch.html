@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URBA Mobility — Pitch Deck Officiel B2C & B2B · Scale-Up GIZ / MECSME</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #070D1E;
+            --bg-slide: #0B142B;
+            --bg-card: rgba(18, 30, 60, 0.75);
+            --bg-card-hover: rgba(26, 42, 82, 0.9);
+            --magenta: #EC008B;
+            --magenta-glow: rgba(236, 0, 139, 0.35);
+            --cyan: #00F2FE;
+            --cyan-glow: rgba(0, 242, 254, 0.35);
+            --emerald: #10B981;
+            --gold: #F59E0B;
+            --text-main: #FFFFFF;
+            --text-sub: #CBD5E1;
+            --text-muted: #8494A8;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-cyan: rgba(0, 242, 254, 0.25);
+            --border-magenta: rgba(236, 0, 139, 0.3);
+            --font-head: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: #030610;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 60px;
+        }
+
+        /* Top Bar Controls */
+        .deck-controls {
+            position: fixed;
+            top: 15px;
+            right: 25px;
+            z-index: 1000;
+            display: flex;
+            gap: 12px;
+            background: rgba(7, 13, 30, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-cyan);
+            border-radius: 30px;
+            padding: 6px 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        }
+        .btn-ctrl {
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            font-family: var(--font-head);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-ctrl:hover, .btn-ctrl.active {
+            background: var(--magenta);
+            color: #fff;
+            box-shadow: 0 0 15px var(--magenta-glow);
+        }
+        .btn-ctrl.cyan:hover {
+            background: var(--cyan);
+            color: #070D1E;
+            box-shadow: 0 0 15px var(--cyan-glow);
+        }
+
+        /* Slides Presentation Container */
+        .deck-wrapper {
+            width: 100%;
+            max-width: 1280px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        /* Single Slide (16:9 Responsive) */
+        .slide {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: var(--bg-slide);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 48px 56px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            background-image: 
+                radial-gradient(circle at 85% 15%, rgba(236, 0, 139, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 15% 85%, rgba(0, 242, 254, 0.06) 0%, transparent 50%),
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+        }
+
+        /* Slide Header */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+        .slide-tag {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--cyan);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .slide-tag::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--magenta);
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .slide-title {
+            font-family: var(--font-head);
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+            color: #fff;
+        }
+        .slide-title span.pink { color: var(--magenta); }
+        .slide-title span.cyan { color: var(--cyan); }
+        .slide-num {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-muted);
+            border: 1px solid var(--border-subtle);
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+
+        /* Slide Body Content */
+        .slide-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Slide Footer */
+        .slide-footer {
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+        .slide-footer strong { color: var(--text-sub); }
+
+        /* Cover Slide Specifics */
+        .slide-cover {
+            justify-content: space-between;
+            background: linear-gradient(145deg, #070D1E 0%, #101B38 60%, #0B132B 100%);
+            border-color: var(--border-magenta);
+        }
+        .cover-hero {
+            margin: auto 0;
+        }
+        .cover-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(236, 0, 139, 0.12);
+            border: 1px solid var(--border-magenta);
+            color: var(--magenta);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 12.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        .cover-title {
+            font-family: var(--font-head);
+            font-size: 58px;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            line-height: 1.08;
+            margin-bottom: 18px;
+        }
+        .cover-subtitle {
+            font-size: 20px;
+            color: var(--text-sub);
+            max-width: 820px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+        .cover-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 24px;
+        }
+        .cm-box {
+            font-size: 12px;
+        }
+        .cm-lbl { color: var(--text-muted); text-transform: uppercase; font-family: var(--font-mono); font-size: 10px; margin-bottom: 4px; }
+        .cm-val { font-weight: 700; color: #fff; font-size: 13.5px; }
+
+        /* Grid Layouts for Content Slides */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        /* Generic Card Styling */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+        .card:hover {
+            border-color: var(--cyan);
+            transform: translateY(-2px);
+        }
+        .card.pink { border-color: var(--border-magenta); }
+        .card.pink:hover { border-color: var(--magenta); }
+        .card.cyan { border-color: var(--border-cyan); }
+        .card.emerald { border-color: rgba(16, 185, 129, 0.35); }
+        .card.gold { border-color: rgba(245, 158, 11, 0.35); }
+
+        .card-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+        .card-head {
+            font-family: var(--font-head);
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-sub);
+            line-height: 1.5;
+        }
+        .card-highlight {
+            font-family: var(--font-mono);
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--cyan);
+            margin-top: 14px;
+        }
+        .card-highlight.pink { color: var(--magenta); }
+        .card-highlight.emerald { color: var(--emerald); }
+
+        /* Persona Card Styling */
+        .persona-slide-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .p-avatar-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 14px;
+        }
+        .p-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: rgba(236, 0, 139, 0.15);
+            border: 1px solid var(--border-magenta);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+        }
+        .p-avatar.cyan {
+            background: rgba(0, 242, 254, 0.15);
+            border-color: var(--border-cyan);
+        }
+        .p-meta h4 {
+            font-family: var(--font-head);
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .p-meta span {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+        .p-specs {
+            list-style: none;
+            font-size: 12.5px;
+            color: var(--text-sub);
+            line-height: 1.5;
+        }
+        .p-specs li {
+            margin-bottom: 8px;
+            padding-left: 18px;
+            position: relative;
+        }
+        .p-specs li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--magenta);
+            font-weight: 800;
+        }
+        .p-specs.cyan li::before { color: var(--cyan); }
+
+        /* Tables in Slides */
+        .slide-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .slide-table th, .slide-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .slide-table th {
+            background: rgba(255, 255, 255, 0.04);
+            font-family: var(--font-head);
+            font-size: 13px;
+            color: var(--text-sub);
+            text-transform: uppercase;
+        }
+        .slide-table td.bold {
+            font-weight: 700;
+            color: #fff;
+        }
+        .slide-table td.pink {
+            color: var(--magenta);
+            font-family: var(--font-mono);
+            font-weight: 700;
+        }
+        .slide-table td.cyan {
+            color: var(--cyan);
+            font-family: var(--font-mono);
+            font-weight: 700;
+        }
+        .slide-table td.green {
+            color: var(--emerald);
+            font-family: var(--font-mono);
+            font-weight: 700;
+        }
+
+        /* Print for PDF Presentation Mode */
+        @media print {
+            body { background: #000; padding: 0; }
+            .deck-controls { display: none !important; }
+            .deck-wrapper { margin-top: 0; gap: 0; max-width: 100%; }
+            .slide {
+                aspect-ratio: 16 / 9;
+                width: 100vw;
+                height: 100vh;
+                page-break-after: always;
+                border-radius: 0;
+                border: none;
+                box-shadow: none;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .slide { aspect-ratio: auto; min-height: 100vh; padding: 30px; }
+            .grid-2, .grid-3, .grid-4, .persona-slide-grid { grid-template-columns: 1fr; }
+            .cover-title { font-size: 38px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Controls -->
+    <div class="deck-controls">
+        <button class="btn-ctrl" onclick="window.print()">🖨️ Exporter PDF</button>
+        <a href="urba.html" class="btn-ctrl cyan" style="text-decoration:none;">🌐 Démo Live</a>
+        <a href="canvas.html" class="btn-ctrl" style="text-decoration:none;">📑 Canvas</a>
+    </div>
+
+    <div class="deck-wrapper">
+
+        <!-- ================= SLIDE 1 : COVER ================= -->
+        <div class="slide slide-cover" id="slide-1">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <img src="assets/urba_logo.svg" alt="URBA Mobility Logo" style="height: 52px;">
+                <span class="slide-num">SLIDE 01 / 12</span>
+            </div>
+
+            <div class="cover-hero">
+                <div class="cover-badge">Scale-Up Programme · GIZ &amp; MECSME · Day 2</div>
+                <h1 class="cover-title">
+                    One App. Every Trip.<br/>
+                    <span style="color:var(--magenta);">Smart Mobility B2C &amp; B2B.</span>
+                </h1>
+                <p class="cover-subtitle">
+                    La première plateforme intégrée de mobilité urbaine multimodale en Afrique du Nord : <strong>l'App citoyenne tout-en-un (B2C)</strong> combinée au <strong>SaaS d'optimisation de flottes &amp; navettes d'entreprises (B2B)</strong>.
+                </p>
+            </div>
+
+            <div class="cover-meta-grid">
+                <div class="cm-box">
+                    <div class="cm-lbl">Fondateur &amp; Lead AI</div>
+                    <div class="cm-val">Ing. Maamar Omar ARBOUZ</div>
+                </div>
+                <div class="cm-box">
+                    <div class="cm-lbl">Modèle d'Affaires</div>
+                    <div class="cm-val">B2B SaaS (Flottes) + B2C Market</div>
+                </div>
+                <div class="cm-box">
+                    <div class="cm-lbl">Marché Cible Initial</div>
+                    <div class="cm-val">Alger, Rouiba, Oran (Algérie)</div>
+                </div>
+                <div class="cm-box">
+                    <div class="cm-lbl">Objectif Levée Seed</div>
+                    <div class="cm-val" style="color:var(--magenta);">200 000 € (Amorçage)</div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>URBA Mobility Inc. · Inspiré du modèle européen MaaS (urba.co)</div>
+                <div>Strictement Confidentiel · Octobre 2026</div>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 2 : THE PROBLEM ================= -->
+        <div class="slide" id="slide-2">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-tag">Le Constat Terrain</div>
+                    <h2 class="slide-title">Le Chaos de la Mobilité Quotidienne dans nos Métropoles</h2>
+                </div>
+                <span class="slide-num">SLIDE 02 / 12</span>
+            </div>
+
+            <div class="slide-body">
+                <div class="grid-2">
+                    <div class="card pink">
+                        <div class="card-icon">🚶‍♂️</div>
+                        <div class="card-head">Côté Citoyens (B2C) : Fragmentation Totale</div>
+                        <p class="card-desc">
+                            Pour se déplacer à Alger ou Oran, un citoyen doit jongler entre 4 applications VTC fermées (Yassir, Coursa, Indrive), un réseau de bus ETUSA/privés sans horaires fiables, et des taxis sans paiement par carte.<br/><br/>
+                            • <strong>45 minutes perdues</strong> par jour à attendre à l'aveugle.<br/>
+                            • <strong>Zéro ticket unique :</strong> Obligation d'avoir constamment des pièces de monnaie en poche.
+                        </p>
+                        <div class="card-highlight pink">72% des actifs subissent un trajet imprévisible</div>
+                    </div>
+
+                    <div class="card cyan">
+                        <div class="card-icon">🏭</div>
+                        <div class="card-head">Côté Entreprises (B2B) : Des Millions Gaspillés</div>
+                        <p class="card-desc">
+                            Les zones industrielles (Rouiba, Oued Smar, Hassi Messaoud) dépendent de <strong>minibus de ramassage privé</strong> loués à l'aveugle pour transporter leurs salariés.<br/><br/>
+                            • <strong>35% de sièges vides</strong> et des détours insensés tracés sur papier.<br/>
+                            • <strong>Retards chroniques</strong> désorganisant les équipes d'usines.<br/>
+                            • <strong>Fraudes massives</strong> sur les faux reçus de taxi remboursés aux cadres.
+                        </p>
+                        <div class="card-highlight">30% de la facture transport d'entreprise est du pur gaspillage</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>Source : Enquêtes mobilité urbaine Grand Alger &amp; retours DRH zones industrielles</div>
+                <div>URBA Mobility Pitch Deck</div>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 3 : THE SOLUTION ================= -->
+        <div class="slide" id="slide-3">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-tag">Notre Réponse</div>
+                    <h2 class="slide-title">URBA Mobility : L'OS de Flotte Hybride B2B &amp; MaaS B2C</h2>
+                </div>
+                <span class="slide-num">SLIDE 03 / 12</span>
+            </div>
+
+            <div class="slide-body">
+                <div class="grid-3">
+                    <div class="card cyan">
+                        <div class="card-icon">🚐</div>
+                        <div class="card-head">1. URBA for Business (B2B)</div>
+                        <p class="card-desc">
+                            <strong>Commute OS d'usines :</strong> Algorithme VRPTW qui regroupe les salariés par quartier et génère les circuits optimaux des navettes privées : -30% de budget carburant et zéro retard aux prises de poste.
+                        </p>
+                        <div class="card-highlight">Cash-Flow Immédiat Récurrent</div>
+                    </div>
+
+                    <div class="card emerald">
+                        <div class="card-icon">⚡</div>
+                        <div class="card-head">2. URBA Corridors (B2B2C)</div>
+                        <p class="card-desc">
+                            <strong>L'Innovation Out-Of-The-Box :</strong> De 09h à 16h, les bus d'usines dorment sur les parkings. URBA active ces flottes privées inactives pour ouvrir des lignes express à la demande (Universités, Aéroports).
+                        </p>
+                        <div class="card-highlight emerald">Rendement d'Actif +40%</div>
+                    </div>
+
+                    <div class="card pink">
+                        <div class="card-icon">🗺️</div>
+                        <div class="card-head">3. App Citoyenne (B2C)</div>
+                        <p class="card-desc">
+                            <strong>Super-App Multimodale :</strong> Unifie Métro, Tramway, Bus ETUSA et VTC avec billettique BaridiMob/CIB 1-clic. Cache hors-ligne pour voyager sans coupure réseau ni bus fantômes.
+                        </p>
+                        <div class="card-highlight pink">Adoption Massive &amp; Notoriété</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>Architecture inspirée d'URBA Italie (urba.co) · Adaptée aux voiries d'Afrique du Nord</div>
+                <div>URBA Mobility Pitch Deck</div>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 4 : B2C PRODUCT ================= -->
+        <div class="slide" id="slide-4">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-tag">Produit Grand Public</div>
+                    <h2 class="slide-title">L'Expérience Citoyenne : Le Pass Urbain dans la Poche</h2>
+                </div>
+                <span class="slide-num">SLIDE 04 / 12</span>
+            </div>
+
+            <div class="slide-body">
+                <div class="grid-4">
+                    <div class="card">
+                        <div class="card-icon">📍</div>
+                        <div class="card-head">Agrégateur Live</div>
+                        <p class="card-desc">Visualisation immédiate de tous les modes de transport autour de l'utilisateur à moins de 500m.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">⚡</div>
+                        <div class="card-head">Multi-Routing IA</div>
+                        <p class="card-desc">Comparateur direct : l'itinéraire le plus rapide, le plus économique ou le plus écologique en 1 clic.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🎟️</div>
+                        <div class="card-head">Pass Dématérialisé</div>
+                        <p class="card-desc">Achat de tickets et abonnements de bus/métro directement via BaridiMob avec QR Code offline.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔔</div>
+                        <div class="card-head">Alertes Trafic</div>
+                        <p class="card-desc">Notification prédictive des embouteillages aux carrefours critiques (ex: rocade sud d'Alger, carrefour Dar El Beida).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>Disponible sur iOS &amp; Android · Mode basse consommation de données</div>
+                <div>URBA Mobility Pitch Deck</div>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 5 : B2B PRODUCT ================= -->
+        <div class="slide" id="slide-5">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-tag">Produit Entreprise (Cash-Cow)</div>
+                    <h2 class="slide-title">URBA for Business : La Plateforme Flotte pour les DRH</h2>
+                </div>
+                <span class="slide-num">SLIDE 05 / 12</span>
+            </div>
+
+            <div class="slide-body">
+                <div class="grid-3">
+                    <div class="card cyan">
+                        <div class="card-head">Module 1 : Smart Shuttles</div>
+                        <p class="card-desc">
+                            <strong>Clustering Géospatial :</strong> Regroupement automatique des salariés par quartier.<br/><br/>
+                            <strong>Traçage GPS Temps Réel :</strong> L'employé voit son bus arriver sur son smartphone et sait exactement quand sortir de chez lui.<br/><br/>
+                            <strong>Validation QR Code :</strong> Suivi précis du taux d'occupation des navettes.
+                        </p>
+                        <div class="card-highlight">-30% Facture Diesel</div>
+                    </div>
+
+                    <div class="card pink">
+                        <div class="card-head">Module 2 : Corporate Wallet</div>
+                        <p class="card-desc">
+                            <strong>Budget Mensuel Dédié :</strong> Attribution de crédits de transport aux commerciaux et cadres pour leurs rendez-vous pro.<br/><br/>
+                            <strong>Zéro Fraude :</strong> Utilisable uniquement sur les partenaires conventionnés (VTC, taxis agréés, parking).<br/><br/>
+                            <strong>Facture Unique DGI :</strong> TVA déductible et traçabilité comptable parfaite.
+                        </p>
+                        <div class="card-highlight pink">Fin des Faux Reçus</div>
+                    </div>
+
+                    <div class="card emerald">
+                        <div class="card-head">Module 3 : ESG &amp; Analytics</div>
+                        <p class="card-desc">
+                            <strong>Dashboard DRH / DAF :</strong> Tableau de bord centralisé pour piloter les coûts au centime près.<br/><br/>
+                            <strong>Indicateurs Ponctualité :</strong> Alertes automatiques en cas d'incident sur un circuit avant la prise de poste.<br/><br/>
+                            <strong>Bilan Carbone Salarié :</strong> Calcul des tonnes de CO2 économisées pour le rapport RSE de l'entreprise.
+                        </p>
+                        <div class="card-highlight emerald">Reporting RSE Auto</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>Déploiement en 72 heures sans installation de boîtier physique lourd</div>
+                <div>URBA Mobility Pitch Deck</div>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 6 : PERSONAS ================= -->
+        <div class="slide" id="slide-6">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-tag">Nos Cibles Idéales</div>
+                    <h2 class="slide-title">Profils Utilisateur &amp; Décideur (Personas)</h2>
+                </div>
+                <span class="slide-num">SLIDE 06 / 12</span>
+            </div>
+
+            <div class="slide-body">
+                <div class="persona-slide-grid">
+                    <!-- Persona B2C -->
+                    <div class="card pink">
+                        <div class="p-avatar-row">
+                            <div class="p-avatar">🧑‍💻</div>
+                            <div class="p-meta">
+                                <h4>Amine, 24 ans</h4>
+                                <span>Persona B2C · Navetteur Quotidien (Kouba ➔ Bab Ezzouar)</span>
+                            </div>
+                        </div>
+                        <ul class="p-specs">
+                            <li><strong>Défi :</strong> 3 correspondances imprévisibles chaque matin pour rejoindre son bureau.</li>
+                            <li><strong>Frustration :</strong> Dépense 600 DZD en taxi clandestin quand le bus est bloqué.</li>
+                            <li><strong>Attente :</strong> Savoir exactement à quelle heure part son bus et payer sans monnaie.</li>
+                            <li><strong>Valeur URBA :</strong> Trajet optimisé Métro + Navette, 30 min gagnées par jour, paiement BaridiMob.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Persona B2B -->
+                    <div class="card cyan">
+                        <div class="p-avatar-row">
+                            <div class="p-avatar cyan">👔</div>
+                            <div class="p-meta">
+                                <h4>Karim, 48 ans</h4>
+                                <span>Persona B2B · DRH Usine Agro-Alimentaire à Rouiba (380 salariés)</span>
+                            </div>
+                        </div>
+                        <ul class="p-specs cyan">
+                            <li><strong>Périmètre :</strong> Gère 14 minibus loués coûtant 1,8M DZD/mois (~12 000 €).</li>
+                            <li><strong>Frustration :</strong> Retards à la prise de poste de 07h00 qui bloquent les machines de conditionnement.</li>
+                            <li><strong>Déclencheur d'Achat :</strong> Une démo montrant comment supprimer 3 minibus inutiles grâce au routage IA.</li>
+                            <li><strong>Valeur URBA :</strong> 450 000 DZD économisés par mois, ponctualité à 98%, tableau de bord en direct.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>Entretiens qualitatifs menés dans la zone industrielle de Rouiba et pôles universitaires</div>
+                <div>URBA Mobility Pitch Deck</div>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 7 : MARKET SIZE ================= -->
+        <div class="slide" id="slide-7">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-tag">Opportunité Commerciale</div>
+                    <h2 class="slide-title">Un Marché Immense Porté par l'Urbanisation</h2>
+                </div>
+                <span class="slide-num">SLIDE 07 / 12</span>
+            </div>
+
+            <div class="slide-body">
+                <div class="grid-3">
+                    <div class="card">
+                        <div class="card-head">TAM (Marché Total)</div>
+                        <div class="card-highlight" style="font-size:32px;">750 M€ / an</div>
+                        <p class="card-desc" style="margin-top:10px;">
+                            Budget global annuel des transports urbains et des flottes de personnel en Afrique du Nord (Algérie, Maroc, Tunisie, Égypte).
+                        </p>
+                    </div>
+
+                    <div class="card cyan">
+                        <div class="card-head">SAM (Marché Adressable)</div>
+                        <div class="card-highlight" style="font-size:32px;">180 M€ / an</div>
+                        <p class="card-desc" style="margin-top:10px;">
+                            Marché de la mobilité d'entreprise et des déplacements multimodaux dans les 4 grandes métropoles algériennes (Alger, Oran, Constantine, Sétif).
+                        </p>
+                    </div>
+
+                    <div class="card pink">
+                        <div class="card-head">SOM (Objectif à 24 Mois)</div>
+                        <div class="card-highlight pink" style="font-size:32px;">4,2 M€ / an</div>
+                        <p class="card-desc" style="margin-top:10px;">
+                            Capture de 60 grandes entreprises clientes (20 000 salariés abonnés B2B) + 150 000 usagers actifs B2C dans le Grand Alger.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>Source : Données ONS, Ministère des Transports et benchmark MaaS Afrique</div>
+                <div>URBA Mobility Pitch Deck</div>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 8 : BUSINESS MODEL ================= -->
+        <div class="slide" id="slide-8">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-tag">Modèle Économique</div>
+                    <h2 class="slide-title">Double Moteur de Revenus : SaaS B2B + Marketplace B2C</h2>
+                </div>
+                <span class="slide-num">SLIDE 08 / 12</span>
+            </div>
+
+            <div class="slide-body">
+                <table class="slide-table">
+                    <thead>
+                        <tr>
+                            <th>Segment</th>
+                            <th>Offre &amp; Produit</th>
+                            <th>Grille Tarifaire Révisée</th>
+                            <th>Nature du Revenu</th>
+                            <th>Marge Brute</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="bold">B2B Flottes</td>
+                            <td>URBA Shuttle Optimizer (Minibus d'usines)</td>
+                            <td class="cyan">12 000 DZD (~80 €) / véhicule / mois</td>
+                            <td>Abonnement SaaS Récurrent</td>
+                            <td class="green">90 %</td>
+                        </tr>
+                        <tr>
+                            <td class="bold">B2B Salariés</td>
+                            <td>Application Navette &amp; Check-in Salarié</td>
+                            <td class="cyan">400 DZD (~2,70 €) / salarié / mois</td>
+                            <td>Licence Utilisateur Actif</td>
+                            <td class="green">92 %</td>
+                        </tr>
+                        <tr>
+                            <td class="bold">B2B Wallet</td>
+                            <td>Budget Mobilité Entreprise (Bons de taxi digitaux)</td>
+                            <td class="cyan">2,5 % de commission sur volume géré</td>
+                            <td>Frais de Gestion Transactionnels</td>
+                            <td class="green">85 %</td>
+                        </tr>
+                        <tr>
+                            <td class="bold">B2C Market</td>
+                            <td>Mise en relation VTC, Taxis &amp; Micro-mobilité</td>
+                            <td class="pink">4 % de commission par course</td>
+                            <td>Marketplace Take-Rate</td>
+                            <td class="green">80 %</td>
+                        </tr>
+                        <tr>
+                            <td class="bold">B2C Ticketing</td>
+                            <td>Vente de tickets de bus/métro dématérialisés</td>
+                            <td class="pink">15 DZD par ticket numérique</td>
+                            <td>Convenience Fee</td>
+                            <td class="green">75 %</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="slide-footer">
+                <div>Encaissement B2B par virement bancaire 30 jours · Encaissement B2C instantané BaridiMob/CIB</div>
+                <div>URBA Mobility Pitch Deck</div>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 9 : UNIT ECONOMICS ================= -->
+        <div class="slide" id="slide-9">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-tag">Économie Unitaire</div>
+                    <h2 class="slide-title">Des Ratios Financiers de Classe Mondiale</h2>
+                </div>
+                <span class="slide-num">SLIDE 09 / 12</span>
+            </div>
+
+            <div class="slide-body">
+                <div class="grid-2">
+                    <div class="card cyan">
+                        <div class="card-head">Économie Unitaire B2B (Entreprises &gt; 50 salariés)</div>
+                        <ul class="p-specs cyan" style="margin-top:12px;">
+                            <li><strong>Panier Moyen Annuel (ACV) :</strong> <strong>4 500 €</strong> / an / entreprise moyenne (3 navettes + 100 salariés).</li>
+                            <li><strong>Coût d'Acquisition Client (CAC B2B) :</strong> <strong>350 €</strong> (visite usine, audit d'itinéraires préliminaire).</li>
+                            <li><strong>Durée de Rétention Moyenne :</strong> 2,5 ans (taux de churn &lt; 5% grâce au verrouillage opérationnel).</li>
+                            <li><strong>Valeur Vie Client (LTV B2B) :</strong> <strong>8 500 €</strong> (avec 88% de marge brute).</li>
+                        </ul>
+                        <div style="display:flex; justify-content:space-between; margin-top:16px; border-top:1px solid rgba(255,255,255,0.08); padding-top:12px;">
+                            <div>Ratio LTV/CAC : <strong style="color:var(--emerald); font-size:18px;">24.2 x</strong></div>
+                            <div>Payback : <strong style="color:var(--gold); font-size:18px;">1.2 Mois</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="card pink">
+                        <div class="card-head">Économie Unitaire B2C (Usagers Quotidiens)</div>
+                        <ul class="p-specs" style="margin-top:12px;">
+                            <li><strong>Revenu Annuel par Usager Actif (ARPU) :</strong> <strong>14 €</strong> / an (commissions VTC + ticketing).</li>
+                            <li><strong>Coût d'Acquisition Utilisateur (CAC B2C) :</strong> <strong>1,10 €</strong> (bouche-à-oreille organique + parrainage).</li>
+                            <li><strong>Durée d'Utilisation Moyenne :</strong> 18 mois d'activité continue.</li>
+                            <li><strong>Valeur Vie Client (LTV B2C) :</strong> <strong>16,50 €</strong>.</li>
+                        </ul>
+                        <div style="display:flex; justify-content:space-between; margin-top:16px; border-top:1px solid rgba(255,255,255,0.08); padding-top:12px;">
+                            <div>Ratio LTV/CAC : <strong style="color:var(--magenta); font-size:18px;">15.0 x</strong></div>
+                            <div>Payback : <strong style="color:var(--gold); font-size:18px;">1.8 Mois</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>Le cash-flow prévisible B2B finance l'acquisition et la notoriété B2C à coût marginal nul</div>
+                <div>URBA Mobility Pitch Deck</div>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 10 : TECHNOLOGY & MOAT ================= -->
+        <div class="slide" id="slide-10">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-tag">Avantage Compétitif Déloyal</div>
+                    <h2 class="slide-title">La Barrière Technologique : Topographie Vectorielle &amp; IA</h2>
+                </div>
+                <span class="slide-num">SLIDE 10 / 12</span>
+            </div>
+
+            <div class="slide-body">
+                <div class="grid-3">
+                    <div class="card cyan">
+                        <div class="card-icon">📐</div>
+                        <div class="card-head">1. Moat SIG &amp; Géomètre</div>
+                        <p class="card-desc">
+                            Expertise <strong>Géomètre-Topographe d'État</strong> combinée à <strong>CARTO Pro &amp; PostGIS</strong> (débloqué via GitHub Pack). Topologie fine des zones industrielles souvent absente ou erronée sur Google Maps.
+                        </p>
+                        <div class="card-highlight" style="font-size:14px;">Données souveraines · 0 € US API</div>
+                    </div>
+
+                    <div class="card emerald">
+                        <div class="card-icon">🧠</div>
+                        <div class="card-head">2. Fleet Yield IA (VRPTW)</div>
+                        <p class="card-desc">
+                            Moteur d'optimisation sous contraintes de fenêtres de temps : regroupement spatial en moins de 3 secondes pour 1 000 salariés, puis <strong>réallocation des bus inactifs aux heures creuses</strong> (+40% de rendement d'actif).
+                        </p>
+                        <div class="card-highlight emerald" style="font-size:14px;">Optimisation Heures Creuses</div>
+                    </div>
+
+                    <div class="card pink">
+                        <div class="card-icon">🏛️</div>
+                        <div class="card-head">3. Clearinghouse 4-Ledgers</div>
+                        <p class="card-desc">
+                            Architecture de compensation à 4 registres étanches sur standard international <strong>TOMP-API v2.0.0 &amp; GBFS 3.0</strong> avec filtre de fraîcheur strict anti-véhicules fantômes et cache offline.
+                        </p>
+                        <div class="card-highlight pink" style="font-size:14px;">Zéro Bus Fantôme · Normes UE</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>Propriété intellectuelle algorithmique propriétaire · Code souverain déployable on-premise</div>
+                <div>URBA Mobility Pitch Deck</div>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 11 : COMPETITION ================= -->
+        <div class="slide" id="slide-11">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-tag">Paysage Concurrentiel</div>
+                    <h2 class="slide-title">Pourquoi URBA Mobility Domine le Terrain</h2>
+                </div>
+                <span class="slide-num">SLIDE 11 / 12</span>
+            </div>
+
+            <div class="slide-body">
+                <table class="slide-table">
+                    <thead>
+                        <tr>
+                            <th>Critères Clés</th>
+                            <th>Applications VTC (Yassir, Coursa)</th>
+                            <th>Gestionnaires Papier &amp; Minibus Traditionnels</th>
+                            <th style="background:rgba(236,0,139,0.15); color:var(--magenta);">URBA Mobility (B2C &amp; B2B)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="bold">Multimodalité</td>
+                            <td>Non (VTC privé uniquement)</td>
+                            <td>Non (Ligne unique isolée)</td>
+                            <td class="green">OUI (Bus + Métro + VTC + Navettes)</td>
+                        </tr>
+                        <tr>
+                            <td class="bold">Optimisation Flottes B2B</td>
+                            <td>Non (Réservation à la course chère)</td>
+                            <td>Non (Itinéraires fixes archaïques)</td>
+                            <td class="green">OUI (Algorithme IA Shuttle Optimizer)</td>
+                        </tr>
+                        <tr>
+                            <td class="bold">Paiement Digital Dédié</td>
+                            <td>In-app partiel</td>
+                            <td>100% Espèces sans contrôle</td>
+                            <td class="green">OUI (BaridiMob, CIB &amp; Wallet Entreprise)</td>
+                        </tr>
+                        <tr>
+                            <td class="bold">Coût pour l'Usager</td>
+                            <td>Élevé (400 - 900 DZD / course)</td>
+                            <td>Faible mais imprévisible</td>
+                            <td class="green">Optimisé (du bus à 30 DZD au VTC direct)</td>
+                        </tr>
+                        <tr>
+                            <td class="bold">Traçabilité Comptable DAF</td>
+                            <td>Factures individuelles complexes</td>
+                            <td>Bons volants souvent frauduleux</td>
+                            <td class="green">Facture mensuelle unique déductible DGI</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="slide-footer">
+                <div>URBA ne concurrence pas les VTC : il les intègre comme partenaire sur son agrégateur</div>
+                <div>URBA Mobility Pitch Deck</div>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 12 : ROADMAP & THE ASK ================= -->
+        <div class="slide" id="slide-12">
+            <div class="slide-header">
+                <div>
+                    <div class="slide-tag">Trajectoire &amp; Financement</div>
+                    <h2 class="slide-title">Roadmap 24 Mois &amp; Tour Seed (200 000 €)</h2>
+                </div>
+                <span class="slide-num">SLIDE 12 / 12</span>
+            </div>
+
+            <div class="slide-body">
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-head">Jalons Opérationnels (2026–2028)</div>
+                        <ul class="p-specs" style="margin-top:12px;">
+                            <li><strong>Q4 2026 · Pilote B2B :</strong> Déploiement pilote sur 3 usines de Rouiba (1 200 salariés, 25 navettes sous contrat).</li>
+                            <li><strong>S1 2027 · Lancement App B2C :</strong> Sortie publique Grand Alger (50 000 téléchargements, intégration ETUSA).</li>
+                            <li><strong>S2 2027 · Expansion B2B :</strong> 30 entreprises abonnées, 150 navettes connectées, atteinte de <strong>35 000 € de MRR (chiffre d'affaires mensuel récurrent)</strong>.</li>
+                            <li><strong>2028 · Échelle Régionale :</strong> Lancement Oran, Constantine et amorçage du corridor Tunis. ARR &gt; <strong>420 000 €</strong>.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card pink">
+                        <div class="card-head">Tour Seed (200 000 €) &amp; Cap Table Propre</div>
+                        <p class="card-desc" style="margin-bottom:10px;">
+                            Valorisation Pre-Money : <strong>1 100 000 €</strong> · Post-Money : <strong>1 300 000 €</strong>
+                        </p>
+                        <ul class="p-specs">
+                            <li><strong>Cap Table Post-Tour :</strong> Fondateur : <strong>71,9%</strong> · Pool ESOP Salariés : <strong>12,7%</strong> · Nouveaux VCs : <strong>15,4%</strong>.</li>
+                            <li><strong>Stack Infra à 0 € (+15k€ débloqués) :</strong> CARTO Pro, Azure, Clerk, Datadog et Sentry offerts (zéro burn logiciel).</li>
+                            <li><strong>100% Fonds Dédiés au Terrain :</strong> 45% Vente B2B Rouiba/Oran, 35% R&amp;D Mobile/IA, 20% Déploiement B2C &amp; Juridique.</li>
+                            <li><strong>Seuil de Rentabilité (Breakeven) :</strong> Atteint dès le <strong>Mois 14</strong>.</li>
+                        </ul>
+                        <div class="card-highlight pink" style="font-size:16px; margin-top:12px;">
+                            Clôture du Tour : Q4 2026 / Q1 2027
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>Fondateur : Ing. Maamar Omar ARBOUZ · Email : arbouzmaamar@gmail.com · Tél : +213 541 453 952</div>
+                <div>URBA Mobility Inc. · Tous droits réservés</div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
