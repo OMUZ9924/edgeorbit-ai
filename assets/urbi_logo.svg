@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240" width="100%" height="100%">
+    <defs>
+        <linearGradient id="urbiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#EC008B" />
+            <stop offset="100%" stop-color="#FF5E62" />
+        </linearGradient>
+        <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00F2FE" />
+            <stop offset="100%" stop-color="#4FACFE" />
+        </linearGradient>
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="8" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+    </defs>
+
+    <!-- Background Badge -->
+    <rect width="100%" height="100%" fill="#070D1E" rx="24" />
+
+    <!-- Transit Route Circuit Lines -->
+    <path d="M 50 170 Q 140 170 180 120 T 320 120 T 480 70" fill="none" stroke="rgba(236, 0, 139, 0.25)" stroke-width="4" stroke-dasharray="8 8" />
+    <path d="M 80 190 Q 200 190 260 140 T 420 140 T 600 80" fill="none" stroke="rgba(0, 242, 254, 0.2)" stroke-width="3" />
+
+    <!-- Icon: Modern Geometric "U" + Mobility Waypoint Orbit -->
+    <g transform="translate(60, 45)">
+        <!-- Outer Orbit Circle -->
+        <circle cx="75" cy="75" r="68" fill="none" stroke="url(#cyanGrad)" stroke-width="3" opacity="0.4" stroke-dasharray="12 8" />
+        
+        <!-- Glowing Station Nodes -->
+        <circle cx="75" cy="7" r="7" fill="#00F2FE" filter="url(#glow)" />
+        <circle cx="143" cy="75" r="6" fill="#EC008B" filter="url(#glow)" />
+        <circle cx="75" cy="143" r="6" fill="#10B981" filter="url(#glow)" />
+
+        <!-- Bold Stylized "U" Transit Loop -->
+        <path d="M 45 40 
+                 L 45 92 
+                 C 45 118, 105 118, 105 92 
+                 L 105 40 
+                 L 86 40 
+                 L 86 90 
+                 C 86 102, 64 102, 64 90 
+                 L 64 40 Z" 
+              fill="url(#urbiGrad)" filter="url(#glow)" />
+
+        <!-- Center Waypoint Arrow / Speed Particle -->
+        <polygon points="75,52 83,68 75,64 67,68" fill="#00F2FE" />
+    </g>
+
+    <!-- Brand Wordmark "URBI" -->
+    <text x="260" y="132" font-family="'Space Grotesk', 'Montserrat', 'Segoe UI', sans-serif" font-size="88" font-weight="900" letter-spacing="-1" fill="#FFFFFF">
+        URBI
+    </text>
+    
+    <!-- Accent Dot / Station Pulse -->
+    <circle cx="495" cy="80" r="10" fill="#EC008B" filter="url(#glow)" />
+
+    <!-- Category / Descriptor -->
+    <text x="265" y="168" font-family="'JetBrains Mono', 'Roboto', monospace" font-size="16" font-weight="700" letter-spacing="4" fill="#00F2FE" text-transform="uppercase">
+        MOBILITY · B2C &amp; B2B PLATFORM
+    </text>
+
+    <!-- Tagline pill -->
+    <g transform="translate(560, 105)">
+        <rect width="180" height="34" rx="17" fill="rgba(236, 0, 139, 0.15)" stroke="#EC008B" stroke-width="1.5" />
+        <text x="90" y="22" font-family="'Inter', sans-serif" font-size="12" font-weight="800" fill="#EC008B" text-anchor="middle" letter-spacing="1">
+            ALL-IN-ONE
+        </text>
+    </g>
+</svg>
