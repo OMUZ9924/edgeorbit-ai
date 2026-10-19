@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>EdgeOrbit AI · AgroOrbit · Sila 2026</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{
+  width:100%;height:100%;
+  background:#000;
+  font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;
+  color:#fff;
+  overflow:hidden;
+}
+
+/* ─── DECK ─── */
+#deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#000;}
+.slide{position:absolute;inset:0;display:none;opacity:0;transition:opacity .5s ease;}
+.slide.active{display:flex;opacity:1;}
+
+/* ─── PROGRESS ─── */
+#prog{position:fixed;top:0;left:0;height:3px;z-index:100;
+  background:linear-gradient(90deg,#4CBBB2,#F09235);
+  box-shadow:0 0 14px #4CBBB2;transition:width .4s ease;}
+#ctr{position:fixed;bottom:18px;right:22px;font-size:10px;letter-spacing:3px;
+  color:rgba(76,187,178,.4);z-index:100;font-family:monospace;}
+#dots{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  display:flex;gap:7px;z-index:100;}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.18);cursor:pointer;transition:all .3s;}
+.dot.on{background:#4CBBB2;transform:scale(1.5);box-shadow:0 0 8px #4CBBB2;}
+.nav{position:fixed;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;
+  background:rgba(255,255,255,.06);border:1px solid rgba(76,187,178,.3);color:#4CBBB2;
+  font-size:20px;cursor:pointer;z-index:100;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.nav:hover{background:rgba(76,187,178,.15);}
+#np{left:12px;}#nn{right:12px;}
+
+/* ─── SPEECH HINT ─── */
+#hint{
+  position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(120px);
+  z-index:101;
+  background:rgba(76,187,178,.12);
+  border:1px solid rgba(76,187,178,.3);
+  border-radius:20px;padding:4px 16px;
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(76,187,178,.7);
+  transition:transform .4s ease;
+  pointer-events:none;
+}
+#hint.show{transform:translateX(-50%) translateY(0);}
+
+/* ════════════════════════════════════════
+   SPEECH POPUP
+════════════════════════════════════════ */
+#speech{
+  position:fixed;
+  bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(calc(100% + 40px));
+  width:min(780px, 90vw);
+  max-height:42vh;
+  background:rgba(5,12,22,0.97);
+  border:1px solid rgba(76,187,178,.4);
+  border-radius:16px;
+  z-index:9999;
+  display:flex;flex-direction:column;
+  box-shadow:0 0 60px rgba(76,187,178,.2), 0 20px 60px rgba(0,0,0,.8);
+  transition:transform .45s cubic-bezier(.34,1.56,.64,1);
+  overflow:hidden;
+  backdrop-filter:blur(12px);
+}
+#speech.open{
+  transform:translateX(-50%) translateY(0);
+}
+
+/* Speech header */
+#sp-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px 8px;
+  background:rgba(76,187,178,.07);
+  border-bottom:1px solid rgba(76,187,178,.15);
+  flex-shrink:0;
+}
+#sp-head .sp-title{
+  font-size:9px;letter-spacing:2.5px;text-transform:uppercase;
+  color:#4CBBB2;font-weight:700;display:flex;align-items:center;gap:8px;
+}
+#sp-head .sp-title::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:#4CBBB2;box-shadow:0 0 6px #4CBBB2;
+  animation:blink 1.5s infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+#sp-slide-label{
+  font-size:9px;letter-spacing:1px;
+  color:rgba(255,255,255,.35);font-family:monospace;
+}
+#sp-close{
+  background:none;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.4);
+  width:22px;height:22px;border-radius:6px;cursor:pointer;
+  font-size:12px;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+#sp-close:hover{background:rgba(255,255,255,.1);color:#fff;}
+
+/* Speech scroll body */
+#sp-body{
+  overflow-y:auto;padding:16px 20px 14px;flex:1;
+  scroll-behavior:smooth;
+}
+#sp-body::-webkit-scrollbar{width:3px;}
+#sp-body::-webkit-scrollbar-thumb{background:rgba(76,187,178,.3);border-radius:3px;}
+
+/* Speech text */
+.sp-text{
+  font-size:15px;line-height:1.75;
+  color:rgba(255,255,255,.85);
+  font-weight:400;
+  white-space:pre-wrap;
+}
+.sp-text strong{color:#fff;font-weight:700;}
+.sp-text em{color:#4CBBB2;font-style:normal;font-weight:600;}
+.sp-text .warn{color:#F09235;font-weight:600;}
+.sp-text .go{color:#4CAF50;font-weight:600;}
+
+/* Speech nav */
+#sp-nav{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 16px;
+  border-top:1px solid rgba(76,187,178,.1);
+  background:rgba(0,0,0,.3);flex-shrink:0;
+}
+#sp-nav .snbtn{
+  flex:1;padding:5px;border-radius:8px;
+  font-size:9px;letter-spacing:1px;text-transform:uppercase;font-weight:700;
+  cursor:pointer;border:1px solid rgba(76,187,178,.25);
+  background:rgba(76,187,178,.07);color:#4CBBB2;
+  transition:all .2s;
+}
+#sp-nav .snbtn:hover{background:rgba(76,187,178,.18);}
+#sp-nav .sp-hint{
+  font-size:8px;letter-spacing:1px;color:rgba(255,255,255,.2);
+  flex:2;text-align:center;text-transform:uppercase;
+}
+
+/* ════════════════════════════════════════
+   SLIDES
+════════════════════════════════════════ */
+.shell{flex-direction:column;padding:5% 6.5%;position:relative;overflow:hidden;}
+.shell::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#4CBBB2 0%,transparent 80%);}
+.shell::before{content:'';position:absolute;top:-20%;right:-10%;width:50%;padding-bottom:50%;
+  background:radial-gradient(circle,rgba(76,187,178,.07) 0%,transparent 65%);border-radius:50%;pointer-events:none;}
+
+/* individual BGs */
+#s0{flex-direction:column;align-items:flex-start;justify-content:center;padding:8% 10%;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse 80% 70% at 80% 50%,rgba(76,187,178,.12) 0%,transparent 60%),
+  radial-gradient(ellipse 50% 50% at 10% 90%,rgba(240,146,53,.08) 0%,transparent 55%),
+  linear-gradient(160deg,#050f18 0%,#0a1e2e 50%,#071520 100%);}
+#s1{background:linear-gradient(160deg,#070f18 0%,#0c1c28 100%);}
+#s2{background:linear-gradient(160deg,#071018 0%,#0b1d20 100%);}
+#s3{background:linear-gradient(160deg,#070d18 0%,#0d1a25 100%);}
+#s4{background:linear-gradient(160deg,#080f15 0%,#0c1e1e 100%);}
+#s5{background:linear-gradient(160deg,#090d18 0%,#0e1828 100%);}
+#s6{background:linear-gradient(160deg,#08100f 0%,#0c1d1b 100%);}
+#s7{background:linear-gradient(160deg,#0a0d18 0%,#111828 100%);}
+#s8{background:linear-gradient(160deg,#080c15 0%,#0d1620 100%);}
+#s9{align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:8% 12%;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse 60% 60% at 50% 40%,rgba(76,187,178,.13) 0%,transparent 65%),
+  radial-gradient(ellipse 40% 40% at 30% 80%,rgba(240,146,53,.07) 0%,transparent 55%),
+  linear-gradient(160deg,#050f18 0%,#0a1e2e 100%);}
+
+#s0 .grid,#s9 .grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(76,187,178,.05) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(76,187,178,.05) 1px,transparent 1px);
+  background-size:60px 60px;}
+#s0 .gob{position:absolute;right:-5%;top:50%;transform:translateY(-50%);width:55%;padding-bottom:55%;
+  background:radial-gradient(circle,rgba(76,187,178,.18) 0%,transparent 65%);border-radius:50%;pointer-events:none;}
+#s0 .bsat{position:absolute;right:8%;top:50%;transform:translateY(-50%);font-size:clamp(100px,18vw,280px);opacity:.06;line-height:1;}
+
+#s0 .ey{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#4CBBB2;font-weight:600;
+  border:1px solid rgba(76,187,178,.3);padding:5px 16px;border-radius:20px;display:inline-block;
+  margin-bottom:28px;background:rgba(76,187,178,.06);}
+#s0 h1{font-size:clamp(38px,6vw,90px);font-weight:900;line-height:1.0;color:#fff;letter-spacing:-2px;margin-bottom:6px;}
+#s0 h1 em{font-style:normal;background:linear-gradient(135deg,#4CBBB2,#A8DDD9);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#s0 .sub{font-size:clamp(13px,1.6vw,22px);color:rgba(255,255,255,.4);font-weight:300;letter-spacing:1px;margin-bottom:36px;}
+#s0 .pills{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.pill{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;font-weight:700;}
+.pt{background:rgba(76,187,178,.12);color:#4CBBB2;border:1px solid rgba(76,187,178,.3);}
+.po{background:rgba(240,146,53,.12);color:#F09235;border:1px solid rgba(240,146,53,.3);}
+#s0 .ref{font-size:10px;letter-spacing:2px;color:rgba(76,187,178,.35);font-family:monospace;}
+.sh{display:flex;align-items:center;gap:14px;margin-bottom:3.5%;flex-shrink:0;}
+.shi{width:clamp(38px,3.5vw,54px);height:clamp(38px,3.5vw,54px);border-radius:12px;
+  background:rgba(76,187,178,.1);border:1px solid rgba(76,187,178,.25);
+  display:flex;align-items:center;justify-content:center;font-size:clamp(16px,1.8vw,26px);flex-shrink:0;}
+.sh h2{font-size:clamp(18px,2.4vw,36px);font-weight:800;color:#fff;line-height:1.1;}
+.sh h2 span{background:linear-gradient(90deg,#4CBBB2,#A8DDD9);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sh-sub{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:3px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;}
+.card{background:rgba(255,255,255,.035);border:1px solid rgba(76,187,178,.18);border-radius:14px;padding:4% 4.5%;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#4CBBB2,transparent);border-radius:14px 14px 0 0;}
+.card.or::before{background:linear-gradient(90deg,#F09235,transparent);}
+.card h3{font-size:clamp(11px,1.1vw,16px);font-weight:700;color:#fff;margin-bottom:6px;line-height:1.25;}
+.card p{font-size:clamp(9px,0.85vw,12.5px);color:rgba(255,255,255,.42);line-height:1.6;}
+.card .ico{font-size:clamp(16px,1.8vw,26px);margin-bottom:10px;display:block;}
+.bnum{font-size:clamp(26px,4vw,60px);font-weight:900;color:#4CBBB2;font-family:monospace;line-height:1;margin-bottom:6px;text-shadow:0 0 30px rgba(76,187,178,.4);}
+.bnum.or{color:#F09235;text-shadow:0 0 30px rgba(240,146,53,.4);}
+.blbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.mstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;}
+.met{background:rgba(76,187,178,.05);border:1px solid rgba(76,187,178,.18);border-radius:12px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4% 2%;}
+.met .v{font-size:clamp(22px,3.2vw,50px);font-weight:900;color:#4CBBB2;font-family:monospace;line-height:1;text-shadow:0 0 25px rgba(76,187,178,.45);}
+.met .v.or{color:#F09235;text-shadow:0 0 25px rgba(240,146,53,.45);}
+.met .u{font-size:9px;color:rgba(76,187,178,.5);letter-spacing:1px;margin-top:3px;}
+.met .l{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:5px;line-height:1.4;}
+table{width:100%;border-collapse:collapse;font-size:clamp(9px,0.85vw,12.5px);}
+th{text-align:left;padding:8px 12px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#4CBBB2;font-weight:700;border-bottom:1px solid rgba(76,187,178,.2);}
+td{padding:9px 12px;color:rgba(255,255,255,.5);border-bottom:1px solid rgba(255,255,255,.04);line-height:1.4;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+td:first-child{color:#fff;font-weight:600;}
+.tc{color:#4CBBB2!important;font-family:monospace;}
+.to{color:#F09235!important;font-family:monospace;}
+.tg{color:#4CAF50!important;}
+.tr{color:#EF5350!important;}
+.badge{display:inline-block;font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
+.bt{background:rgba(76,187,178,.12);color:#4CBBB2;border:1px solid rgba(76,187,178,.25);}
+.bo{background:rgba(240,146,53,.12);color:#F09235;border:1px solid rgba(240,146,53,.25);}
+.bg{background:rgba(76,175,80,.12);color:#4CAF50;border:1px solid rgba(76,175,80,.25);}
+ul.il{list-style:none;display:flex;flex-direction:column;gap:8px;}
+ul.il li{display:flex;align-items:flex-start;gap:9px;font-size:clamp(9px,0.85vw,12.5px);color:rgba(255,255,255,.45);line-height:1.45;}
+ul.il li .i{color:#4CBBB2;flex-shrink:0;margin-top:1px;}
+ul.il li strong{color:#fff;}
+.quote{background:rgba(76,187,178,.06);border-left:3px solid #4CBBB2;border-radius:0 10px 10px 0;padding:16px 20px;font-size:clamp(10px,1.05vw,15px);color:rgba(255,255,255,.75);font-style:italic;line-height:1.55;}
+.vb{margin-bottom:14px;}
+.vb-head{display:flex;justify-content:space-between;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px;}
+.vb-track{height:8px;background:rgba(255,255,255,.06);border-radius:8px;overflow:hidden;}
+.vb-fill{height:100%;border-radius:8px;}
+.vt{background:linear-gradient(90deg,#4CBBB2,#A8DDD9);}
+.vo{background:linear-gradient(90deg,#F09235,#F7C48A);}
+.vg{background:linear-gradient(90deg,#4CAF50,#8BC34A);}
+.tl{display:flex;flex-direction:column;gap:14px;flex:1;}
+.tli{display:flex;gap:16px;align-items:flex-start;}
+.tl-per{flex:0 0 90px;text-align:right;font-size:9px;letter-spacing:1.5px;color:#4CBBB2;font-family:monospace;font-weight:700;padding-top:3px;}
+.tl-dc{flex:0 0 20px;display:flex;flex-direction:column;align-items:center;}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:#4CBBB2;box-shadow:0 0 10px rgba(76,187,178,.6);flex-shrink:0;}
+.tl-line{flex:1;width:2px;background:rgba(76,187,178,.2);margin-top:3px;}
+.tl-body{flex:1;padding-bottom:10px;}
+.tl-body h4{font-size:clamp(10px,1vw,14px);font-weight:700;color:#fff;margin-bottom:3px;}
+.tl-body p{font-size:clamp(8px,0.72vw,11px);color:rgba(255,255,255,.38);line-height:1.45;}
+.pblock{display:flex;gap:14px;align-items:center;background:rgba(255,255,255,.03);border:1px solid rgba(76,187,178,.18);border-radius:12px;padding:3% 3.5%;margin-bottom:12px;}
+.avatar{width:clamp(44px,4.5vw,64px);height:clamp(44px,4.5vw,64px);border-radius:50%;background:linear-gradient(135deg,#4CBBB2,#2E9990);display:flex;align-items:center;justify-content:center;font-size:clamp(16px,1.8vw,24px);font-weight:900;color:#071520;flex-shrink:0;border:2px solid rgba(76,187,178,.3);}
+.pinfo h4{font-size:clamp(12px,1.2vw,18px);font-weight:800;color:#fff;}
+.pinfo .role{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#4CBBB2;margin-top:3px;}
+.pinfo .det{font-size:9px;color:rgba(255,255,255,.3);margin-top:4px;line-height:1.45;}
+#s9 h1{font-size:clamp(28px,4.5vw,68px);font-weight:900;line-height:1.1;color:#fff;position:relative;margin-bottom:16px;}
+#s9 h1 em{font-style:normal;background:linear-gradient(135deg,#4CBBB2,#A8DDD9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#s9 .tagline{font-size:clamp(12px,1.2vw,18px);color:rgba(255,255,255,.4);max-width:65%;line-height:1.6;position:relative;margin-bottom:32px;}
+#s9 .cg{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;margin-bottom:20px;}
+.ci{background:rgba(255,255,255,.05);border:1px solid rgba(76,187,178,.25);border-radius:10px;padding:10px 18px;font-size:clamp(10px,0.9vw,13px);color:rgba(255,255,255,.6);}
+.ci span{color:#4CBBB2;font-weight:700;}
+#s9 .sref{position:absolute;bottom:16px;right:20px;font-size:9px;letter-spacing:2px;color:rgba(76,187,178,.25);font-family:monospace;}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+
+<!-- ══ SPEECH POPUP ══ -->
+<div id="speech">
+  <div id="sp-head">
+    <div class="sp-title">🎙 Speech — Live</div>
+    <div id="sp-slide-label">Slide 01 / 10</div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <button id="sp-lang" onclick="toggleLang()" style="background:rgba(76,187,178,.15);border:1px solid rgba(76,187,178,.4);color:#4CBBB2;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;cursor:pointer;letter-spacing:1px;">🇫🇷 FR</button>
+      <button id="sp-close" onclick="toggleSpeech()">✕</button>
+    </div>
+  </div>
+  <div id="sp-body">
+    <div class="sp-text" id="sp-text"></div>
+  </div>
+  <div id="sp-nav">
+    <button class="snbtn" onclick="go(-1)">← Back</button>
+    <div class="sp-hint">Press <strong style="color:#4CBBB2;">S</strong> to show/hide · <strong style="color:#4CBBB2;">Space / →</strong> to advance</div>
+    <button class="snbtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<div id="deck">
+
+<!-- ── SLIDE 0 — COVER ── -->
+<div class="slide" id="s0">
+  <div class="grid"></div><div class="gob"></div>
+  <div class="bsat">🛰️</div>
+  <div class="ey">Sila: France-Mediterranean Initiative for AI · 2026</div>
+  <h1>EdgeOrbit AI<br><em>AgroOrbit</em></h1>
+  <p class="sub">Autonomous Satellite GeoAI · Drought &amp; Irrigation Resilience</p>
+  <div class="pills">
+    <span class="pill pt">Algeria · Southern Mediterranean</span>
+    <span class="pill po">INNOspace Masters 2026 Finalist · OHB / DLR</span>
+    <span class="pill pt">ISPRS · SCOPUS Published</span>
+    <span class="pill pt">ASAL Research Engineer</span>
+  </div>
+  <p class="ref">Ref: SILA-2026-DZ-EO-01 &nbsp;·&nbsp; Ing. Maamar Arbouz &nbsp;·&nbsp; arbouzmaamar@gmail.com</p>
+</div>
+
+<!-- ── SLIDE 1 — PROBLEM ── -->
+<div class="slide shell" id="s1">
+  <div class="sh"><div class="shi">💧</div><div><h2>The <span>Mediterranean Water Crisis</span></h2><div class="sh-sub">Why agriculture is flying blind across 45 million hectares</div></div></div>
+  <div class="mstrip" style="margin-bottom:14px;">
+    <div class="met"><div class="v or">40%</div><div class="u">of water</div><div class="l">Lost in Blind Irrigation</div></div>
+    <div class="met"><div class="v">€2,500+</div><div class="u">per hectare</div><div class="l">IoT Sensor Cost Barrier</div></div>
+    <div class="met"><div class="v or">3–7</div><div class="u">days</div><div class="l">Satellite EO Pipeline Latency</div></div>
+    <div class="met"><div class="v">45M</div><div class="u">hectares</div><div class="l">Drought-Vulnerable Land</div></div>
+  </div>
+  <div class="g2" style="flex:1;">
+    <div class="card or"><span class="ico">🌡️</span><h3>Farmers Navigate Extreme Volatility — Blind</h3><p>No real-time soil moisture data. Aquifers deplete as uncoordinated irrigation causes massive waste and catastrophic under-watering during heatwaves.</p></div>
+    <div class="card"><span class="ico">📡</span><h3>Existing Solutions Are Economically Impossible</h3><p>Hardware IoT soil probes cost €1,500+/ha. Cloud satellite dashboards take 3–7 days. Both are out of reach for Mediterranean smallholders.</p></div>
+  </div>
+</div>
+
+<!-- ── SLIDE 2 — SOLUTION ── -->
+<div class="slide shell" id="s2">
+  <div class="sh"><div class="shi">🛰️</div><div><h2>AgroOrbit: <span>Zero-Hardware GeoAI</span></h2><div class="sh-sub">Free Copernicus satellites → Daily soil intelligence → Farmer's phone. No hardware.</div></div></div>
+  <div class="g3" style="flex:1;">
+    <div class="card"><span class="ico">①</span><h3>SAR + Optical Fusion</h3><p>Fuses Sentinel-1 C-band radar with Sentinel-2 MSI. Penetrates cloud cover <strong style="color:#4CBBB2;">100%</strong> — all-weather, 365 days/year — estimating soil moisture down to 30cm root zone.</p></div>
+    <div class="card"><span class="ico">②</span><h3>Edge AI Inference</h3><p>INT8-quantized Spatio-Temporal GNN computes <strong style="color:#4CBBB2;">10m sub-field resolution</strong> soil moisture in <strong style="color:#4CBBB2;">&lt;45ms per field block</strong> at &lt;2W on ARM hardware.</p></div>
+    <div class="card or"><span class="ico">③</span><h3>Direct Irrigation Prescription</h3><p>Van Genuchten physics + ET₀ → deficit irrigation triggers. Delivered via <strong style="color:#fff;">WhatsApp / SMS</strong>. Zero internet at the farm. <strong style="color:#F09235;">30% water reduction</strong> measured.</p></div>
+  </div>
+  <div class="quote" style="margin-top:14px;">"AgroOrbit transforms free Copernicus satellites into actionable daily irrigation prescriptions with <strong>zero ground hardware</strong> — the first truly accessible precision agriculture solution for Mediterranean smallholders."</div>
+</div>
+
+<!-- ── SLIDE 3 — TECHNOLOGY ── -->
+<div class="slide shell" id="s3">
+  <div class="sh"><div class="shi">⚙️</div><div><h2>Technical <span>Architecture</span></h2><div class="sh-sub">Validated performance · Technology Readiness Level 5/6</div></div></div>
+  <div class="g2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card"><h3>AI Performance Metrics</h3><table style="margin-top:10px;"><thead><tr><th>KPI</th><th>Result</th></tr></thead><tbody><tr><td>Ground Truth Correlation (R²)</td><td class="tc">&gt; 0.85</td></tr><tr><td>Soil Moisture RMSE</td><td class="tc">&lt; 3.2% VWC</td></tr><tr><td>All-Weather Reliability</td><td class="tc">100% (SAR)</td></tr><tr><td>Field Water Savings</td><td class="to">28–32%</td></tr><tr><td>Cost vs. IoT Networks</td><td class="tc">70% cheaper</td></tr><tr><td>Edge Latency</td><td class="tc">&lt; 45ms / 10ha</td></tr><tr><td>Edge Power</td><td class="tc">&lt; 2.0W</td></tr></tbody></table></div>
+      <div class="card" style="flex:1;"><h3>5-Stage Pipeline</h3><p style="font-family:monospace;font-size:clamp(8px,0.72vw,11px);color:rgba(76,187,178,.65);line-height:2;margin-top:8px;">Sentinel-1C + Sentinel-2 Ingestion<br>→ SRTM Terrain Correction + Lee Filter<br>→ NDVI / NDWI / sigma₀ Fusion<br>→ INT8 CNN-Transformer VWC (10m)<br>→ van Genuchten + ET₀ Prescription</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card" style="flex:1;"><h3>Competitive Comparison</h3><table style="margin-top:10px;"><thead><tr><th>Feature</th><th>Legacy</th><th>IoT</th><th>AgroOrbit</th></tr></thead><tbody><tr><td>Cloud Penetration</td><td class="tr">❌</td><td class="tg">✅</td><td class="tc">✅ SAR</td></tr><tr><td>Hardware CapEx</td><td>Low</td><td class="tr">❌ €1,500+</td><td class="tc">✅ Zero</td></tr><tr><td>Connectivity</td><td class="tr">❌ Broadband</td><td class="tr">❌ SIM</td><td class="tc">✅ Offline</td></tr><tr><td>Data Sovereignty</td><td class="tr">❌ Foreign</td><td class="tr">❌ Proprietary</td><td class="tc">✅ On-premise</td></tr></tbody></table></div>
+      <div class="card"><h3>Edge Hardware Compatibility</h3><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;"><span class="badge bt">ARM Cortex-A55</span><span class="badge bt">Jetson Orin Nano</span><span class="badge bt">STM32MP1</span><span class="badge bt">ONNX Runtime</span><span class="badge bt">TensorRT</span><span class="badge bo">INT8 · 75% RAM reduction</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SLIDE 4 — TRACTION ── -->
+<div class="slide shell" id="s4">
+  <div class="sh"><div class="shi">🏆</div><div><h2>Traction &amp; <span>Validation</span></h2><div class="sh-sub">Independent institutional endorsements</div></div></div>
+  <div class="g2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;"><h3>🏅 INNOspace Masters 2026 Finalist</h3><span class="badge bo">OHB · DLR</span></div><p>Selected by <strong style="color:#fff;">OHB SE & German Aerospace Center (DLR)</strong> from 200+ international submissions — Europe's 3rd largest satellite manufacturer.</p><p style="margin-top:6px;font-family:monospace;font-size:9px;color:rgba(76,187,178,.45);">Virtual pitch · 16 June 2026 · 15:50–16:15 CEST</p></div>
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;"><h3>📄 ISPRS Archives · FOSS4G 2026</h3><span class="badge bt">SCOPUS · CPCI</span></div><p><em>UrbanGraphSAGE</em> — GNNs for building footprint extraction from Sentinel-2 imagery of Algiers. First-author. SCOPUS + Web of Science indexed.</p></div>
+      <div class="card"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;"><h3>🛰️ ASAL Research Engineer</h3><span class="badge bt">2024–2025</span></div><p>Deep learning pipelines on <strong style="color:#fff;">Alsat-1B / Alsat-2</strong> national imagery at the Algerian Space Agency. +14% precision over CNN. Official attestation on file.</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card" style="flex:1;"><h3>🌍 European Research Network</h3><ul class="il" style="margin-top:10px;"><li><span class="i">✦</span><div><strong>ESWW 2026 Plenary Speaker (PL2)</strong> — European Space Weather Week, Florence</div></li><li><span class="i">✦</span><div><strong>ASI Matera</strong> — National Magnetometry Conference (8–9 Oct 2026)</div></li><li><span class="i">✦</span><div><strong>ETH Zurich Travel Grant</strong> — AI & Terrestrial Resources</div></li><li><span class="i">✦</span><div><strong>EUMaster4HPC Fellow</strong> — Univ. Luxembourg</div></li><li><span class="i">✦</span><div><strong>ESA Φ-Lab Commendation</strong> — Onboard st-GNN validated</div></li><li><span class="i">✦</span><div><strong>SpaceRaise 2026 Scholar</strong> — GSSI L'Aquila</div></li></ul></div>
+      <div class="card"><h3>4 Active COST Action Memberships</h3><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;"><span class="badge bt">CA22136 PANGEOS</span><span class="badge bt">CA23118 FOGOS</span><span class="badge bt">CA24136 InterCoML</span><span class="badge bo">CA24153 EPIGRAPHY·CERN</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SLIDE 5 — MARKET ── -->
+<div class="slide shell" id="s5">
+  <div class="sh"><div class="shi">📈</div><div><h2>Market &amp; <span>Business Model</span></h2><div class="sh-sub">€1.8B Mediterranean precision agriculture market · 85%+ gross margin</div></div></div>
+  <div class="g2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div class="card or"><div class="bnum or">€1.8B</div><div class="blbl">Total Addressable Market</div><p style="margin-top:8px;">45 million hectares of drought-vulnerable Mediterranean + North African land — Algeria, Tunisia, Morocco, Egypt</p></div><div class="card" style="flex:1;"><h3>Target Customers</h3><ul class="il" style="margin-top:10px;"><li><span class="i">🌾</span><div><strong>Agricultural Cooperatives</strong> — Aggregated monitoring; collective irrigation scheduling</div></li><li><span class="i">🫒</span><div><strong>Commercial Agri-Enterprises</strong> — Olive groves, vineyards, citrus — carbon/water compliance</div></li><li><span class="i">🏛️</span><div><strong>Water Basin Authorities</strong> — Government systemic drought monitoring; B2G procurement</div></li></ul></div></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div class="card" style="flex:1;"><h3>💰 Dual Revenue Streams</h3><div style="margin-top:12px;padding:14px;background:rgba(76,187,178,.06);border-radius:10px;margin-bottom:10px;"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;"><span style="font-size:12px;font-weight:700;color:#fff;">B2B/B2C · Per-Hectare SaaS</span><span style="font-family:monospace;color:#4CBBB2;font-size:14px;font-weight:700;">€4.50–€12 / ha / yr</span></div><p>8x ROI in water + energy savings for the farmer.</p></div><div style="padding:14px;background:rgba(240,146,53,.06);border-radius:10px;"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;"><span style="font-size:12px;font-weight:700;color:#fff;">B2G · Basin Dashboard License</span><span style="font-family:monospace;color:#F09235;font-size:14px;font-weight:700;">€15k–€50k / yr</span></div><p>River basin authorities, agri-lenders, crop insurance.</p></div></div><div class="card"><h3>Near-Term Milestones</h3><ul class="il" style="margin-top:10px;"><li><span class="i" style="font-family:monospace;font-size:9px;color:#4CBBB2;">Q4'26</span><div><strong>120→500 ha Algeria pilot</strong> · CIHEAM Bari AU-EU-Med Fair</div></li><li><span class="i" style="font-family:monospace;font-size:9px;color:#4CBBB2;">Q1'27</span><div><strong>3 commercial co-op contracts</strong> in Algeria</div></li><li><span class="i" style="font-family:monospace;font-size:9px;color:#4CBBB2;">Q2'27</span><div><strong>Tunisia pilot</strong> — Medjerda Basin</div></li></ul></div></div>
+  </div>
+</div>
+
+<!-- ── SLIDE 6 — ROADMAP ── -->
+<div class="slide shell" id="s6">
+  <div class="sh"><div class="shi">🗺️</div><div><h2>24-Month <span>Scale-Up Roadmap</span></h2><div class="sh-sub">Structured execution powered by the Sila service voucher</div></div></div>
+  <div class="g2" style="flex:1;">
+    <div class="tl"><div class="tli"><div class="tl-per">Q4 2026</div><div class="tl-dc"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h4>Sila Onboarding & Algeria Pilot</h4><p>Automate Sentinel-1C pipeline · 500 ha Algeria · CIHEAM Bari AU-EU-Med Fair (Nov 25)</p></div></div><div class="tli"><div class="tl-per">Q1–Q2 2027</div><div class="tl-dc"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h4>Industrialisation Phase</h4><p>Ruggedized edge-gateway PCB · TensorRT INT8 ARM nodes · 3 commercial cooperative contracts · Tunisia: Medjerda Basin</p></div></div><div class="tli"><div class="tl-per">Q3–Q4 2027</div><div class="tl-dc"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><h4>Regional Expansion + Pre-Seed</h4><p>5,000 paid ha · Morocco: Souss-Massa Basin · <strong style="color:#F09235;">€200k Pre-Seed closing</strong></p></div></div><div class="tli"><div class="tl-per">2028</div><div class="tl-dc"><div class="tl-dot" style="background:#F09235;box-shadow:0 0 10px rgba(240,146,53,.6);"></div></div><div class="tl-body"><h4>Pan-Mediterranean Scale</h4><p>25,000+ ha · Algeria/Tunisia/Morocco/Egypt · <strong style="color:#4CBBB2;">€350k+ ARR</strong></p></div></div></div>
+    <div style="display:flex;flex-direction:column;gap:14px;"><div class="card" style="flex:1;"><h3>Sila Voucher Allocation (€10k–€30k)</h3><div style="margin-top:16px;"><div class="vb"><div class="vb-head"><span>MLOps Industrialisation</span><span style="color:#4CBBB2;font-family:monospace;">40%</span></div><div class="vb-track"><div class="vb-fill vt" style="width:40%"></div></div><p style="font-size:9px;color:rgba(255,255,255,.25);margin-top:4px;">CI/CD pipelines · GPU training · INT8 quantizers</p></div><div class="vb"><div class="vb-head"><span>IP & Tech Transfer</span><span style="color:#F09235;font-family:monospace;">35%</span></div><div class="vb-track"><div class="vb-fill vo" style="width:35%"></div></div><p style="font-size:9px;color:rgba(255,255,255,.25);margin-top:4px;">Patent filings for edge SAR fusion · spin-off licensing</p></div><div class="vb"><div class="vb-head"><span>Market Access & Pilots</span><span style="color:#4CAF50;font-family:monospace;">25%</span></div><div class="vb-track"><div class="vb-fill vg" style="width:25%"></div></div><p style="font-size:9px;color:rgba(255,255,255,.25);margin-top:4px;">Tunisia + Morocco agronomic validation via Expertise France</p></div></div></div></div>
+  </div>
+</div>
+
+<!-- ── SLIDE 7 — WHY SILA ── -->
+<div class="slide shell" id="s7">
+  <div class="sh"><div class="shi">🤝</div><div><h2>Why <span>Sila</span> — Strategic Alignment</h2><div class="sh-sub">France-Mediterranean AI · Expertise France · MEAE / FEF+</div></div></div>
+  <div class="g3" style="flex:1;"><div class="card"><span class="ico">🇫🇷🇩🇿</span><h3>France-Algeria AI Bridge</h3><p>CNES-ASAL MOU + Expertise France's MENA network = the institutional distribution channel for AgroOrbit's first B2G pilots. EdgeOrbit AI is the <strong style="color:#fff;">first AI-at-the-edge startup bridging both ecosystems</strong>.</p></div><div class="card"><span class="ico">🌍</span><h3>Mediterranean-First Mandate</h3><p>Sila's exact target geography — <strong style="color:#fff;">Algeria, Tunisia, Morocco, Egypt</strong> — IS our primary market. Zero adaptation required. Agricultural drought is the defining crisis for Sila's mission region.</p></div><div class="card or"><span class="ico">🔒</span><h3>Digital Sovereignty Alignment</h3><p>AgroOrbit runs <strong style="color:#fff;">fully on-premise, offline-native</strong>, zero foreign cloud dependency — aligning directly with both Algeria's and France's shared digital sovereignty agenda.</p></div></div>
+  <div class="quote" style="margin-top:14px;">"The three things we need — <strong>MLOps infrastructure, IP structuring, and market entry in Tunisia and Morocco</strong> — are exactly the three service categories Sila covers. We designed our roadmap around your programme."</div>
+</div>
+
+<!-- ── SLIDE 8 — FOUNDER ── -->
+<div class="slide shell" id="s8">
+  <div class="sh"><div class="shi">👤</div><div><h2>Founder Profile &amp; <span>Ecosystem</span></h2><div class="sh-sub">Deep technical mastery · 6 publications · International institutional anchors</div></div></div>
+  <div class="g2" style="flex:1;">
+    <div style="display:flex;flex-direction:column;gap:12px;"><div class="pblock"><div class="avatar">MA</div><div class="pinfo"><h4>Ing. Maamar Omar ARBOUZ</h4><div class="role">Founder & CEO · AI Research Lead</div><div class="det">State Topographic Engineer · MSc AI & Big Data, Mention Très Bien<br>Djilali Bounaama University · Khemis Miliana, Algeria</div></div></div><div class="card" style="flex:1;"><h3>Core Technical Stack</h3><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;"><span class="badge bt">PyTorch / PyG</span><span class="badge bt">st-GNN / GraphSAGE</span><span class="badge bt">INT8 QAT / ONNX</span><span class="badge bt">TensorRT</span><span class="badge bo">Sentinel-1/2/3</span><span class="badge bt">GDAL · GeoPandas</span><span class="badge bo">CUDA · JAX</span><span class="badge bt">Xilinx Zynq · Jetson</span></div></div><div class="card"><h3>Key Scientific Advisors</h3><ul class="il" style="margin-top:8px;"><li><span class="i">▸</span><div><strong>Prof. Piero Boccardo</strong> — Politecnico Torino / ITHACA President (Space Geomatics)</div></li><li><span class="i">▸</span><div><strong>Dr. Belahcene Bahloul</strong> — Univ. Khemis Miliana (Remote Sensing · Ground Truth)</div></li></ul></div></div>
+    <div style="display:flex;flex-direction:column;gap:12px;"><div class="card" style="flex:1;"><h3>2026 Publications & Conferences</h3><ul class="il" style="margin-top:10px;"><li><span class="i">📄</span><div><strong>ISPRS Archives (SCOPUS)</strong> — UrbanGraphSAGE, FOSS4G 2026</div></li><li><span class="i">📄</span><div><strong>ESWW 2026 PL2</strong> — st-GNN Space Weather Detection, Florence</div></li><li><span class="i">📄</span><div><strong>ASI ACDC_Q 2026</strong> — Edge AI Magnetic Telemetry, Matera</div></li><li><span class="i">📄</span><div><strong>GWN Grenoble 2026</strong> — GNNs for Spin Wave Processing</div></li><li><span class="i">📄</span><div><strong>COSEAL 2026</strong> — Algorithm Selection for Edge Payloads, RWTH Aachen</div></li><li><span class="i">📄</span><div><strong>EARSeL 2027</strong> — Physics-Informed Graph Foundation Models (w/ Boccardo)</div></li></ul></div><div class="card"><h3>Schengen Track Record</h3><p style="margin-top:6px;">3 Italian visas, 100% compliance. Fall 2026: <span style="color:#4CBBB2;font-weight:700;">ASI Matera (Oct) · ESWW Florence (Nov) · ISF Rome (Nov) · 2EIS Venice (Dec)</span></p></div></div>
+  </div>
+</div>
+
+<!-- ── SLIDE 9 — CLOSING ── -->
+<div class="slide" id="s9">
+  <div class="grid"></div>
+  <h1>Building a <em>Climate-Resilient</em><br>Mediterranean</h1>
+  <p class="tagline">Partner with EdgeOrbit AI to transform precision irrigation and food security across the Algeria–Europe–Mediterranean region.</p>
+  <div class="cg"><div class="ci">📧 <span>arbouzmaamar@gmail.com</span></div><div class="ci">📱 <span>+213 541 453 952</span></div><div class="ci">🔗 <span>linkedin.com/in/maamar-arbouz</span></div><div class="ci">📍 <span>Miliana, Aïn Defla, Algeria</span></div></div>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;"><span class="pill po">INNOspace Masters Finalist · OHB/DLR</span><span class="pill pt">ISPRS · SCOPUS</span><span class="pill pt">ASAL Engineer</span><span class="pill pt">SILA-2026-DZ-EO-01</span></div>
+  <div class="sref">EdgeOrbit AI (AgroOrbit) · Sila Call for Applications · Southern Mediterranean Cohort 2026</div>
+</div>
+
+</div><!-- /deck -->
+
+<button class="nav" id="np">‹</button>
+<button class="nav" id="nn">›</button>
+<div id="ctr"></div>
+<div id="dots"></div>
+<div id="hint">Press S to show speech</div>
+
+<script>
+// ── FULL VERBATIM SCRIPTS (FRENCH & ENGLISH) ──
+let currentLang = 'fr';
+
+const scripts_fr = [
+`<strong>Bonjour Aymen, bonjour aux membres du comité de sélection.</strong>
+
+Je m'appelle <em>Maamar Arbouz</em>. Je suis ingénieur d’État géodésien-topographe et titulaire d’un Master 2 en Intelligence Artificielle et Big Data avec <em>Mention Très Bien</em> de l'Université de Khemis Miliana en Algérie. Je suis le fondateur d’<strong>EdgeOrbit AI</strong>, et je vous présente aujourd’hui notre première verticale commerciale : <strong>AgroOrbit</strong>. Notre dossier porte la référence <em>SILA-2026-DZ-EO-01</em>.
+
+Pour vous situer en une phrase : nous transformons les constellations satellitaires européennes Copernicus en prescriptions d'irrigation quotidiennes, directement sur le téléphone des agriculteurs, avec <em>zéro capteur physique au sol</em>.
+
+Ce projet est issu de mes travaux de recherche menés avec l'Agence Spatiale Algérienne (ASAL). Il a déjà été validé à l'international : nous sommes <strong>Finalistes de l'INNOspace Masters 2026</strong>, sélectionnés conjointement par le constructeur spatial allemand <em>OHB SE</em> et l'agence spatiale allemande <em>DLR</em>, et premier auteur d'un article scientifique publié dans les archives de l'<em>ISPRS</em>, indexé SCOPUS et Web of Science.
+
+Nous sommes ici aujourd'hui parce que Sila représente exactement le pont institutionnel et technologique dont nous avons besoin pour passer de nos pilotes validés en Algérie à un déploiement pan-méditerranéen.`,
+
+`Dans le bassin méditerranéen, l'agriculture consomme à elle seule <em>70 % de l'eau douce disponible</em>. Pourtant, les agriculteurs gèrent cette ressource vitale à l'aveugle.
+
+Le résultat ? <em>40 % de l'eau d'irrigation est gaspillée</em> à cause de pratiques non calibrées, tandis que lors des canicules, le stress hydrique frappe les cultures sans préavis.
+
+Pourquoi les solutions existantes échouent-elles ?
+1. Les sondes capacitives au sol coûtent plus de <em>2 500 euros par hectare</em> avec l'installation, les câbles et la maintenance. Pour un exploitant en Algérie ou en Tunisie, c'est économiquement inenvisageable.
+2. Les plateformes satellitaires classiques ont une latence de <em>3 à 7 jours</em> entre le passage du satellite, le traitement cloud et l'alerte. Or, quand le flétrissement devient visible sur les feuilles, la perte de rendement est déjà irréversible.
+
+<span class="warn">Ce problème n'a rien de théorique :</span> l'Algérie a perdu plus de 47 000 hectares lors des feux de 2021, et la sécheresse récurrente dans l'Atlas tellien menace directement la sécurité alimentaire. Ce sont <em>45 millions d'hectares vulnérables</em> à travers l'Algérie, la Tunisie, le Maroc et l'Égypte qui attendent une solution adaptée.`,
+
+`C'est précisément pour cela que nous avons conçu <em>AgroOrbit</em> : une architecture d'intelligence géospatiale frugale, qui n'impose aucun matériel au sol.
+
+Notre chaîne repose sur trois étapes automatisées :
+
+<strong>Première étape : La fusion radar et optique.</strong>
+Nous combinons Sentinel-2 optique avec le radar à synthèse d'ouverture (SAR) Sentinel-1 en bande C. Le radar traverse <em>100 % de la couverture nuageuse</em>. Qu'il pleuve, qu'il fasse nuageux ou grand soleil, nous sondons la constante diélectrique du sol jusqu'à 30 cm de profondeur, 365 jours par an.
+
+<strong>Deuxième étape : L'inférence Edge-AI ultra-légère.</strong>
+Grâce à un réseau de neurones spatio-temporel sur graphes (st-GNN) quantifié en INT8, nous calculons l'humidité du sol à <em>10 mètres de résolution parcellaire en moins de 45 millisecondes</em>, sur un microprocesseur de moins de 2 watts.
+
+<strong>Troisième étape : La prescription directe sans barrière.</strong>
+Nous couplons cette humidité aux équations physiques d'évapotranspiration locale. L'agriculteur reçoit un SMS ou un message WhatsApp clair : <em>'Parcelle 3, apport recommandé : 18 mm demain matin'</em>.
+
+Le résultat concret mesuré sur nos parcelles de test : <em>28 à 32 % de réduction de consommation d'eau</em>, tout en protégeant les rendements.`,
+
+`Parlons rigueur scientifique et niveau de maturité technologique. Nous sommes aujourd'hui à un niveau <em>TRL 5-6</em>.
+
+Nos métriques figurent directement dans notre document d'architecture technique soumis à Sila :
+- Notre coefficient de corrélation <em>R² dépasse 0,85</em> face à des sondes physiques capacitives de référence enterrées dans le sol.
+- Notre erreur quadratique moyenne (RMSE) est inférieure à <em>3,2 % de teneur en eau volumique</em>.
+- La fiabilité tout-temps est de <em>100 %</em> grâce à l'inversion radar.
+- Et le coût d'exploitation est <em>70 % inférieur</em> à n'importe quel réseau de capteurs IoT.
+
+Notre pile logicielle est agnostique : elle s'exécute sous ONNX Runtime et TensorRT sur ARM Cortex-A55, Jetson Orin Nano, ou microcontrôleurs STM32MP1. Grâce à notre quantification INT8, nous réduisons l'empreinte mémoire vive de <em>75 %</em> sans perte de précision.`,
+
+`L'évaluation d'une startup deep-tech repose sur la solidité de ses preuves. Voici ce qui valide notre démarche :
+
+Premièrement, notre sélection comme <strong>Finaliste de l'INNOspace Masters 2026</strong> pour le défi OHB SE. Le 2 juin 2026, l'institut IQIB m'a officiellement notifié notre sélection parmi plus de 200 candidatures internationales. J'ai soutenu notre pitch le 16 juin à 15h50 devant le jury d'experts techniques d'<em>OHB SE</em>, troisième constructeur de satellites en Europe.
+
+Deuxièmement, la rigueur académique : je suis premier auteur de l'article scientifique <em>UrbanGraphSAGE</em>, publié dans les archives de l'<strong>ISPRS (FOSS4G 2026)</strong>, indexé <em>SCOPUS et Web of Science</em>.
+
+Troisièmement, mon expérience à l'<strong>Agence Spatiale Algérienne (ASAL)</strong> en 2024-2025 en tant qu'ingénieur de recherche, où j'ai développé des algorithmes de segmentation sur Alsat-1B et Alsat-2.
+
+Enfin, j'ai été retenu comme conférencier plénier à l'<strong>ESWW 2026</strong> à Florence, participant à l'Agence Spatiale Italienne (ASI) à Matera, boursier de l'ETH Zurich et de l'Univ. Luxembourg, et membre de <em>4 Actions COST européennes</em>.`,
+
+`Le marché adressable est massif : <em>1,8 milliard d'euros</em> sur le pourtour méditerranéen et l'Afrique du Nord, correspondant à <em>45 millions d'hectares</em> irrigués ou menacés par le déficit hydrique en Algérie, Tunisie, Maroc et Égypte.
+
+Notre modèle économique est double et récurrent :
+
+1. <strong>Un abonnement SaaS B2B par hectare</strong>, entre <em>4,50 € et 12,00 € par hectare et par an</em>, facturé aux exploitations commerciales et aux coopératives agricoles. Le retour sur investissement pour l'agriculteur est de 8 pour 1 grâce aux économies cumulées d'eau et d'énergie de pompage.
+2. <strong>Des licences B2G pour les agences de bassin hydraulique et les assureurs</strong>, entre <em>15 000 € et 50 000 € par an</em>, pour cartographier le risque systémique de sécheresse à l'échelle d'un bassin versant.
+
+Comme l'ensemble de notre chaîne de calcul est automatisée, notre marge brute dépasse <em>85 %</em>.
+
+Notre jalon commercial immédiat est la <strong>Foire de l'Innovation AU-EU-Med du CIHEAM Bari le 25 novembre 2026</strong>, avec pour objectif d'embarquer nos 5 000 premiers hectares payants d'ici fin 2027.`,
+
+`Dans notre dossier, nous avons soumis une feuille de route opérationnelle sur 24 mois, calibrée précisément sur le chèque d'accompagnement Sila de 10 000 à 30 000 euros :
+
+- <em>40 % pour l'Industrialisation MLOps</em> : pipelines CI/CD automatisés, acquisition de crédits GPU pour le réentraînement, quantificateurs automatiques INT8 et surveillance de dérive de modèle sur différents types de sols méditerranéens.
+- <em>35 % pour la Propriété Intellectuelle et le Transfert Technologique</em> : dépôt de brevets sur l'algorithme de fusion radar-optique embarqué, formalisation de la licence de spin-off universitaire et liberté d'exploitation.
+- <em>25 % pour l'Accès au Marché et les Pilotes Régionaux</em> : accords de validation agronomique en Tunisie (bassin de la Medjerda) et au Maroc (bassin du Souss-Massa) via le réseau d'Expertise France.
+
+Cette trajectoire nous amène à boucler un tour d'amorçage de <em>200 000 euros fin 2027</em>, et à générer plus de <em>350 000 euros d'ARR</em> en 2028.`,
+
+`Pourquoi postulons-nous à Sila plutôt qu'à un accélérateur généraliste ? Pour trois raisons fondamentales :
+
+1. <em>Le pont d'innovation France-Algérie.</em> Le CNES et l'ASAL ont des accords historiques de coopération spatiale. EdgeOrbit AI se positionne pour être la première startup d'IA spatiale faisant le pont entre les capacités algériennes et l'écosystème d'innovation français.
+2. <em>L'ancrage méditerranéen exclusif.</em> Votre mandat cible l'Algérie, la Tunisie, le Maroc et l'Égypte. C'est exactement notre marché cible. Nous n'avons pas besoin d'adapter notre proposition : nous avons été créés pour résoudre la crise hydrique de cette région.
+3. <em>La souveraineté numérique.</em> AgroOrbit fonctionne en local et hors-ligne, sans dépendre de serveurs cloud étrangers. Cette frugalité et cette indépendance correspondent mot pour mot à la vision de souveraineté portée par le Ministère de l'Europe et des Affaires Étrangères et Expertise France.
+
+<span class="warn">Ligne de conclusion :</span> "Sila n'est pas simplement un financement pour nous. C'est le pont institutionnel entre l'écosystème spatial algérien d'où nous venons et le système d'innovation français où nous voulons grandir."`,
+
+`Je porte ce projet avec une double compétence rare : celle d'un ingénieur topographe de terrain qui connaît la réalité physique de la terre, et celle d'un chercheur en IA capable d'optimiser des modèles de Deep Learning à bas niveau.
+
+Je m'appuie sur des mentors scientifiques de premier plan :
+- Le <em>Professeur Piero Boccardo</em>, président de l'institut ITHACA au Politecnico di Torino, expert reconnu auprès des agences spatiales et humanitaires en géomatique d'urgence.
+- Le <em>Dr Belahcene Bahloul</em>, chercheur senior à l'Université de Khemis Miliana, spécialisé dans la vérité terrain et la télédétection.
+
+Sur le plan de la mobilité internationale, mon historique de visa Schengen est exemplaire avec trois visas italiens honorés sans aucune infraction, ce qui me permettra d'assister à l'ensemble des rendez-vous physiques de Sila sans aucun aléa administratif.`,
+
+`<span class="go">Merci beaucoup, Aymen, et merci à toute l'équipe d'Expertise France.</span>
+
+Nous sommes prêts à exécuter. Nous avons la technologie, nous avons la validation scientifique par des tiers de confiance comme OHB et l'ISPRS, et nous avons un modèle économique clair.
+
+Ce qu'il nous faut maintenant, c'est l'effet de levier institutionnel que seul Sila peut nous apporter pour structurer nos brevets, industrialiser notre MLOps et ouvrir nos premiers pilotes en Tunisie et au Maroc.
+
+<em>Nous sollicitons votre soutien pour bâtir une Méditerranée résiliente face au changement climatique.</em>
+
+Email : arbouzmaamar@gmail.com · Tél / WhatsApp : +213 541 453 952 · Réf : SILA-2026-DZ-EO-01
+
+<span class="warn">À demander à Aymen :</span> "Quelles sont les prochaines étapes du processus de sélection et le calendrier prévisionnel ?"
+
+Et : "Je peux transmettre toute donnée de test ou document complémentaire sous 24 heures."`
+];
+
+const scripts_en = [
+`<strong>Good morning Aymen, and members of the Sila Selection Committee.</strong>
+
+My name is <em>Maamar Arbouz</em>. I am a State Topographic Engineer and hold an M.Sc. in Artificial Intelligence & Big Data with <em>High Honors</em> from the University of Khemis Miliana, Algeria. I am the founder of <strong>EdgeOrbit AI</strong>, and today I am presenting our primary commercial vertical: <strong>AgroOrbit</strong>. Our application reference is <em>SILA-2026-DZ-EO-01</em>.
+
+To summarize our mission in one sentence: we transform free European Copernicus satellite constellations into daily, parcel-level irrigation prescriptions directly on farmers' mobile phones, with <em>zero ground sensors required</em>.
+
+This venture originated from my research conducted with the Algerian Space Agency (ASAL). It has already received strong international validation: we are <strong>Finalists in the INNOspace Masters 2026</strong>, selected by German satellite manufacturer <em>OHB SE</em> and the German Aerospace Center <em>DLR</em>, and I am first-author of a peer-reviewed research paper published in the <em>ISPRS Archives</em>, indexed in SCOPUS and Web of Science.
+
+We are here today because Sila represents the exact institutional and technological bridge we need to scale our validated Algerian pilots across the Southern Mediterranean.`,
+
+`Across the Mediterranean basin, agriculture consumes <em>70% of all available freshwater</em>. Yet farmers are managing this critical resource completely blind.
+
+The result? <em>40% of irrigation water is wasted</em> due to uncalibrated schedules, while sudden heatwaves trigger crop water stress without warning.
+
+Why do existing solutions fail?
+1. In-situ capacitive soil probes cost over <em>€2,500 per hectare</em> once cabling, installation, and maintenance are factored in. For small and medium farmers in Algeria or Tunisia, that is economically impossible.
+2. Standard satellite analytics dashboards suffer from a <em>3-to-7-day latency</em> between orbital capture, cloud processing, and alert delivery. By the time visual wilting appears on the leaves, crop yield damage is already irreversible.
+
+<span class="warn">This crisis is tangible:</span> Algeria lost over 47,000 hectares to catastrophic fires in 2021, and recurrent drought across the Tell Atlas directly threatens food security. There are <em>45 million drought-vulnerable hectares</em> across Algeria, Tunisia, Morocco, and Egypt that require an accessible, zero-hardware solution.`,
+
+`This is precisely why we engineered <em>AgroOrbit</em>: a frugal geospatial AI architecture requiring zero hardware on the ground.
+
+Our pipeline operates in three automated stages:
+
+<strong>Step 1: Radar and Optical Fusion.</strong>
+We fuse Sentinel-2 optical multispectral data with Sentinel-1 C-band Synthetic Aperture Radar (SAR). Radar penetrates <em>100% of cloud cover</em>. Rain, clouds, or clear sky—we measure real soil dielectric permittivity down to 30 cm root-zone depth, 365 days a year.
+
+<strong>Step 2: Ultra-Lightweight Edge-AI Inference.</strong>
+Using an INT8-quantized Spatio-Temporal Graph Neural Network (st-GNN), we compute volumetric water content at <em>10-meter parcel resolution in under 45 milliseconds</em>, running on an embedded ARM core consuming less than 2 Watts.
+
+<strong>Step 3: Direct Prescription Without Friction.</strong>
+We feed this soil moisture data into local evapotranspiration physics models. The farmer receives an actionable WhatsApp or SMS message: <em>'Plot 3: Recommended water allocation: 18 mm tomorrow morning'</em>.
+
+The measurable result on our active test plots: <em>28% to 32% reduction in water consumption</em>, while securing crop yields against heat stress.`,
+
+`Let us look at technical rigor and maturity. We are currently operating at <em>TRL 5-6</em>.
+
+Our performance benchmarks are verified and detailed in our Sila technical architecture submission:
+- Our correlation coefficient <em>R² exceeds 0.85</em> against buried in-situ capacitive ground probes.
+- Our root-mean-square error (RMSE) is strictly below <em>3.2% volumetric water content</em>.
+- All-weather reliability is <em>100%</em> thanks to SAR microwave inversion.
+- And our operating cost is <em>70% lower</em> than any IoT physical probe grid.
+
+On the embedded side, our stack is hardware-agnostic: running ONNX Runtime and TensorRT across ARM Cortex-A55, Jetson Orin Nano, and STM32MP1 processors. Our asymmetric INT8 quantization achieves a <em>75% reduction in RAM footprint</em> with negligible precision loss.`,
+
+`A deep-tech startup must be judged on independent evidence. Here is our validation:
+
+First, our selection as an <strong>INNOspace Masters 2026 Finalist</strong> for the OHB Challenge. On June 2, 2026, competition organizer IQIB officially notified me of our selection out of 200+ international entries. I pitched our innovation virtually on June 16 at 15:50 CEST directly to the technical jury of <em>OHB SE</em>, Europe's 3rd largest satellite manufacturer. All confirmation emails are included in our submission file.
+
+Second, academic peer review: I am first-author of the paper <em>UrbanGraphSAGE</em>, published in the <strong>ISPRS Archives (FOSS4G 2026)</strong>, indexed in <em>SCOPUS and Web of Science</em>.
+
+Third, my engineering tenure at the <strong>Algerian Space Agency (ASAL)</strong> in 2024–2025, where I designed deep learning semantic segmentation pipelines for national satellites Alsat-1B and Alsat-2.
+
+Additionally, I am an accepted plenary speaker at <strong>European Space Weather Week (ESWW 2026)</strong> in Florence, participant at the Italian Space Agency (ASI) in Matera, grant awardee from ETH Zurich, EUMaster4HPC Fellow, and active member of <em>4 European COST Actions</em>.`,
+
+`Our market opportunity represents <em>€1.8 Billion</em> across the Euro-Mediterranean and North African agricultural basin, covering <em>45 million hectares</em> of irrigated or drought-threatened land in Algeria, Tunisia, Morocco, and Egypt.
+
+We operate a dual recurring revenue model:
+
+1. <strong>B2B SaaS Subscription</strong>: priced between <em>€4.50 and €12.00 per hectare per year</em>, billed to commercial farms and agricultural cooperatives. Farmers achieve an <strong>8x ROI</strong> through combined water and pumping fuel savings.
+2. <strong>B2G Basin Dashboard Licenses</strong>: priced between <em>€15,000 and €50,000 annually</em>, for river basin authorities and agricultural insurers monitoring systemic drought risk.
+
+Because our satellite ingestion and inference pipelines are fully automated, our gross margin exceeds <em>85%</em>.
+
+Our immediate milestone is presenting at the <strong>CIHEAM Bari AU-EU-Med Innovation Fair on November 25, 2026</strong>, aiming to onboard our first 5,000 paid hectares by late 2027.`,
+
+`In our application file, we detailed a structured 24-month scale-up roadmap aligned with Sila's €10,000 to €30,000 acceleration voucher:
+
+- <em>40% for MLOps Industrialization</em>: establishing automated CI/CD satellite pipelines, acquiring GPU training compute, deploying automated INT8 quantizers, and tracking concept drift across diverse Mediterranean soil regimes.
+- <em>35% for IP & Technology Transfer Structuring</em>: filing patents for our low-power edge SAR fusion pipeline, university spin-off licensing, and cross-border freedom-to-operate validation.
+- <em>25% for Market Access & Regional Pilot Onboarding</em>: establishing field validation and trial agreements in Tunisia (Medjerda Basin) and Morocco (Souss-Massa Basin) through Expertise France's regional network.
+
+This operational roadmap positions us to close a <em>€200k Pre-Seed round in late 2027</em>, and generate over <em>€350k in ARR</em> by 2028.`,
+
+`Why Sila instead of a generic startup accelerator? For three critical reasons:
+
+1. <em>The France-Algeria Deep-Tech Bridge.</em> CNES and ASAL share a long-standing history of space cooperation. EdgeOrbit AI aims to be the first edge-AI space startup bridging Algerian aerospace research with the French innovation ecosystem.
+2. <em>Native Mediterranean Market Focus.</em> Your mandate focuses on Algeria, Tunisia, Morocco, and Egypt. That is our exact home market. We do not need to adapt our product—it was engineered from day one to address Mediterranean water scarcity.
+3. <em>Alignment on Digital Sovereignty.</em> AgroOrbit operates offline and on-premise, free from foreign proprietary cloud dependencies. This commitment to frugal, sovereign artificial intelligence directly matches the core vision of the French Ministry for Europe and Foreign Affairs and Expertise France.
+
+<span class="warn">Closing line:</span> "Sila is not just a funding opportunity. It is the institutional bridge between the Algerian space ecosystem we come from and the French innovation system we want to scale into."`,
+
+`I bring a dual capability: the grounded discipline of a State Topographic Engineer who understands geodesy and physical land, combined with an AI research background capable of training and quantizing neural networks at low level.
+
+I am supported by distinguished academic advisors:
+- <em>Professor Piero Boccardo</em>, President of ITHACA at Politecnico di Torino, a leading global authority in satellite geomatics for disaster risk reduction.
+- <em>Dr. Belahcene Bahloul</em>, Senior Researcher at the University of Khemis Miliana, guiding our ground-truth verification.
+
+Regarding European mobility, my consular record is flawless with three Italian Schengen visas fully complied with, ensuring unhindered participation in all Sila in-person acceleration milestones.`,
+
+`<span class="go">Thank you very much, Aymen, and thank you to the Expertise France team.</span>
+
+We are ready to execute. We have validated science, independent institutional endorsements from OHB and ISPRS, and a sustainable business model addressing the Mediterranean's defining climate crisis.
+
+What we need now is the institutional leverage that only Sila and Expertise France can provide—to patent our core algorithms, industrialize our MLOps, and secure our expansion into Tunisia and Morocco.
+
+<em>We are asking for your support to build a climate-resilient Mediterranean.</em>
+
+Email: arbouzmaamar@gmail.com · Phone: +213 541 453 952 · Reference: SILA-2026-DZ-EO-01
+
+<span class="warn">Ask them:</span> "What are the next steps in the selection process and the expected timeline?"
+
+And: "I can send any additional documents, demo data, or PoC results within 24 hours."`
+];
+
+// ── SLIDE TITLES ──
+const titles = [
+  'Cover — Introduction',
+  'Problem — Mediterranean Water Crisis',
+  'Solution — Zero-Hardware GeoAI',
+  'Technology — Architecture & Metrics',
+  'Traction — Validation & Endorsements',
+  'Market — Business Model',
+  'Roadmap — 24-Month Scale-Up',
+  'Why Sila — Strategic Alignment',
+  'Founder — Profile & Ecosystem',
+  'Closing — Call to Action'
+];
+
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let cur = 0, going = false, speechOpen = false;
+
+const prog = document.getElementById('prog');
+const ctrEl = document.getElementById('ctr');
+const dc = document.getElementById('dots');
+const sp = document.getElementById('speech');
+const spText = document.getElementById('sp-text');
+const spLabel = document.getElementById('sp-slide-label');
+const hint = document.getElementById('hint');
+const langBtn = document.getElementById('sp-lang');
+
+function toggleLang(){
+  currentLang = currentLang === 'fr' ? 'en' : 'fr';
+  if(langBtn) langBtn.textContent = currentLang === 'fr' ? '🇫🇷 FR' : '🇬🇧 EN';
+  updateUI();
+}
+
+// build dots
+slides.forEach((_,i)=>{
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' on':'');
+  d.onclick=()=>goTo(i);
+  dc.appendChild(d);
+});
+
+function showHint(){
+  hint.classList.add('show');
+  setTimeout(()=>hint.classList.remove('show'), 3000);
+}
+
+function updateUI(){
+  const pct = total<=1 ? 100 : (cur/(total-1))*100;
+  prog.style.width = pct+'%';
+  ctrEl.textContent = String(cur+1).padStart(2,'0')+' / '+String(total).padStart(2,'0');
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  spLabel.textContent = 'Slide '+String(cur+1).padStart(2,'0')+' / '+String(total).padStart(2,'0')+' — '+titles[cur];
+  const list = currentLang === 'fr' ? scripts_fr : scripts_en;
+  spText.innerHTML = list[cur];
+  document.getElementById('sp-body').scrollTop = 0;
+}
+
+function go(delta){
+  goTo(cur + delta);
+}
+
+function goTo(n){
+  if(going || n===cur || n<0 || n>=total) return;
+  going = true;
+  slides[cur].classList.remove('active');
+  slides[cur].style.display = 'none';
+  cur = n;
+  slides[cur].style.display = 'flex';
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      slides[cur].classList.add('active');
+      updateUI();
+      setTimeout(()=>going=false, 600);
+    });
+  });
+}
+
+function toggleSpeech(){
+  speechOpen = !speechOpen;
+  sp.classList.toggle('open', speechOpen);
+}
+
+// init
+slides[0].style.display = 'flex';
+slides[0].classList.add('active');
+updateUI();
+
+// show hint after 1.5s
+setTimeout(showHint, 1500);
+
+document.getElementById('np').onclick = ()=>goTo(cur-1);
+document.getElementById('nn').onclick = ()=>goTo(cur+1);
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(cur+1);}
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(cur-1);}
+  else if(e.key==='s'||e.key==='S'){e.preventDefault();toggleSpeech();}
+  else if(e.key==='l'||e.key==='L'){e.preventDefault();toggleLang();}
+  else if(e.key==='Home') goTo(0);
+  else if(e.key==='End') goTo(total-1);
+  else if(e.key==='Escape' && speechOpen) toggleSpeech();
+});
+
+// touch
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{
+  if(speechOpen) return;
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>50) goTo(cur+(dx<0?1:-1));
+},{passive:true});
+</script>
+</body>
+</html>
