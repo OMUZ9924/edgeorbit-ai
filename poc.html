@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>URBI Mobility · Live Interactive POC & Prototype</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&family=Space+Grotesk:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #050A17;
+            --bg-card: rgba(11, 20, 42, 0.9);
+            --bg-card-hover: rgba(18, 32, 66, 0.95);
+            --cyan: #00F2FE;
+            --cyan-glow: rgba(0, 242, 254, 0.35);
+            --magenta: #EC008B;
+            --magenta-glow: rgba(236, 0, 139, 0.35);
+            --emerald: #10B981;
+            --emerald-glow: rgba(16, 185, 129, 0.35);
+            --gold: #F59E0B;
+            --text-main: #FFFFFF;
+            --text-sub: #CBD5E1;
+            --text-muted: #8494A8;
+            --border: rgba(255, 255, 255, 0.1);
+            --border-cyan: rgba(0, 242, 254, 0.3);
+            --border-magenta: rgba(236, 0, 139, 0.3);
+            --font-head: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Nav */
+        .poc-navbar {
+            background: rgba(7, 13, 30, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-cyan);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 2000;
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand-logo {
+            font-family: var(--font-head);
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            color: #fff;
+        }
+        .brand-logo span {
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .poc-badge {
+            background: rgba(0, 242, 254, 0.15);
+            border: 1px solid var(--border-cyan);
+            color: var(--cyan);
+            font-size: 11px;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .mode-switch-group {
+            display: flex;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 3px;
+            gap: 4px;
+        }
+        .btn-tab {
+            background: transparent;
+            border: none;
+            color: var(--text-sub);
+            padding: 7px 16px;
+            border-radius: 25px;
+            font-family: var(--font-head);
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-tab.active {
+            background: var(--cyan);
+            color: #050A17;
+            box-shadow: 0 0 15px var(--cyan-glow);
+        }
+        .btn-tab.magenta.active {
+            background: var(--magenta);
+            color: #fff;
+            box-shadow: 0 0 15px var(--magenta-glow);
+        }
+        .btn-tab.emerald.active {
+            background: var(--emerald);
+            color: #050A17;
+            box-shadow: 0 0 15px var(--emerald-glow);
+        }
+
+        /* Main Workspace */
+        .workspace {
+            display: flex;
+            flex-grow: 1;
+            height: calc(100vh - 58px);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Left/Center Map View */
+        .map-section {
+            flex-grow: 1;
+            height: 100%;
+            position: relative;
+        }
+        #algiersMap {
+            width: 100%;
+            height: 100%;
+            background: #060c1c;
+        }
+
+        /* Map Floating HUD */
+        .map-hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(7, 13, 30, 0.88);
+            border: 1px solid var(--border-cyan);
+            backdrop-filter: blur(14px);
+            border-radius: 16px;
+            padding: 16px 20px;
+            width: 320px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        }
+        .hud-title {
+            font-family: var(--font-head);
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--emerald);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--emerald);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.8; }
+        }
+        .hud-desc {
+            font-size: 12px;
+            color: var(--text-sub);
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+        .hud-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 10px;
+        }
+        .h-val {
+            font-family: var(--font-mono);
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--cyan);
+        }
+        .h-lbl {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Right Device / Context Panel */
+        .device-panel {
+            width: 440px;
+            background: rgba(9, 17, 36, 0.96);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        }
+
+        .panel-header {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .panel-title {
+            font-family: var(--font-head);
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* VIEW 1 : PASSAGER B2C */
+        .mobile-pass-card {
+            background: linear-gradient(135deg, #101F42 0%, #0B142B 100%);
+            border: 1px solid var(--border-cyan);
+            border-radius: 20px;
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.1);
+        }
+        .pass-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .pass-type {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--cyan);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .pass-company {
+            font-size: 12px;
+            color: var(--text-sub);
+            font-weight: 600;
+        }
+        .qr-placeholder {
+            width: 170px;
+            height: 170px;
+            margin: 0 auto 16px;
+            background: #fff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+            position: relative;
+        }
+        .qr-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .pass-route {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px dashed rgba(255,255,255,0.15);
+            padding-top: 14px;
+            margin-top: 6px;
+        }
+        .station-name {
+            font-family: var(--font-head);
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff;
+        }
+        .station-time {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--cyan);
+        }
+
+        /* VIEW 2 : CHAUFFEUR SCANNER & WALLET */
+        .driver-scanner-box {
+            background: #0E1A38;
+            border: 2px dashed var(--magenta);
+            border-radius: 18px;
+            padding: 26px 20px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .driver-scanner-box:hover {
+            background: #14244D;
+            border-color: #ff33a8;
+            box-shadow: 0 0 25px var(--magenta-glow);
+        }
+        .scan-anim-line {
+            width: 80%;
+            height: 3px;
+            background: var(--magenta);
+            box-shadow: 0 0 10px var(--magenta);
+            margin: 0 auto;
+            border-radius: 2px;
+            animation: scanLine 2s infinite ease-in-out;
+        }
+        @keyframes scanLine {
+            0% { transform: translateY(-30px); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(30px); opacity: 0; }
+        }
+        .wallet-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--emerald);
+            border-radius: 16px;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .w-balance {
+            font-family: var(--font-mono);
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--emerald);
+        }
+
+        /* VIEW 3 : B2B HR DASHBOARD */
+        .hr-shuttle-row {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+        .hr-shuttle-row:hover {
+            border-color: var(--border-cyan);
+            background: var(--bg-card-hover);
+        }
+        .badge-fill {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        .badge-green { background: rgba(16, 185, 129, 0.15); color: var(--emerald); border: 1px solid var(--emerald); }
+        .badge-orange { background: rgba(245, 158, 11, 0.15); color: var(--gold); border: 1px solid var(--gold); }
+
+        /* VIEW 4 : 3D TOPOGRAPHIC ELEVATION */
+        .elevation-chart-box {
+            background: #081126;
+            border: 1px solid var(--border-cyan);
+            border-radius: 16px;
+            padding: 18px;
+        }
+        .slope-bar {
+            height: 12px;
+            background: linear-gradient(90deg, var(--emerald) 0%, var(--gold) 60%, #EF4444 100%);
+            border-radius: 6px;
+            margin: 10px 0;
+            position: relative;
+        }
+        .slope-marker {
+            position: absolute;
+            top: -4px;
+            width: 4px;
+            height: 20px;
+            background: #fff;
+            border-radius: 2px;
+            box-shadow: 0 0 6px #fff;
+        }
+
+        /* Action Buttons */
+        .btn-action {
+            background: linear-gradient(135deg, var(--cyan) 0%, #0099FF 100%);
+            border: none;
+            color: #050A17;
+            font-family: var(--font-head);
+            font-size: 14px;
+            font-weight: 800;
+            padding: 14px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px var(--cyan-glow);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 242, 254, 0.5);
+        }
+        .btn-action.magenta {
+            background: linear-gradient(135deg, var(--magenta) 0%, #FF2A85 100%);
+            color: #fff;
+            box-shadow: 0 6px 20px var(--magenta-glow);
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #0D1A38;
+            border: 1px solid var(--emerald);
+            color: #fff;
+            padding: 14px 22px;
+            border-radius: 12px;
+            font-family: var(--font-head);
+            font-size: 13.5px;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 900px) {
+            .workspace { flex-direction: column; height: auto; }
+            .map-section { height: 50vh; }
+            .device-panel { width: 100%; height: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <header class="poc-navbar">
+        <div class="brand-box">
+            <div class="brand-logo">URBI <span>MOBILITY</span></div>
+            <div class="poc-badge">LIVE PROTOTYPE · ALGER 2026</div>
+        </div>
+
+        <div class="mode-switch-group">
+            <button class="btn-tab active" onclick="switchMode('b2c', this)">👤 Salarié (B2C)</button>
+            <button class="btn-tab magenta" onclick="switchMode('driver', this)">🚐 Chauffeur (QR)</button>
+            <button class="btn-tab emerald" onclick="switchMode('b2b', this)">🏢 DRH Flotte (B2B)</button>
+            <button class="btn-tab" onclick="switchMode('3d', this)">🗺️ Moat 3D Relief</button>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+            <a href="urbi.pdf" target="_blank" style="color:var(--text-sub); text-decoration:none; font-size:12px; font-weight:700; padding:6px 12px; border:1px solid var(--border); border-radius:20px;">📄 Pitch Deck</a>
+            <a href="urbi-contract-en.pdf" target="_blank" style="color:var(--cyan); text-decoration:none; font-size:12px; font-weight:700; padding:6px 12px; border:1px solid var(--border-cyan); border-radius:20px;">📋 Contrat Pilote</a>
+        </div>
+    </header>
+
+    <!-- Main Live Workspace -->
+    <div class="workspace">
+
+        <!-- Live Leaflet Map Container -->
+        <div class="map-section">
+            <div id="algiersMap"></div>
+
+            <!-- Map Floating HUD -->
+            <div class="map-hud">
+                <div class="hud-title">
+                    <span id="hudRouteName">Corridor Rouiba ➔ Bab Ezzouar</span>
+                    <div class="live-dot" title="Télémétrie temps réel active"></div>
+                </div>
+                <div class="hud-desc" id="hudDesc">
+                    Navette URBI #04 en circulation. 18 salariés à bord. Optimisation topographique 3D active (évitement goulet autoroute).
+                </div>
+                <div class="hud-stats">
+                    <div>
+                        <div class="h-val" id="hudETA">07 min</div>
+                        <div class="h-lbl">Arrivée Bab Ezzouar</div>
+                    </div>
+                    <div>
+                        <div class="h-val" id="hudSpeed" style="color:var(--emerald);">46 km/h</div>
+                        <div class="h-lbl">Vitesse Moyenne</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side Device Panel -->
+        <div class="device-panel">
+
+            <!-- MODE 1 : SALARIÉ B2C -->
+            <div id="viewB2C" class="panel-body">
+                <div class="panel-title">📱 Mon Pass Trajet d'Entreprise</div>
+
+                <div class="mobile-pass-card">
+                    <div class="pass-header">
+                        <span class="pass-type">Pass Salarié Illimité</span>
+                        <span class="pass-company">PME Algérie Technologies</span>
+                    </div>
+
+                    <div class="qr-placeholder">
+                        <!-- Dynamic SVG QR Code Simulation -->
+                        <svg viewBox="0 0 100 100" width="100%" height="100%">
+                            <rect width="100" height="100" fill="#ffffff"/>
+                            <rect x="10" y="10" width="25" height="25" fill="#070D1E"/>
+                            <rect x="15" y="15" width="15" height="15" fill="#ffffff"/>
+                            <rect x="18" y="18" width="9" height="9" fill="#070D1E"/>
+                            <rect x="65" y="10" width="25" height="25" fill="#070D1E"/>
+                            <rect x="70" y="15" width="15" height="15" fill="#ffffff"/>
+                            <rect x="73" y="18" width="9" height="9" fill="#070D1E"/>
+                            <rect x="10" y="65" width="25" height="25" fill="#070D1E"/>
+                            <rect x="15" y="70" width="15" height="15" fill="#ffffff"/>
+                            <rect x="18" y="73" width="9" height="9" fill="#070D1E"/>
+                            <rect x="42" y="12" width="6" height="6" fill="#070D1E"/>
+                            <rect x="52" y="18" width="6" height="6" fill="#070D1E"/>
+                            <rect x="42" y="42" width="16" height="16" fill="#EC008B"/>
+                            <rect x="65" y="52" width="8" height="8" fill="#00F2FE"/>
+                            <rect x="45" y="70" width="10" height="10" fill="#070D1E"/>
+                            <rect x="75" y="75" width="12" height="12" fill="#070D1E"/>
+                        </svg>
+                    </div>
+
+                    <div style="text-align:center; font-family:var(--font-mono); font-size:12px; color:var(--cyan); margin-bottom:10px;">
+                        Pass dynamique · Rafraîchi dans <span id="qrTimer">12s</span>
+                    </div>
+
+                    <div class="pass-route">
+                        <div>
+                            <div class="station-name">Rouiba Centre</div>
+                            <div class="station-time">Départ : 07h35</div>
+                        </div>
+                        <div style="font-size:18px; color:var(--text-muted);">➔</div>
+                        <div style="text-align:right;">
+                            <div class="station-name">Pôle Bab Ezzouar</div>
+                            <div class="station-time">ETA : 07h52</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:14px; padding:16px;">
+                    <div style="font-size:12px; font-weight:700; color:#fff; margin-bottom:6px;">Prise en charge par l'employeur</div>
+                    <div style="font-size:12px; color:var(--text-muted); line-height:1.4;">
+                        Coût pour le salarié : <strong>0 DZD</strong> (Abonnement mensuel B2B prépayé par l'entreprise). Zéro monnaie liquide manipulée.
+                    </div>
+                </div>
+
+                <button class="btn-action" onclick="simulateBoarding()">
+                    <span>📲 Simuler Montée à Bord &amp; Scan</span>
+                </button>
+            </div>
+
+            <!-- MODE 2 : CHAUFFEUR INFORMEL -->
+            <div id="viewDriver" class="panel-body" style="display:none;">
+                <div class="panel-title" style="color:var(--magenta);">🚐 Mode Chauffeur · Zéro Matériel (QR)</div>
+
+                <div class="wallet-card">
+                    <div>
+                        <div style="font-size:11px; text-transform:uppercase; color:var(--text-muted); font-weight:700;">Recette du Jour (Encaissée)</div>
+                        <div class="w-balance" id="driverBalance">4 850 DZD</div>
+                        <div style="font-size:11px; color:var(--text-sub);">97 passagers validés aujourd'hui</div>
+                    </div>
+                    <button onclick="simulateCashout()" style="background:var(--emerald); border:none; color:#050A17; font-family:var(--font-head); font-weight:800; font-size:12px; padding:10px 14px; border-radius:10px; cursor:pointer;">
+                        Virement BaridiMob ➔
+                    </button>
+                </div>
+
+                <div class="driver-scanner-box" onclick="simulateDriverScan()">
+                    <div style="font-size:36px; margin-bottom:8px;">📷</div>
+                    <div class="scan-anim-line"></div>
+                    <div style="font-family:var(--font-head); font-size:16px; font-weight:800; color:#fff; margin-top:12px;">
+                        SCANNER UN PASSAGER
+                    </div>
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">
+                        Ou scan automatique via le QR adhésif collé sur votre tableau de bord
+                    </div>
+                </div>
+
+                <button class="btn-action magenta" onclick="simulateDriverScan()">
+                    <span>🔔 Simuler Validation (+50 DA)</span>
+                </button>
+
+                <div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:12px; padding:14px; font-size:12px; color:var(--text-sub);">
+                    <strong style="color:#fff;">Reverse-clearing automatique :</strong> Les recettes sont versées tous les soirs à 20h00 directement sur la carte Edahabia du chauffeur, sans commissions bancaires prédatrices.
+                </div>
+            </div>
+
+            <!-- MODE 3 : DASHBOARD DRH B2B -->
+            <div id="viewB2B" class="panel-body" style="display:none;">
+                <div class="panel-title" style="color:var(--emerald);">🏢 Dashboard DRH · PME 120 Salariés</div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div style="background:#0F1C3B; border:1px solid var(--border); border-radius:14px; padding:14px; text-align:center;">
+                        <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Ancien Budget Minibus</div>
+                        <div style="font-family:var(--font-mono); font-size:20px; font-weight:800; color:#EF4444; margin-top:4px;">600 000 DZD</div>
+                        <div style="font-size:10px; color:var(--text-muted);">3 minibus privés loués fixes</div>
+                    </div>
+                    <div style="background:#0A2328; border:1px solid var(--border-cyan); border-radius:14px; padding:14px; text-align:center;">
+                        <div style="font-size:10px; color:var(--cyan); text-transform:uppercase; font-weight:700;">Facture URBI SaaS</div>
+                        <div style="font-family:var(--font-mono); font-size:20px; font-weight:800; color:var(--emerald); margin-top:4px;">396 000 DZD</div>
+                        <div style="font-size:10px; color:var(--emerald); font-weight:700;">-34% d'économies nettes</div>
+                    </div>
+                </div>
+
+                <div style="font-family:var(--font-head); font-size:14px; font-weight:800; color:#fff; margin-top:4px;">Navettes en Rotation Active :</div>
+
+                <div class="hr-shuttle-row">
+                    <div>
+                        <div style="font-weight:700; font-size:13px; color:#fff;">Navette #01 · Corridor Rouiba</div>
+                        <div style="font-size:11px; color:var(--text-muted);">22 places · Chauffeur Karim T.</div>
+                    </div>
+                    <span class="badge-fill badge-green">95% Rempli (21/22)</span>
+                </div>
+
+                <div class="hr-shuttle-row">
+                    <div>
+                        <div style="font-weight:700; font-size:13px; color:#fff;">Navette #02 · Corridor Dar El Beïda</div>
+                        <div style="font-size:11px; color:var(--text-muted);">18 places · Chauffeur Reda M.</div>
+                    </div>
+                    <span class="badge-fill badge-green">89% Rempli (16/18)</span>
+                </div>
+
+                <div class="hr-shuttle-row">
+                    <div>
+                        <div style="font-weight:700; font-size:13px; color:#fff;">Navette #03 · Corridor Birtouta</div>
+                        <div style="font-size:11px; color:var(--text-muted);">14 places · Chauffeur Sofiane B.</div>
+                    </div>
+                    <span class="badge-fill badge-orange">78% Rempli (11/14)</span>
+                </div>
+
+                <button class="btn-action" onclick="showToast('Facture mensuelle certifiée et rapport ESG générés !')" style="background:var(--emerald);">
+                    <span>📥 Exporter Rapport RH &amp; Facture Unique</span>
+                </button>
+            </div>
+
+            <!-- MODE 4 : MOAT 3D RELIEF -->
+            <div id="view3D" class="panel-body" style="display:none;">
+                <div class="panel-title" style="color:var(--cyan);">🗺️ Moteur Topographique 3D d'Alger</div>
+
+                <div class="elevation-chart-box">
+                    <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted);">
+                        <span>Port d'Alger (Niveau Mer : 5m)</span>
+                        <span style="color:var(--cyan); font-weight:700;">Plateau Hydra (Alt : 125m)</span>
+                    </div>
+
+                    <div class="slope-bar">
+                        <div class="slope-marker" style="left:72%;"></div>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; font-size:11px; font-family:var(--font-mono);">
+                        <span style="color:var(--emerald);">0% Pente douce</span>
+                        <span style="color:var(--gold);">8% Pente moyenne</span>
+                        <span style="color:#EF4444; font-weight:700;">18% Ravin critique</span>
+                    </div>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:14px; padding:16px;">
+                    <div style="font-size:13px; font-weight:800; color:#fff; margin-bottom:8px;">Pourquoi Google Maps échoue à Alger :</div>
+                    <div style="font-size:12px; color:var(--text-sub); line-height:1.5;">
+                        • <strong>Google Maps (Calcul 2D plat) :</strong> Route les minibus dans des montées à 18% saturées ➔ surchauffe moteur, consommation de carburant doublée.<br/><br/>
+                        • <strong>URBI 3D Engine (Géodésie spatiale) :</strong> Optimise l'inertie mécanique sur les courbes de niveau ➔ <strong>-18% de carburant et 12 minutes gagnées</strong>.
+                    </div>
+                </div>
+
+                <button class="btn-action" onclick="toggle3DLayer()">
+                    <span>🔄 Basculer Calque Altimétrique 3D</span>
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="pocToast" class="toast">
+        <span style="font-size:18px;">✅</span>
+        <span id="toastMsg">Action exécutée avec succès !</span>
+    </div>
+
+    <!-- Audio Beep simulation using Web Audio API -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Init Map of Algiers centered on Bab Ezzouar & Rouiba corridor
+        const map = L.map('algiersMap', {
+            zoomControl: false,
+            attributionControl: false
+        }).setView([36.7210, 3.1850], 13);
+
+        // Dark tile layer (CartoDB Dark Matter)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19
+        }).addTo(map);
+
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+        // Shuttle Route Coordinates (Rouiba ➔ Bab Ezzouar Tech Park)
+        const routeCoords = [
+            [36.7350, 3.2850], // Rouiba
+            [36.7280, 3.2500],
+            [36.7220, 3.2100], // Dar El Beïda
+            [36.7150, 3.1850], // Bab Ezzouar Centre
+            [36.7120, 3.1750]  // Pôle d'Affaires / Université USTHB
+        ];
+
+        // Draw Polyline for Route
+        const routeLine = L.polyline(routeCoords, {
+            color: '#00F2FE',
+            weight: 4,
+            opacity: 0.85,
+            dashArray: '8, 8'
+        }).addTo(map);
+
+        // Stations Markers
+        const stations = [
+            { name: "Rouiba Ville (Départ)", lat: 36.7350, lng: 3.2850 },
+            { name: "Dar El Beïda Hub", lat: 36.7220, lng: 3.2100 },
+            { name: "Bab Ezzouar Pôle Tech (Terminus)", lat: 36.7120, lng: 3.1750 }
+        ];
+
+        stations.forEach(st => {
+            const circle = L.circleMarker([st.lat, st.lng], {
+                radius: 7,
+                fillColor: '#EC008B',
+                color: '#fff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.9
+            }).addTo(map);
+            circle.bindPopup(`<b>${st.name}</b><br/>Point d'arrêt certifié URBI`);
+        });
+
+        // Moving Shuttle Marker
+        const shuttleIcon = L.divIcon({
+            className: 'custom-shuttle-icon',
+            html: `<div style="background:#00F2FE; color:#050A17; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:bold; box-shadow:0 0 15px #00F2FE; border:2px solid #fff;">🚐</div>`,
+            iconSize: [32, 32],
+            iconAnchor: [16, 16]
+        });
+
+        let currentIdx = 0;
+        const shuttleMarker = L.marker(routeCoords[0], { icon: shuttleIcon }).addTo(map);
+
+        // Move shuttle along route
+        setInterval(() => {
+            currentIdx = (currentIdx + 1) % routeCoords.length;
+            shuttleMarker.setLatLng(routeCoords[currentIdx]);
+            document.getElementById('hudSpeed').innerText = `${Math.floor(40 + Math.random() * 12)} km/h`;
+            document.getElementById('hudETA').innerText = `${Math.max(1, 8 - currentIdx * 2)} min`;
+        }, 3000);
+
+        // Sound effect (Web Audio API)
+        function playChime(freq = 880) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(freq * 1.5, ctx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.3);
+            } catch(e) {}
+        }
+
+        // Switch Mode Function
+        function switchMode(mode, btn) {
+            document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.getElementById('viewB2C').style.display = 'none';
+            document.getElementById('viewDriver').style.display = 'none';
+            document.getElementById('viewB2B').style.display = 'none';
+            document.getElementById('view3D').style.display = 'none';
+
+            if (mode === 'b2c') {
+                document.getElementById('viewB2C').style.display = 'flex';
+                document.getElementById('hudRouteName').innerText = "Corridor Rouiba ➔ Bab Ezzouar";
+                document.getElementById('hudDesc').innerText = "Navette URBI #04 en circulation. 18 salariés à bord. Optimisation topographique active.";
+            } else if (mode === 'driver') {
+                document.getElementById('viewDriver').style.display = 'flex';
+                document.getElementById('hudRouteName').innerText = "Mode Minibus Artisanal #412";
+                document.getElementById('hudDesc').innerText = "Minibus équipé du pass QR tableau de bord. Encaissement instantané BaridiMob.";
+            } else if (mode === 'b2b') {
+                document.getElementById('viewB2B').style.display = 'flex';
+                document.getElementById('hudRouteName').innerText = "Flotte Partagée PME Bab Ezzouar";
+                document.getElementById('hudDesc').innerText = "Supervision RH en direct : 3 navettes mutualisées entre 4 entreprises partenaires.";
+            } else if (mode === '3d') {
+                document.getElementById('view3D').style.display = 'flex';
+                document.getElementById('hudRouteName').innerText = "Modèle Numérique de Terrain 3D (Relief)";
+                document.getElementById('hudDesc').innerText = "Algorithme géodésique actif : réduction de 18% du carburant par contournement des pentes à 18%.";
+            }
+        }
+
+        // Simulators
+        function simulateBoarding() {
+            playChime(1046); // High C
+            showToast("Pass Salarié Validé ✓ · Place réservée à bord de la Navette #04 !");
+        }
+
+        let driverBalance = 4850;
+        function simulateDriverScan() {
+            driverBalance += 50;
+            document.getElementById('driverBalance').innerText = `${driverBalance.toLocaleString()} DZD`;
+            playChime(880);
+            showToast("🔔 +50 DA Encaissés ! Compte BaridiMob crédité en temps réel.");
+        }
+
+        function simulateCashout() {
+            playChime(1200);
+            showToast(`Virement de ${driverBalance} DZD envoyé sur compte postal BaridiMob #TXN-9842 !`);
+        }
+
+        function toggle3DLayer() {
+            showToast("Calque 3D LiDAR rechargé : pentes et dénivelés d'Alger synchronisés.");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('pocToast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.style.display = 'flex';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3500);
+        }
+
+        // QR Timer Countdown
+        let timerVal = 15;
+        setInterval(() => {
+            timerVal--;
+            if (timerVal <= 0) timerVal = 15;
+            const el = document.getElementById('qrTimer');
+            if (el) el.innerText = `${timerVal}s`;
+        }, 1000);
+    </script>
+</body>
+</html>
