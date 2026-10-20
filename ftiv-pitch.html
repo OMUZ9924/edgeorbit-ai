@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URBI Mobility · Pitch 10 Slides (Framework FTIV / FT Innovation Venture)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #070D1E;
+            --bg-slide: #0A1329;
+            --bg-card: rgba(15, 26, 54, 0.75);
+            --bg-card-hover: rgba(22, 38, 77, 0.95);
+            --cyan: #00F2FE;
+            --cyan-glow: rgba(0, 242, 254, 0.4);
+            --magenta: #EC008B;
+            --magenta-glow: rgba(236, 0, 139, 0.4);
+            --emerald: #10B981;
+            --gold: #F59E0B;
+            --text-main: #FFFFFF;
+            --text-sub: #CBD5E1;
+            --text-muted: #8494A8;
+            --border: rgba(255, 255, 255, 0.1);
+            --border-cyan: rgba(0, 242, 254, 0.35);
+            --border-magenta: rgba(236, 0, 139, 0.35);
+            --font-head: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: #030611;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .deck-header {
+            width: 100%;
+            max-width: 1260px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px 18px;
+            background: rgba(10, 19, 41, 0.85);
+            border: 1px solid var(--border-cyan);
+            border-radius: 40px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        }
+
+        .brand-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-head);
+            font-weight: 900;
+            font-size: 16px;
+        }
+        .brand-pill span.logo-highlight {
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .controls-center {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .slide-counter {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--cyan);
+            letter-spacing: 1px;
+        }
+
+        .btn-ctrl {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font-head);
+            font-size: 12px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-ctrl:hover {
+            background: var(--cyan);
+            color: #030611;
+            border-color: var(--cyan);
+            box-shadow: 0 0 15px var(--cyan-glow);
+        }
+        .btn-ctrl.pdf-btn {
+            background: rgba(236, 0, 139, 0.15);
+            border-color: var(--border-magenta);
+            color: #fff;
+        }
+        .btn-ctrl.pdf-btn:hover {
+            background: var(--magenta);
+            color: #fff;
+            border-color: var(--magenta);
+            box-shadow: 0 0 15px var(--magenta-glow);
+        }
+
+        .progress-track {
+            width: 140px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 10%;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            transition: width 0.35s ease;
+        }
+
+        /* 16:9 Viewport */
+        .deck-container {
+            width: 100%;
+            max-width: 1260px;
+            aspect-ratio: 16 / 9;
+            background: var(--bg-slide);
+            border: 1px solid var(--border-cyan);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85);
+            background-image: 
+                radial-gradient(circle at 85% 15%, rgba(0, 242, 254, 0.07) 0%, transparent 50%),
+                radial-gradient(circle at 15% 85%, rgba(236, 0, 139, 0.06) 0%, transparent 50%),
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 40px 54px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.98) translateY(12px);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1) translateY(0);
+        }
+
+        .tagline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 242, 254, 0.12);
+            color: var(--cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10.5px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            margin-bottom: 6px;
+        }
+        .question-badge {
+            font-family: var(--font-head);
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--magenta);
+            margin-bottom: 4px;
+        }
+        .slide-title {
+            font-family: var(--font-head);
+            font-size: 26px;
+            font-weight: 900;
+            line-height: 1.2;
+            color: #FFFFFF;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 14px;
+            flex-grow: 1;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 14px;
+            flex-grow: 1;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-top: 12px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card-cyan { border-left: 4px solid var(--cyan); }
+        .card-magenta { border-left: 4px solid var(--magenta); }
+        .card-emerald { border-left: 4px solid var(--emerald); }
+        .card-gold { border-left: 4px solid var(--gold); }
+
+        .card-title {
+            font-family: var(--font-head);
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        ul.points {
+            list-style: none;
+            padding: 0;
+            margin: 6px 0;
+        }
+        ul.points li {
+            position: relative;
+            padding-left: 16px;
+            margin-bottom: 6px;
+            font-size: 12.5px;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+        ul.points li::before {
+            content: "•";
+            position: absolute;
+            left: 2px;
+            color: var(--cyan);
+            font-weight: bold;
+        }
+        ul.points.magenta li::before { color: var(--magenta); }
+
+        .slide-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 10px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        @media print {
+            body { background: #000; padding: 0; }
+            .deck-header { display: none !important; }
+            .deck-container { border: none; box-shadow: none; border-radius: 0; max-width: 100%; }
+            .slide { position: relative; opacity: 1 !important; transform: none !important; page-break-after: always; width: 100vw; height: 100vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <div class="deck-header">
+        <div class="brand-pill">
+            <span>URBI</span>
+            <span class="logo-highlight">MOBILITY</span>
+            <span style="font-size:11px; color:var(--text-muted); padding-left:8px; border-left:1px solid rgba(255,255,255,0.15);">FTIV 10 SLIDES</span>
+        </div>
+
+        <div class="controls-center">
+            <button class="btn-ctrl" onclick="prevSlide()">◀ Précédent</button>
+            <div class="progress-track">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="slide-counter" id="slideCounter">SLIDE 01 / 10</div>
+            <button class="btn-ctrl" onclick="nextSlide()">Suivant ▶</button>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+            <a href="urbi-10.pdf" target="_blank" class="btn-ctrl pdf-btn">📥 Télécharger PDF 10 Slides</a>
+            <a href="urbi.pdf" target="_blank" class="btn-ctrl">📄 Version 5 Slides</a>
+            <button class="btn-ctrl" onclick="toggleFullScreen()">⛶ Plein Écran</button>
+        </div>
+    </div>
+
+    <!-- Master 16:9 Deck Container -->
+    <div class="deck-container" id="deckContainer">
+
+        <!-- SLIDE 01 : PROBLÈME -->
+        <div class="slide active" id="slide-1">
+            <div>
+                <div class="tagline">SLIDE 01 · FTIV FRAMEWORK</div>
+                <div class="question-badge">Question Investisseur : Quel vrai problème ?</div>
+                <h1 class="slide-title">1. Le Gouffre Financier &amp; Logistique des PME à Alger</h1>
+            </div>
+            <div class="grid-2">
+                <div class="card card-magenta">
+                    <div class="card-title">🏢 Côté Entreprises (Bab Ezzouar, Hydra, Rouiba)</div>
+                    <ul class="points magenta">
+                        <li><strong>600 000 DZD / mois gaspillés :</strong> Une PME de 150 salariés loue 3 minibus privés fixes à plein tarif qui tournent à 30% de capacité dès 9h15.</li>
+                        <li><strong>25 % de retards matinaux chroniques :</strong> Congestion sur la Rocade Sud et l'autoroute, chute directe de productivité.</li>
+                        <li><strong>Crise du stationnement :</strong> 30 places de parking pour 150 collaborateurs (conflits quotidiens dès 8h20).</li>
+                        <li><strong>Opacité comptable :</strong> Gestion papier manuelle et fraudes aux indemnités kilométriques.</li>
+                    </ul>
+                </div>
+                <div class="card card-cyan">
+                    <div class="card-title">👥 Côté Citoyens &amp; Économie Réelle</div>
+                    <ul class="points">
+                        <li><strong>1,4 Milliard $ de pertes annuelles :</strong> Coût national en carburant gasoil subventionné gaspillé et temps perdu.</li>
+                        <li><strong>2h30 d'épuisement quotidien :</strong> Trajets sans visibilité depuis Blida, Boumerdès et Rouiba.</li>
+                        <li><strong>8 000 DZD brûlés par mois :</strong> En taxis de panique dès qu'un bus informel saute son passage.</li>
+                        <li><strong>100% Cash physique :</strong> 15 000 minibus informels (80% du réseau réel) totalement exclus du paiement digital.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Chaque slide répond à une question de l'investisseur · Framework FT Innovation Venture</div>
+                <div>URBI Mobility · Slide 1 / 10</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 02 : SOLUTION -->
+        <div class="slide" id="slide-2">
+            <div>
+                <div class="tagline">SLIDE 02 · FTIV FRAMEWORK</div>
+                <div class="question-badge">Question Investisseur : Comment le réglez-vous ?</div>
+                <h1 class="slide-title">2. L'OS de Flotte Hybride B2B &amp; Le Pass Sans Matériel</h1>
+            </div>
+            <div class="grid-2">
+                <div class="card card-emerald">
+                    <div class="card-title">🛡️ Le Cheval de Troie B2B (HR SaaS OS)</div>
+                    <ul class="points">
+                        <li><strong>Préfinancé le 1er du mois :</strong> L'entreprise souscrit un abonnement URBI Business (3 000 DZD/salarié). Zéro risque de crédit, trésorerie immédiatement positive.</li>
+                        <li><strong>Flotte Virtuelle Partagée :</strong> Algorithme d'affectation dynamique combinant navettes mutualisées entre PME voisines, covoiturage et lignes régulières.</li>
+                        <li><strong>-33% d'économies directes :</strong> La facture transport de l'employeur chute de 600k à 400k DZD par mois dès le premier mois.</li>
+                    </ul>
+                </div>
+                <div class="card card-cyan">
+                    <div class="card-title">📱 Pass QR Code pour 15 000 Minibus Informels</div>
+                    <ul class="points">
+                        <li><strong>Zéro investissement matériel :</strong> Aucun terminal bancaire ni valideur coûteux à installer à bord des véhicules.</li>
+                        <li><strong>QR Code dynamique sur tableau de bord :</strong> Les 15 000 chauffeurs informels sont digitalisés sans changer leurs habitudes.</li>
+                        <li><strong>Clearing instantané BaridiMob / Edahabia :</strong> Le salarié scanne avec URBI, le chauffeur encaisse son argent le soir même sans frais bancaires abusifs.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Zéro Capex Flotte · Déploiement logiciel 100% cloud souverain</div>
+                <div>URBI Mobility · Slide 2 / 10</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 03 : PROPOSITION DE VALEUR -->
+        <div class="slide" id="slide-3">
+            <div>
+                <div class="tagline">SLIDE 03 · FTIV FRAMEWORK</div>
+                <div class="question-badge">Question Investisseur : Pourquoi vous ?</div>
+                <h1 class="slide-title">3. Notre Rupture Catégorielle &amp; Moat Défendable</h1>
+            </div>
+            <div class="grid-3">
+                <div class="card card-magenta">
+                    <div class="card-title">Face au MaaS Européen (Whim)</div>
+                    <p style="font-size:12px; color:var(--text-sub); line-height:1.45;">
+                        Whim a fait faillite en Finlande car il dépendait de milliards de subventions publiques.<br/><br/>
+                        <strong>Rupture URBI :</strong> Préfinancé à 100% par les entreprises privées dès le 1er jour. Modèle rentable sans aide d'État.
+                    </p>
+                </div>
+                <div class="card card-cyan">
+                    <div class="card-title">Face aux VTC (Yassir, Heetch)</div>
+                    <p style="font-size:12px; color:var(--text-sub); line-height:1.45;">
+                        Une course VTC individuelle coûte 800 DZD : inabordable pour 95% des salariés au quotidien.<br/><br/>
+                        <strong>Rupture URBI :</strong> Transport collectif multimodal à 150 DZD/trajet payé par l'employeur. Volume de marché 20x supérieur.
+                    </p>
+                </div>
+                <div class="card card-emerald">
+                    <div class="card-title">Face aux Cartes 2D (Google Maps)</div>
+                    <p style="font-size:12px; color:var(--text-sub); line-height:1.45;">
+                        Google Maps ignore le relief 3D et envoie les bus dans des pentes saturées à 18%.<br/><br/>
+                        <strong>Rupture URBI :</strong> Moteur topographique vectoriel 3D optimisant l'effort mécanique et les 120m de dénivelé d'Alger.
+                    </p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Triple avantage compétitif : Financier, Tarifaire et Technologique</div>
+                <div>URBI Mobility · Slide 3 / 10</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 04 : MARCHÉ -->
+        <div class="slide" id="slide-4">
+            <div>
+                <div class="tagline">SLIDE 04 · FTIV FRAMEWORK</div>
+                <div class="question-badge">Question Investisseur : Quelle taille ? (TAM · SAM · SOM)</div>
+                <h1 class="slide-title">4. Une Opportunité de Marché Profonde &amp; Solvable</h1>
+            </div>
+            <div class="grid-3">
+                <div class="card card-cyan">
+                    <div style="font-size:11px; color:var(--cyan); font-weight:800; text-transform:uppercase;">TAM · Marché Total Adressable</div>
+                    <div style="font-family:var(--font-mono); font-size:26px; font-weight:900; color:#fff; margin:6px 0;">1,4 Milliard $ / an</div>
+                    <p style="font-size:12px; color:var(--text-sub); line-height:1.45;">
+                        Dépenses globales de transport pendulaire, pertes de productivité et carburant gasoil gaspillé en Algérie (4 millions de navetteurs quotidiens).
+                    </p>
+                </div>
+                <div class="card card-magenta">
+                    <div style="font-size:11px; color:var(--magenta); font-weight:800; text-transform:uppercase;">SAM · Marché Disponible Grand Alger</div>
+                    <div style="font-family:var(--font-mono); font-size:26px; font-weight:900; color:#fff; margin:6px 0;">120 Millions $ / an</div>
+                    <p style="font-size:12px; color:var(--text-sub); line-height:1.45;">
+                        Budgets transport des entreprises et navetteurs formels du Grand Alger, Blida, Boumerdès et Tipaza (600 000 salariés du tertiaire et de l'industrie).
+                    </p>
+                </div>
+                <div class="card card-emerald">
+                    <div style="font-size:11px; color:var(--emerald); font-weight:800; text-transform:uppercase;">SOM · Objectif 24 Mois URBI</div>
+                    <div style="font-family:var(--font-mono); font-size:26px; font-weight:900; color:#fff; margin:6px 0;">3,5 Millions $ / an</div>
+                    <p style="font-size:12px; color:var(--text-sub); line-height:1.45;">
+                        Capture de 420 PME clientes et 22 000 salariés actifs sur les pôles de Bab Ezzouar, Hydra, Rouiba, Oued Smar et Sidi Abdellah.
+                    </p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Source : Données de trafic Ministère des Transports 2024–2026 &amp; Enquêtes DRH PME</div>
+                <div>URBI Mobility · Slide 4 / 10</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 05 : CHIFFRES CLÉS -->
+        <div class="slide" id="slide-5">
+            <div>
+                <div class="tagline">SLIDE 05 · FTIV FRAMEWORK</div>
+                <div class="question-badge">Question Investisseur : Quelles preuves ?</div>
+                <h1 class="slide-title">5. Des Métriques de Classe Mondiale &amp; Validation Terrain</h1>
+            </div>
+            <div class="grid-4">
+                <div class="card card-emerald" style="padding:14px;">
+                    <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Économie PME Garantie</div>
+                    <div style="font-family:var(--font-mono); font-size:26px; font-weight:900; color:var(--emerald); margin-top:2px;">- 33 %</div>
+                    <div style="font-size:11px; color:var(--text-sub); margin-top:4px;">Sur la facture mensuelle</div>
+                </div>
+                <div class="card card-cyan" style="padding:14px;">
+                    <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Ratio LTV / CAC</div>
+                    <div style="font-family:var(--font-mono); font-size:26px; font-weight:900; color:var(--cyan); margin-top:2px;">16x</div>
+                    <div style="font-size:11px; color:var(--text-sub); margin-top:4px;">Standard VC mondial &gt; 3x</div>
+                </div>
+                <div class="card card-gold" style="padding:14px;">
+                    <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Temps de Retour Payback</div>
+                    <div style="font-family:var(--font-mono); font-size:26px; font-weight:900; color:var(--gold); margin-top:2px;">2,5 Mois</div>
+                    <div style="font-size:11px; color:var(--text-sub); margin-top:4px;">Remboursement éclair du CAC</div>
+                </div>
+                <div class="card card-magenta" style="padding:14px;">
+                    <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Marge Brute Logicielle</div>
+                    <div style="font-family:var(--font-mono); font-size:26px; font-weight:900; color:var(--magenta); margin-top:2px;">82% - 87%</div>
+                    <div style="font-size:11px; color:var(--text-sub); margin-top:4px;">Zéro possession de véhicules</div>
+                </div>
+            </div>
+            <div class="card" style="margin-top:14px; padding:16px;">
+                <div class="card-title">Preuves Institutionnelles &amp; Scientifiques Exceptionnelles :</div>
+                <ul class="points">
+                    <li><strong>92% de corrélation géodésique :</strong> Algorithme calibré sur le Modèle Numérique de Terrain d'Alger (120m de dénivelé).</li>
+                    <li><strong>Invité Officiel des Nations Unies (UNOOSA Vienne) :</strong> Reconnaissance internationale pour la Conférence Lunaire 2026.</li>
+                    <li><strong>Lauréat Bourse Européenne e-COST :</strong> Recherches spatiales avancées à l'ESA-ESRIN (Frascati, Rome).</li>
+                    <li><strong>Pipe Commercial Qualifié :</strong> 60 PME identifiées et 10 premières entreprises prêtes à démarrer à Bab Ezzouar.</li>
+                </ul>
+            </div>
+            <div class="slide-footer">
+                <div>Indicateurs vérifiables · Trajectoire validée par le programme GIZ Scale-Up</div>
+                <div>URBI Mobility · Slide 5 / 10</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 06 : MODÈLE DE REVENUS -->
+        <div class="slide" id="slide-6">
+            <div>
+                <div class="tagline">SLIDE 06 · FTIV FRAMEWORK</div>
+                <div class="question-badge">Question Investisseur : Comment gagnez-vous de l'argent ?</div>
+                <h1 class="slide-title">6. Modèle de Monétisation Hybride SaaS &amp; Transactionnel</h1>
+            </div>
+            <div class="grid-3">
+                <div class="card card-emerald">
+                    <div class="card-title">1. SaaS B2B Employeur (Cœur)</div>
+                    <div style="font-family:var(--font-mono); font-size:20px; font-weight:800; color:var(--emerald); margin:4px 0;">3 000 DZD / salarié / mois</div>
+                    <p style="font-size:12px; color:var(--text-sub); line-height:1.45; margin-top:6px;">
+                        Abonnement URBI Business payé d'avance le 1er du mois par virement bancaire pour l'accès à la flotte virtuelle, au dashboard DRH et au dispatch automatisé.<br/><br/>
+                        <strong>Marge Brute : 88 %</strong>
+                    </p>
+                </div>
+                <div class="card card-cyan">
+                    <div class="card-title">2. Pass B2C Unitaire (Hors-Entreprise)</div>
+                    <div style="font-family:var(--font-mono); font-size:20px; font-weight:800; color:var(--cyan); margin:4px 0;">120 à 180 DZD / trajet</div>
+                    <p style="font-size:12px; color:var(--text-sub); line-height:1.45; margin-top:6px;">
+                        Pour les trajets personnels des salariés ou du grand public en heures creuses et le week-end, payés instantanément via carte Edahabia ou BaridiMob.<br/><br/>
+                        <strong>Marge Brute : 75 %</strong>
+                    </p>
+                </div>
+                <div class="card card-gold">
+                    <div class="card-title">3. Commission Clearing Chauffeurs</div>
+                    <div style="font-family:var(--font-mono); font-size:20px; font-weight:800; color:var(--gold); margin:4px 0;">5 % à 7 % par course</div>
+                    <p style="font-size:12px; color:var(--text-sub); line-height:1.45; margin-top:6px;">
+                        Frais de service prélevés sur les reversements instantanés vers les comptes postaux des 15 000 chauffeurs de minibus informels.<br/><br/>
+                        <strong>Marge Brute : 95 %</strong>
+                    </p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Double moteur de revenus : récurrent prévisible (B2B) + exponentiel à l'usage (B2C)</div>
+                <div>URBI Mobility · Slide 6 / 10</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 07 : ÉQUIPE -->
+        <div class="slide" id="slide-7">
+            <div>
+                <div class="tagline">SLIDE 07 · FTIV FRAMEWORK</div>
+                <div class="question-badge">Question Investisseur : Pourquoi vous pouvez réussir ?</div>
+                <h1 class="slide-title">7. L'Équipe &amp; L'Avantage Fondateur Inégalable</h1>
+            </div>
+            <div class="grid-2">
+                <div class="card card-cyan">
+                    <div class="card-title">👨‍💻 Ing. Maamar Omar ARBOUZ · Fondateur &amp; Lead AI</div>
+                    <ul class="points">
+                        <li><strong>Ingénieur d'État Topographe :</strong> Expert national des réseaux de voirie, de la géodésie et des modèles numériques de terrain 3D.</li>
+                        <li><strong>Major de Promotion Master 2 IA &amp; Big Data :</strong> Concepteur des algorithmes d'affectation dynamique de flottes et de graphes multi-agents.</li>
+                        <li><strong>Chercheur Lauréat e-COST / ESA-ESRIN :</strong> Travaux avancés en traitement d'images satellitaires à Rome.</li>
+                        <li><strong>Invité Officiel des Nations Unies (UNOOSA Vienne) :</strong> Reconnaissance institutionnelle internationale au plus haut niveau spatial.</li>
+                    </ul>
+                </div>
+                <div class="card card-magenta">
+                    <div class="card-title">🤝 Écosystème Stratégique &amp; Mentors</div>
+                    <ul class="points magenta">
+                        <li><strong>Steve (Mentor d'Affaires International) :</strong> Conseil stratégique sur la levée de fonds VC et la commercialisation B2B.</li>
+                        <li><strong>Programme GIZ Scale-Up / MECSME :</strong> Accompagnement institutionnel pour l'accélération d'entreprise.</li>
+                        <li><strong>Partenariats Monétique &amp; Réglementaires :</strong> Alignement étroit avec SATIM, GIE Monétique et la tutelle des transports.</li>
+                        <li><strong>Force de Vente B2B en cours de recrutement :</strong> 3 profils seniors spécialisés dans la prospection des parcs industriels.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Double compétence rarissime : Ingénierie Foncère d'État + Intelligence Artificielle</div>
+                <div>URBI Mobility · Slide 7 / 10</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 08 : FEUILLE DE ROUTE -->
+        <div class="slide" id="slide-8">
+            <div>
+                <div class="tagline">SLIDE 08 · FTIV FRAMEWORK</div>
+                <div class="question-badge">Question Investisseur : Quelles prochaines étapes ?</div>
+                <h1 class="slide-title">8. Feuille de Route d'Exécution sur 24 Mois</h1>
+            </div>
+            <div class="grid-4">
+                <div class="card card-cyan" style="padding:14px;">
+                    <div style="font-size:10px; color:var(--cyan); font-weight:800; text-transform:uppercase;">Mois 1 à 3</div>
+                    <div style="font-family:var(--font-head); font-weight:800; font-size:14px; margin:4px 0; color:#fff;">Lancement Pilotes</div>
+                    <p style="font-size:11.5px; color:var(--text-sub); line-height:1.4;">
+                        • 10 PME pilotes (600 salariés)<br/>
+                        • 100 premiers minibus QR code<br/>
+                        • MRR : 1,8M DZD
+                    </p>
+                </div>
+                <div class="card card-magenta" style="padding:14px;">
+                    <div style="font-size:10px; color:var(--magenta); font-weight:800; text-transform:uppercase;">Mois 4 à 6</div>
+                    <div style="font-family:var(--font-head); font-weight:800; font-size:14px; margin:4px 0; color:#fff;">Accélération Alger</div>
+                    <p style="font-size:11.5px; color:var(--text-sub); line-height:1.4;">
+                        • 25 PME actives (1 200 salariés)<br/>
+                        • 500 minibus BaridiMob connectés<br/>
+                        • Intégration API GIE Monétique
+                    </p>
+                </div>
+                <div class="card card-gold" style="padding:14px;">
+                    <div style="font-size:10px; color:var(--gold); font-weight:800; text-transform:uppercase;">Mois 7 à 12</div>
+                    <div style="font-family:var(--font-head); font-weight:800; font-size:14px; margin:4px 0; color:#fff;">Seuil de Rentabilité</div>
+                    <p style="font-size:11.5px; color:var(--text-sub); line-height:1.4;">
+                        • 35 PME (1 800 salariés)<br/>
+                        • ARR : 50M DZD (~350k €)<br/>
+                        • <strong>Break-even atteint à M+12</strong>
+                    </p>
+                </div>
+                <div class="card card-emerald" style="padding:14px;">
+                    <div style="font-size:10px; color:var(--emerald); font-weight:800; text-transform:uppercase;">Mois 13 à 24</div>
+                    <div style="font-family:var(--font-head); font-weight:800; font-size:14px; margin:4px 0; color:#fff;">Expansion Régionale</div>
+                    <p style="font-size:11.5px; color:var(--text-sub); line-height:1.4;">
+                        • Extension Oran &amp; Constantine<br/>
+                        • 140 PME (7 200 salariés)<br/>
+                        • ARR : 240M DZD (~1,7M €)
+                    </p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Jalons d'exécution mensuels auditables · 14 mois de runway garanti</div>
+                <div>URBI Mobility · Slide 8 / 10</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 09 : LA DEMANDE -->
+        <div class="slide" id="slide-9">
+            <div>
+                <div class="tagline">SLIDE 09 · FTIV FRAMEWORK</div>
+                <div class="question-badge">Question Investisseur : Combien, pour quoi faire ?</div>
+                <h1 class="slide-title">9. Le Tour Seed : 28 000 000 DZD (200 000 €)</h1>
+            </div>
+            <div class="grid-2">
+                <div class="card card-magenta">
+                    <div class="card-title">💰 Conditions de la Levée Seed</div>
+                    <ul class="points magenta">
+                        <li><strong>Ticket Sollicité :</strong> 28 000 000 DZD (200 000 €).</li>
+                        <li><strong>Valorisation Post-Money :</strong> 1,35 M€ (~185M DZD).</li>
+                        <li><strong>Dilution Offerte :</strong> 15 % à 18 % du capital.</li>
+                        <li><strong>Piste de Trésorerie (Runway) :</strong> 14 mois d'autonomie financière pour atteindre le point mort opérationnel dès le 12ème mois.</li>
+                    </ul>
+                </div>
+                <div class="card card-cyan">
+                    <div class="card-title">📊 Allocation Rigoureuse du Capital</div>
+                    <ul class="points">
+                        <li><strong>40 % (11,2 M DZD) · Force de Vente Directe B2B :</strong> Recrutement de 3 Business Developers seniors pour verrouiller les 35 premières PME clientes.</li>
+                        <li><strong>35 % (9,8 M DZD) · Intégrations Bancaires :</strong> Certification API SATIM, GIE Monétique et Algérie Poste pour le reverse-clearing direct aux chauffeurs.</li>
+                        <li><strong>25 % (7,0 M DZD) · Données Spatiales 3D &amp; Cloud :</strong> Modèles numériques de terrain LiDAR haute précision et serveurs souverains en Algérie.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Montant calibré sur le ticket maximal d'amorçage de l'Algérie Startup Fund (ASF)</div>
+                <div>URBI Mobility · Slide 9 / 10</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10 : LA VISION -->
+        <div class="slide" id="slide-10">
+            <div>
+                <div class="tagline">SLIDE 10 · FTIV FRAMEWORK</div>
+                <div class="question-badge">Question Investisseur : Jusqu'où cela peut aller ?</div>
+                <h1 class="slide-title">10. La Vision : L'OS des Megacities Émergentes</h1>
+            </div>
+            <div class="grid-3">
+                <div class="card card-cyan">
+                    <div class="card-title">1. Dorsale Nationale Algérie</div>
+                    <p style="font-size:12px; color:var(--text-sub); line-height:1.45;">
+                        Devenir l'infrastructure unifiée de la mobilité en Algérie : connecter métros, tramways, bus publics ET 100% des minibus informels sous un compte citoyen numérique unique.
+                    </p>
+                </div>
+                <div class="card card-magenta">
+                    <div class="card-title">2. Duplication Megacities Afrique</div>
+                    <p style="font-size:12px; color:var(--text-sub); line-height:1.45;">
+                        Exporter notre solution B2B + QR sans matériel dans les capitales ayant la même fracture informelle : Le Caire, Casablanca, Dakar et Nairobi (où les matatus représentent 85% des flux).
+                    </p>
+                </div>
+                <div class="card card-emerald">
+                    <div class="card-title">3. Opportunités de Sortie (M&amp;A)</div>
+                    <p style="font-size:12px; color:var(--text-sub); line-height:1.45;">
+                        • <strong>Série A internationale</strong> à valorisation &gt; 15 M€ à 24-36 mois.<br/>
+                        • <strong>Rachat stratégique</strong> par un opérateur télécom (Djezzy, Ooredoo, Mobilis), une fintech africaine ou un logisticien mondial.
+                    </p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>Bâtir l'infrastructure de transit souveraine de l'Afrique du Nord</div>
+                <div>URBI Mobility · Slide 10 / 10</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 10;
+
+        function updateSlide() {
+            document.querySelectorAll('.slide').forEach((slide, idx) => {
+                if (idx + 1 === currentSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+
+            document.getElementById('slideCounter').innerText = `SLIDE ${currentSlide < 10 ? '0' : ''}${currentSlide} / 10`;
+            document.getElementById('progressBar').style.width = `${(currentSlide / totalSlides) * 100}%`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullScreen();
+            }
+        });
+
+        function toggleFullScreen() {
+            const container = document.getElementById('deckContainer');
+            if (!document.fullscreenElement) {
+                if (container.requestFullscreen) {
+                    container.requestFullscreen();
+                } else if (container.webkitRequestFullscreen) {
+                    container.webkitRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
