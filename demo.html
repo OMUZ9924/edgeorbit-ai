@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>URBI Mobility · Live Interactive POC & Prototype</title>
+    <title>URBA Mobility · Live Interactive POC & Prototype</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&family=Space+Grotesk:wght@600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -469,7 +469,7 @@
     <!-- Navigation Header -->
     <header class="poc-navbar">
         <div class="brand-box">
-            <div class="brand-logo">URBI <span>MOBILITY</span></div>
+            <div class="brand-logo">URBA <span>MOBILITY</span></div>
             <div class="poc-badge">LIVE PROTOTYPE · ALGER 2026</div>
         </div>
 
@@ -481,8 +481,8 @@
         </div>
 
         <div style="display:flex; gap:10px;">
-            <a href="urbi.pdf" target="_blank" style="color:var(--text-sub); text-decoration:none; font-size:12px; font-weight:700; padding:6px 12px; border:1px solid var(--border); border-radius:20px;">📄 Pitch Deck</a>
-            <a href="urbi-contract-en.pdf" target="_blank" style="color:var(--cyan); text-decoration:none; font-size:12px; font-weight:700; padding:6px 12px; border:1px solid var(--border-cyan); border-radius:20px;">📋 Contrat Pilote</a>
+            <a href="URBA.pdf" target="_blank" style="color:var(--text-sub); text-decoration:none; font-size:12px; font-weight:700; padding:6px 12px; border:1px solid var(--border); border-radius:20px;">📄 Pitch Deck</a>
+            <a href="URBA-contract-en.pdf" target="_blank" style="color:var(--cyan); text-decoration:none; font-size:12px; font-weight:700; padding:6px 12px; border:1px solid var(--border-cyan); border-radius:20px;">📋 Contrat Pilote</a>
         </div>
     </header>
 
@@ -500,7 +500,7 @@
                     <div class="live-dot" title="Télémétrie temps réel active"></div>
                 </div>
                 <div class="hud-desc" id="hudDesc">
-                    Navette URBI #04 en circulation. 18 salariés à bord. Optimisation topographique 3D active (évitement goulet autoroute).
+                    Navette URBA #04 en circulation. 18 salariés à bord. Optimisation topographique 3D active (évitement goulet autoroute).
                 </div>
                 <div class="hud-stats">
                     <div>
@@ -625,7 +625,7 @@
                         <div style="font-size:10px; color:var(--text-muted);">3 minibus privés loués fixes</div>
                     </div>
                     <div style="background:#0A2328; border:1px solid var(--border-cyan); border-radius:14px; padding:14px; text-align:center;">
-                        <div style="font-size:10px; color:var(--cyan); text-transform:uppercase; font-weight:700;">Facture URBI SaaS</div>
+                        <div style="font-size:10px; color:var(--cyan); text-transform:uppercase; font-weight:700;">Facture URBA SaaS</div>
                         <div style="font-family:var(--font-mono); font-size:20px; font-weight:800; color:var(--emerald); margin-top:4px;">396 000 DZD</div>
                         <div style="font-size:10px; color:var(--emerald); font-weight:700;">-34% d'économies nettes</div>
                     </div>
@@ -687,7 +687,7 @@
                     <div style="font-size:13px; font-weight:800; color:#fff; margin-bottom:8px;">Pourquoi Google Maps échoue à Alger :</div>
                     <div style="font-size:12px; color:var(--text-sub); line-height:1.5;">
                         • <strong>Google Maps (Calcul 2D plat) :</strong> Route les minibus dans des montées à 18% saturées ➔ surchauffe moteur, consommation de carburant doublée.<br/><br/>
-                        • <strong>URBI 3D Engine (Géodésie spatiale) :</strong> Optimise l'inertie mécanique sur les courbes de niveau ➔ <strong>-18% de carburant et 12 minutes gagnées</strong>.
+                        • <strong>URBA 3D Engine (Géodésie spatiale) :</strong> Optimise l'inertie mécanique sur les courbes de niveau ➔ <strong>-18% de carburant et 12 minutes gagnées</strong>.
                     </div>
                 </div>
 
@@ -755,7 +755,7 @@
                 opacity: 1,
                 fillOpacity: 0.9
             }).addTo(map);
-            circle.bindPopup(`<b>${st.name}</b><br/>Point d'arrêt certifié URBI`);
+            circle.bindPopup(`<b>${st.name}</b><br/>Point d'arrêt certifié URBA`);
         });
 
         // Moving Shuttle Marker
@@ -808,7 +808,7 @@
             if (mode === 'b2c') {
                 document.getElementById('viewB2C').style.display = 'flex';
                 document.getElementById('hudRouteName').innerText = "Corridor Rouiba ➔ Bab Ezzouar";
-                document.getElementById('hudDesc').innerText = "Navette URBI #04 en circulation. 18 salariés à bord. Optimisation topographique active.";
+                document.getElementById('hudDesc').innerText = "Navette URBA #04 en circulation. 18 salariés à bord. Optimisation topographique active.";
             } else if (mode === 'driver') {
                 document.getElementById('viewDriver').style.display = 'flex';
                 document.getElementById('hudRouteName').innerText = "Mode Minibus Artisanal #412";
