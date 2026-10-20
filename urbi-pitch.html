@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URBI Mobility · 5-Slide Master Pitch Deck (ACF & Investisseurs)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #070D1E;
+            --bg-slide: #0A1329;
+            --bg-card: rgba(15, 26, 54, 0.75);
+            --bg-card-hover: rgba(22, 38, 77, 0.95);
+            --cyan: #00F2FE;
+            --cyan-glow: rgba(0, 242, 254, 0.4);
+            --magenta: #EC008B;
+            --magenta-glow: rgba(236, 0, 139, 0.4);
+            --emerald: #10B981;
+            --emerald-glow: rgba(16, 185, 129, 0.4);
+            --gold: #F59E0B;
+            --gold-glow: rgba(245, 158, 11, 0.4);
+            --text-main: #FFFFFF;
+            --text-sub: #CBD5E1;
+            --text-muted: #8494A8;
+            --border: rgba(255, 255, 255, 0.1);
+            --border-cyan: rgba(0, 242, 254, 0.35);
+            --border-magenta: rgba(236, 0, 139, 0.35);
+            --font-head: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: #030611;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Top Bar Controls */
+        .deck-header {
+            width: 100%;
+            max-width: 1260px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            padding: 8px 18px;
+            background: rgba(10, 19, 41, 0.85);
+            border: 1px solid var(--border-cyan);
+            border-radius: 40px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        }
+
+        .brand-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-head);
+            font-weight: 900;
+            font-size: 17px;
+            letter-spacing: 0.5px;
+        }
+        .brand-pill span.logo-urbi {
+            color: #fff;
+        }
+        .brand-pill span.logo-highlight {
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .controls-center {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .slide-counter {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--cyan);
+            letter-spacing: 1px;
+        }
+
+        .btn-ctrl {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font-head);
+            font-size: 12px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-ctrl:hover {
+            background: var(--cyan);
+            color: #030611;
+            border-color: var(--cyan);
+            box-shadow: 0 0 15px var(--cyan-glow);
+        }
+        .btn-ctrl.pdf-btn {
+            background: rgba(236, 0, 139, 0.15);
+            border-color: var(--border-magenta);
+            color: #fff;
+        }
+        .btn-ctrl.pdf-btn:hover {
+            background: var(--magenta);
+            color: #fff;
+            border-color: var(--magenta);
+            box-shadow: 0 0 15px var(--magenta-glow);
+        }
+
+        .progress-track {
+            width: 140px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 20%;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            transition: width 0.35s ease;
+        }
+
+        /* Master 16:9 Viewport */
+        .deck-container {
+            width: 100%;
+            max-width: 1260px;
+            aspect-ratio: 16 / 9;
+            background: var(--bg-slide);
+            border: 1px solid var(--border-cyan);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85);
+            background-image: 
+                radial-gradient(circle at 85% 15%, rgba(0, 242, 254, 0.07) 0%, transparent 50%),
+                radial-gradient(circle at 15% 85%, rgba(236, 0, 139, 0.06) 0%, transparent 50%),
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 44px 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.98) translateY(12px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1) translateY(0);
+        }
+
+        /* Slide Typography */
+        .tagline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 242, 254, 0.12);
+            color: var(--cyan);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            margin-bottom: 8px;
+            width: fit-content;
+        }
+        .tagline.magenta {
+            background: rgba(236, 0, 139, 0.12);
+            color: var(--magenta);
+            border-color: rgba(236, 0, 139, 0.3);
+        }
+        .tagline.emerald {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--emerald);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .slide-title {
+            font-family: var(--font-head);
+            font-size: 30px;
+            font-weight: 900;
+            line-height: 1.2;
+            color: #FFFFFF;
+            margin-bottom: 6px;
+        }
+        .slide-title span.hl-cyan { color: var(--cyan); }
+        .slide-title span.hl-magenta { color: var(--magenta); }
+        .slide-title span.hl-emerald { color: var(--emerald); }
+
+        .slide-desc {
+            font-size: 14.5px;
+            color: var(--text-sub);
+            max-width: 950px;
+            line-height: 1.45;
+        }
+
+        /* Grids */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+            margin-top: 18px;
+            flex-grow: 1;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 18px;
+            flex-grow: 1;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            border-color: var(--border-cyan);
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+        .card-cyan { border-left: 4px solid var(--cyan); }
+        .card-magenta { border-left: 4px solid var(--magenta); }
+        .card-emerald { border-left: 4px solid var(--emerald); }
+        .card-gold { border-left: 4px solid var(--gold); }
+
+        .card-title {
+            font-family: var(--font-head);
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        ul.points {
+            list-style: none;
+            padding: 0;
+            margin: 6px 0;
+        }
+        ul.points li {
+            position: relative;
+            padding-left: 18px;
+            margin-bottom: 7px;
+            font-size: 13px;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+        ul.points li::before {
+            content: "•";
+            position: absolute;
+            left: 4px;
+            color: var(--cyan);
+            font-weight: bold;
+            font-size: 16px;
+        }
+        ul.points.magenta li::before { color: var(--magenta); }
+        ul.points.emerald li::before { color: var(--emerald); }
+
+        .pill-highlight {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 8px;
+            margin-top: 8px;
+            display: inline-block;
+        }
+        .pill-cyan { background: rgba(0, 242, 254, 0.15); color: var(--cyan); border: 1px solid var(--border-cyan); }
+        .pill-magenta { background: rgba(236, 0, 139, 0.15); color: var(--magenta); border: 1px solid var(--border-magenta); }
+        .pill-emerald { background: rgba(16, 185, 129, 0.15); color: var(--emerald); border: 1px solid rgba(16, 185, 129, 0.35); }
+
+        /* Tables */
+        .deck-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12.5px;
+            margin-top: 14px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .deck-table th {
+            background: #101B38;
+            color: #fff;
+            font-family: var(--font-head);
+            font-weight: 800;
+            text-align: left;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-cyan);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+        .deck-table td {
+            padding: 9px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-sub);
+        }
+        .deck-table tr:hover td { background: rgba(0, 242, 254, 0.04); }
+
+        /* Simulator Card */
+        .simulator-box {
+            background: rgba(16, 27, 56, 0.9);
+            border: 1px solid var(--border-cyan);
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .slider-group {
+            flex-grow: 1;
+        }
+        .slider-group label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+        .slider-group input[type=range] {
+            width: 100%;
+            accent-color: var(--cyan);
+            cursor: pointer;
+        }
+        .calc-res {
+            display: flex;
+            gap: 18px;
+            text-align: center;
+        }
+        .calc-val {
+            font-family: var(--font-mono);
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--cyan);
+        }
+        .calc-val.emerald { color: var(--emerald); }
+        .calc-lbl {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        /* Slide Footer */
+        .slide-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 12px;
+            margin-top: 10px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .slide-footer span.auth { color: var(--text-sub); font-weight: 600; }
+
+        @media print {
+            body { background: #000; padding: 0; }
+            .deck-header { display: none !important; }
+            .deck-container { border: none; box-shadow: none; border-radius: 0; max-width: 100%; }
+            .slide { position: relative; opacity: 1 !important; transform: none !important; page-break-after: always; width: 100vw; height: 100vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <div class="deck-header">
+        <div class="brand-pill">
+            <span class="logo-urbi">URBI</span>
+            <span class="logo-highlight">MOBILITY</span>
+            <span style="font-size:11px; font-weight:700; color:var(--text-muted); padding-left:8px; border-left:1px solid rgba(255,255,255,0.15);">5-MIN PITCH</span>
+        </div>
+
+        <div class="controls-center">
+            <button class="btn-ctrl" onclick="prevSlide()" title="Diapositive précédente (←)">◀ Précédent</button>
+            <div class="progress-track">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="slide-counter" id="slideCounter">SLIDE 01 / 05</div>
+            <button class="btn-ctrl" onclick="nextSlide()" title="Diapositive suivante (→ ou Espace)">Suivant ▶</button>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+            <a href="urbi.pdf" target="_blank" class="btn-ctrl pdf-btn">📥 Télécharger PDF</a>
+            <a href="urbi.html" class="btn-ctrl" style="border-color:var(--border-cyan);">🌐 Portail Web</a>
+            <button class="btn-ctrl" onclick="toggleFullScreen()" title="Plein écran (F11)">⛶ Plein Écran</button>
+        </div>
+    </div>
+
+    <!-- 16:9 Viewport -->
+    <div class="deck-container" id="deckContainer">
+
+        <!-- SLIDE 1 : THE PROBLEM -->
+        <div class="slide active" id="slide-1">
+            <div>
+                <div class="tagline">GIZ SCALE-UP · DEMO DAY ACF &amp; INVESTISSEURS</div>
+                <h1 class="slide-title">1. Le Gouffre de la Mobilité d'Entreprise à <span class="hl-cyan">Alger</span></h1>
+                <p class="slide-desc">Chaque matin, les PME gaspillent des millions en minibus privés vides, tandis que leurs salariés perdent 2h30 dans les embouteillages.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card card-magenta">
+                    <div>
+                        <div class="card-title">🏢 Le Fardeau de la PME (Bab Ezzouar &amp; Hydra)</div>
+                        <ul class="points magenta">
+                            <li><strong>600 000 DZD / mois gaspillés :</strong> 3 minibus privés loués à plein tarif qui tournent à 30% de capacité dès 9h15.</li>
+                            <li><strong>25 % de retards matinaux :</strong> Rocades Sud et autoroute saturées, créant une chute directe de productivité.</li>
+                            <li><strong>Crise aiguë du stationnement :</strong> 30 places de parking pour 150 employés (conflits quotidiens dès 8h20).</li>
+                            <li><strong>Opacité comptable totale :</strong> Remboursements manuels en liquide non justifiés et fraudes kilométriques.</li>
+                        </ul>
+                    </div>
+                    <div class="pill-highlight pill-magenta">Impact Entreprise : Perte nette de 7,2 Millions DZD / an</div>
+                </div>
+
+                <div class="card card-cyan">
+                    <div>
+                        <div class="card-title">👥 Le Calvaire Citoyen &amp; L'Économie Réelle</div>
+                        <ul class="points">
+                            <li><strong>1,4 Milliard $ de pertes annuelles :</strong> Coût macro-économique de la congestion urbaine et carburant gasoil subventionné gaspillé.</li>
+                            <li><strong>2h30 d'épuisement quotidien :</strong> Trajets Blida, Boumerdès, Rouiba sans correspondances coordonnées ni visibilité.</li>
+                            <li><strong>8 000 DZD brûlés par mois :</strong> En taxis de panique dès qu'un minibus artisanal saute son passage.</li>
+                            <li><strong>100% Cash physique :</strong> 15 000 minibus informels non bancarisés, totalement exclus du paiement électronique.</li>
+                        </ul>
+                    </div>
+                    <div class="pill-highlight pill-cyan">Impact Macro : 82% des navetteurs algérois en détresse logistique</div>
+                </div>
+            </div>
+
+            <div class="grid-4">
+                <div class="card" style="padding:12px 16px;">
+                    <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Gaspillage PME Moyen</div>
+                    <div style="font-family:var(--font-mono); font-size:22px; font-weight:800; color:var(--magenta); margin-top:2px;">600k DZD / mois</div>
+                </div>
+                <div class="card" style="padding:12px 16px;">
+                    <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Retards Salariés</div>
+                    <div style="font-family:var(--font-mono); font-size:22px; font-weight:800; color:#fff; margin-top:2px;">25 % Matinaux</div>
+                </div>
+                <div class="card" style="padding:12px 16px;">
+                    <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Coût National Congestion</div>
+                    <div style="font-family:var(--font-mono); font-size:22px; font-weight:800; color:var(--cyan); margin-top:2px;">1,4 Milliard $ / an</div>
+                </div>
+                <div class="card" style="padding:12px 16px;">
+                    <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Flotte Informelle Réelle</div>
+                    <div style="font-family:var(--font-mono); font-size:22px; font-weight:800; color:var(--gold); margin-top:2px;">15 000 Minibus</div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>Source : Données de trafic Grand Alger 2024–2026 · Enquêtes PME Bab Ezzouar &amp; Hydra</div>
+                <div><span class="auth">URBI Mobility</span> · Confidentiel Investisseurs</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2 : THE SOLUTION -->
+        <div class="slide" id="slide-2">
+            <div>
+                <div class="tagline emerald">L'INNOVATION EN RUPTURE (OUT-OF-THE-BOX)</div>
+                <h1 class="slide-title">2. L'OS de Flotte Hybride B2B &amp; Le Pass <span class="hl-emerald">Sans Matériel</span></h1>
+                <p class="slide-desc">Nous ne brûlons pas de cash en marketing grand public. Nous entrons par le B2B : -33% d'économies cash pour l'entreprise, prépayées le 1er du mois.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card card-emerald">
+                    <div>
+                        <div class="card-title">🛡️ Cheval de Troie B2B (HR SaaS OS)</div>
+                        <ul class="points emerald">
+                            <li><strong>Paiement d'avance le 1er du mois :</strong> L'entreprise souscrit à URBA Business (3 000 DZD/salarié). Trésorerie positive immédiate sans risque de défaut.</li>
+                            <li><strong>Flotte Virtuelle Partagée :</strong> Algorithme d'affectation dynamique combinant covoiturage d'entreprise, navettes mutualisées et lignes régulières.</li>
+                            <li><strong>-33% d'économies directes :</strong> Une PME de 150 salariés fait chuter son budget transport de 600k à 400k DZD par mois.</li>
+                        </ul>
+                    </div>
+                    <div class="pill-highlight pill-emerald">Économie Employeur : 2,4M DZD / an par contrat signé</div>
+                </div>
+
+                <div class="card card-cyan">
+                    <div>
+                        <div class="card-title">📱 Pass QR Code Sans Matériel (15 000 Minibus)</div>
+                        <ul class="points">
+                            <li><strong>Zéro investissement boîtier :</strong> Aucun terminal bancaire ou valideur coûteux à installer à bord.</li>
+                            <li><strong>QR Code dynamique sécurisé :</strong> Les 15 000 minibus informels sont équipés d'un QR code imprimé sur le tableau de bord.</li>
+                            <li><strong>Intégration Dahabia &amp; BaridiMob :</strong> Le salarié scanne avec URBA, le chauffeur encaisse instantanément sur son compte sans intermédiaire bancaire.</li>
+                        </ul>
+                    </div>
+                    <div class="pill-highlight pill-cyan">Chauffeurs : Minibus remplis à 95% sans manipulation de monnaie</div>
+                </div>
+            </div>
+
+            <!-- Interactive Simulator -->
+            <div class="simulator-box">
+                <div class="slider-group">
+                    <label>
+                        <span>Simulateur Économies PME : Effectif Entreprise</span>
+                        <span id="sliderEmpCount" style="color:var(--cyan); font-family:var(--font-mono); font-size:14px;">120 Salariés</span>
+                    </label>
+                    <input type="range" id="empRange" min="30" max="400" step="10" value="120" oninput="updateSim(this.value)">
+                </div>
+                <div class="calc-res">
+                    <div>
+                        <div class="calc-val" id="simOldCost">480 000 DZD</div>
+                        <div class="calc-lbl">Budget Ancien Minibus</div>
+                    </div>
+                    <div>
+                        <div class="calc-val emerald" id="simUrbiCost">360 000 DZD</div>
+                        <div class="calc-lbl">Facture URBI Business</div>
+                    </div>
+                    <div>
+                        <div class="calc-val emerald" id="simSavings">+ 120 000 DZD / mois</div>
+                        <div class="calc-lbl">Économie Cash Nette (-25%)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>Modèle sans acquisition d'actifs lourds (Zero-Capex Fleet) · Déploiement logiciel 100% cloud</div>
+                <div><span class="auth">URBI Mobility</span> · Solution Break-through</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3 : UNFAIR ADVANTAGE & MOAT -->
+        <div class="slide" id="slide-3">
+            <div>
+                <div class="tagline">BARRIÈRE TECHNOLOGIQUE &amp; SOUVERAINETÉ NATIONALE</div>
+                <h1 class="slide-title">3. Topographie Vectorielle 3D &amp; Souveraineté <span class="hl-cyan">Financière</span></h1>
+                <p class="slide-desc">Pourquoi Yassir, Heetch ou Google Maps ne peuvent pas répliquer URBI : Alger n'est pas une grille 2D plate.</p>
+            </div>
+
+            <div class="grid-3">
+                <div class="card card-cyan">
+                    <div>
+                        <div class="card-title">🗺️ Moteur Topographique 3D</div>
+                        <p style="font-size:12.5px; color:var(--text-sub); line-height:1.45; margin-bottom:8px;">
+                            <strong>Le Défi du Relief Algérois :</strong> 120 mètres de dénivelé entre le Port et Hydra, ravins impraticables, montées à 18% et escaliers piétons.<br/><br/>
+                            <strong>L'Échec des Cartes Plates :</strong> Google Maps calcule des distances euclidiennes 2D et envoie les navettes dans des goulets saturés.<br/><br/>
+                            <strong>Notre MNT Hypsométrique :</strong> Optimisation de l'effort mécanique, de la consommation carburant et des vrais accès piétons.
+                        </p>
+                    </div>
+                    <div class="pill-highlight pill-cyan">Moat : 12 mois d'avance SIG 3D</div>
+                </div>
+
+                <div class="card card-magenta">
+                    <div>
+                        <div class="card-title">🎓 Équipe Fondatrice DeepTech</div>
+                        <p style="font-size:12.5px; color:var(--text-sub); line-height:1.45; margin-bottom:8px;">
+                            <strong>Ing. Maamar Omar ARBOUZ :</strong><br/>
+                            • Ingénieur d'État Topographe (Cadastre &amp; Géodésie).<br/>
+                            • Major de Promotion Master 2 IA &amp; Big Data.<br/>
+                            • Chercheur Lauréat e-COST &amp; ESA-ESRIN (Frascati, Rome).<br/><br/>
+                            <strong>Graphe Multimodal Souverain :</strong> Numérisation propriétaire de l'offre informelle introuvable sur les plateformes occidentales.
+                        </p>
+                    </div>
+                    <div class="pill-highlight pill-magenta">Profil Rare : Géomètre + IA + Espace</div>
+                </div>
+
+                <div class="card card-emerald">
+                    <div>
+                        <div class="card-title">🏛️ Souveraineté &amp; Mandat Économique</div>
+                        <p style="font-size:12.5px; color:var(--text-sub); line-height:1.45; margin-bottom:8px;">
+                            <strong>Mandat MECSME &amp; ASF :</strong> Éradication totale du cash physique dans le transport urbain conformément aux directives nationales.<br/><br/>
+                            <strong>Décongestion &amp; Devises :</strong> Réduction directe des importations de carburant gasoil et de pièces détachées.<br/><br/>
+                            <strong>Données Souveraines :</strong> Hébergement 100% localisé en Algérie (conformité stricte aux lois de protection des données).
+                        </p>
+                    </div>
+                    <div class="pill-highlight pill-emerald">Label : Priorité Nationale ASF</div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>Données topographiques calibrées sur modèles numériques de terrain haute résolution</div>
+                <div><span class="auth">URBI Mobility</span> · Barrière Technologique Défendable</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4 : FINANCIALS & TRAJECTORY -->
+        <div class="slide" id="slide-4">
+            <div>
+                <div class="tagline emerald">UNIT ECONOMICS &amp; RENTABILITÉ IMMÉDIATE</div>
+                <h1 class="slide-title">4. Des Ratios Financiers de Classe Mondiale — <span class="hl-emerald">LTV / CAC 16x</span></h1>
+                <p class="slide-desc">Un double moteur de revenus récurrents (B2B SaaS) et transactionnels (B2C) garantissant la rentabilité dès l'An 1.</p>
+            </div>
+
+            <table class="deck-table">
+                <thead>
+                    <tr>
+                        <th>Indicateur Clé</th>
+                        <th>An 1 (2026–2027)</th>
+                        <th>An 2 (2027–2028)</th>
+                        <th>An 3 (2028–2029)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="font-weight:700; color:#fff;">Entreprises B2B Actives</td>
+                        <td>35 entreprises</td>
+                        <td>140 entreprises</td>
+                        <td>420 entreprises</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700; color:#fff;">Salariés &amp; Navetteurs Actifs</td>
+                        <td>1 800 salariés</td>
+                        <td>7 200 salariés</td>
+                        <td>22 000 salariés</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700; color:#fff;">Chiffre d'Affaires Brut (ARR)</td>
+                        <td style="color:var(--cyan); font-family:var(--font-mono); font-weight:800;">50 000 000 DZD (~350k €)</td>
+                        <td style="color:var(--cyan); font-family:var(--font-mono); font-weight:800;">240 000 000 DZD (~1,7M €)</td>
+                        <td style="color:var(--emerald); font-family:var(--font-mono); font-weight:800; font-size:14px;">750 000 000 DZD (~5,2M €)</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700; color:#fff;">Marge Brute Globale (%)</td>
+                        <td style="color:var(--emerald); font-weight:700;">82 %</td>
+                        <td style="color:var(--emerald); font-weight:700;">85 %</td>
+                        <td style="color:var(--emerald); font-weight:800;">87 %</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700; color:#fff;">Point d'Équilibre (Break-even)</td>
+                        <td style="color:var(--gold); font-weight:700;">Mois 12 (Opérationnel)</td>
+                        <td style="color:var(--emerald); font-weight:700;">Cash-flow Net Positif</td>
+                        <td style="color:var(--emerald); font-weight:700;">Expansion Oran &amp; Constantine</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="grid-4" style="margin-top:14px;">
+                <div class="card card-cyan" style="padding:14px 18px;">
+                    <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">CAC B2B Moyen</div>
+                    <div style="font-family:var(--font-mono); font-size:22px; font-weight:800; color:var(--cyan); margin-top:2px;">45 000 DZD</div>
+                    <div style="font-size:10px; color:var(--text-sub); margin-top:4px;">Par PME de 50 salariés signée</div>
+                </div>
+                <div class="card card-magenta" style="padding:14px 18px;">
+                    <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">LTV B2B (24 Mois)</div>
+                    <div style="font-family:var(--font-mono); font-size:22px; font-weight:800; color:var(--magenta); margin-top:2px;">720 000 DZD</div>
+                    <div style="font-size:10px; color:var(--text-sub); margin-top:4px;">Revenus récurrents nets garantis</div>
+                </div>
+                <div class="card card-emerald" style="padding:14px 18px;">
+                    <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Ratio LTV / CAC</div>
+                    <div style="font-family:var(--font-mono); font-size:22px; font-weight:800; color:var(--emerald); margin-top:2px;">16x</div>
+                    <div style="font-size:10px; color:var(--text-sub); margin-top:4px;">Rentabilité d'élite (>3x benchmark)</div>
+                </div>
+                <div class="card card-gold" style="padding:14px 18px;">
+                    <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Temps de Retour (Payback)</div>
+                    <div style="font-family:var(--font-mono); font-size:22px; font-weight:800; color:var(--gold); margin-top:2px;">2,5 Mois</div>
+                    <div style="font-size:10px; color:var(--text-sub); margin-top:4px;">Remboursement éclair de l'effort commercial</div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>Hypothèses : 3 000 DZD/salarié/mois SaaS B2B · Commission de 5 à 7% sur flux transactionnels hors-entreprise</div>
+                <div><span class="auth">URBI Mobility</span> · Trajectoire Financière</div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5 : THE ASK -->
+        <div class="slide" id="slide-5">
+            <div>
+                <div class="tagline magenta">TOUR SEED · ACCÉLÉRATION COMMERCIALE &amp; SCALING</div>
+                <h1 class="slide-title">5. Le Tour Seed : <span class="hl-magenta">28 000 000 DZD</span> (200 000 €)</h1>
+                <p class="slide-desc">Objectif : Verrouiller les pôles d'affaires de Bab Ezzouar et d'Hydra, intégrer GIE Monétique, et atteindre 50M DZD d'ARR en 12 mois.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card card-magenta">
+                    <div>
+                        <div class="card-title">💼 Allocation Rigoureuse du Capital (Runway 14 Mois)</div>
+                        <ul class="points magenta">
+                            <li><strong>40 % (11,2 M DZD) · Force Commerciale &amp; Acquisition B2B :</strong> Recrutement de 3 Business Developers seniors dédiés aux parcs d'affaires d'El Qods, Bab Ezzouar et Hydra pour signer les 35 premières PME.</li>
+                            <li><strong>35 % (9,8 M DZD) · Intégrations Bancaires &amp; Clearinghouse :</strong> Homologation API GIE Monétique, SATIM et Algérie Poste pour le reverse-clearing direct aux chauffeurs sans cash.</li>
+                            <li><strong>25 % (7,0 M DZD) · Modèle 3D Vectoriel &amp; Cloud Souverain :</strong> Acquisition de données géospatiales LiDAR/MNT haute résolution et infrastructure serveurs sécurisée.</li>
+                        </ul>
+                    </div>
+                    <div class="pill-highlight pill-magenta">Ticket Seed Visé : 28M DZD (200k €) / ASF &amp; VCs</div>
+                </div>
+
+                <div class="card card-cyan">
+                    <div>
+                        <div class="card-title">🎯 Jalons d'Exécution &amp; Contacts Direction</div>
+                        <ul class="points">
+                            <li><strong>M+3 :</strong> Signature des 10 premières PME pilotes à Bab Ezzouar (600 salariés actifs, 1,8M DZD MRR).</li>
+                            <li><strong>M+6 :</strong> 500 minibus informels onboardés avec QR Code BaridiMob validé.</li>
+                            <li><strong>M+12 :</strong> 35 entreprises clientes, 50 000 000 DZD d'ARR, Point mort opérationnel atteint.</li>
+                            <li><strong>M+24 :</strong> Extension régionale (Oran et Constantine), Série A ou rachat stratégique.</li>
+                        </ul>
+                        <div style="background:rgba(0, 242, 254, 0.08); border:1px solid var(--border-cyan); border-radius:10px; padding:10px 14px; margin-top:8px;">
+                            <div style="font-size:12px; font-weight:800; color:#fff;">Ing. Maamar Omar ARBOUZ · CEO &amp; Lead AI Engineer</div>
+                            <div style="font-size:11px; color:var(--text-sub); margin-top:2px;">WhatsApp : +213 541 453 952 · Email : arbouzmaamar@gmail.com</div>
+                            <div style="font-size:11px; color:var(--cyan); margin-top:2px;">Deck Live : omuz9924.github.io/edgeorbit-ai/urbi-pitch.html</div>
+                        </div>
+                    </div>
+                    <div class="pill-highlight pill-cyan">Break-even M+12 · Runway 14 Mois Garanti</div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>Montant calibré sur le ticket maximal d'amorçage de l'ASF (Algérie Startup Fund)</div>
+                <div><span class="auth">URBI Mobility</span> · Clôture du Tour Seed</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 5;
+
+        function updateSlide() {
+            document.querySelectorAll('.slide').forEach((slide, idx) => {
+                if (idx + 1 === currentSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+
+            document.getElementById('slideCounter').innerText = `SLIDE 0${currentSlide} / 05`;
+            document.getElementById('progressBar').style.width = `${(currentSlide / totalSlides) * 100}%`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullScreen();
+            }
+        });
+
+        function toggleFullScreen() {
+            const container = document.getElementById('deckContainer');
+            if (!document.fullscreenElement) {
+                if (container.requestFullscreen) {
+                    container.requestFullscreen();
+                } else if (container.webkitRequestFullscreen) {
+                    container.webkitRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        function updateSim(emp) {
+            document.getElementById('sliderEmpCount').innerText = `${emp} Salariés`;
+            const oldCost = emp * 4000;
+            const urbiCost = emp * 3000;
+            const savings = oldCost - urbiCost;
+            document.getElementById('simOldCost').innerText = `${oldCost.toLocaleString()} DZD`;
+            document.getElementById('simUrbiCost').innerText = `${urbiCost.toLocaleString()} DZD`;
+            document.getElementById('simSavings').innerText = `+ ${savings.toLocaleString()} DZD / mois`;
+        }
+    </script>
+</body>
+</html>
