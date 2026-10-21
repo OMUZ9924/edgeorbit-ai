@@ -1,0 +1,113 @@
+,,,,"Once completed, this form must be emailed - with receipts - to POandAP@imperial.ac.uk for processing",,,,,,Expense Claim - E1,,,,,,VAT =,0.2
+,,,,,,,,,,,,,v1.2
+,Title and full name:,,Mr Maamar Arbouz,,,,,,,As you complete this form cells will become shaded light red to help indicate where data needs to be entered,,,,,,Analysis Code List
+,"College Identifier
+(CID Number):",,,,,"The section below must be completed by students, casual staff and visitors to the college.
+For employees, this information is obtained from HR and payroll."
+,Income tax? (mark with a cross),Purpose of claim:,,,,Date of birth:,24/09/1999,,,Bank Name:,,Clear Junction Limited,,,,This list contains only the codes eligible for use on expense claims.  
+,,Small grant awarded by EPIGRAPHY COST Action for participation costs in 2nd European Workshop on Artificial Nighttime Light Remote Sensing conference,,,,Home address:,,,,Bank Branch:,,London, United Kingdom,,,,A full list can be downloaded from the finance division's intranet pages. 
+,,,,,,"zougala miliana 44059, 44059, Miliana",,,,"Sort code:
+(or SWIFT)",,04-13-07 / CLJUGB21XXX
+,,,,,,Algeria
+,,,,,,,,,,"Account No.:
+(or IBAN):",,44256871 / GB95CLJU04130744256871
+,,,,,,,,Post Code:,44059
+,,Travel (general),,,,,,,,,,,,,,,TRAVEL General
+,,Date(s),Mode,Return?,From,To,,Foreign Currency,Sterling total (£) ,"Tick if
+Non UK/EU
+Travel",Analysis Code,,"Sub Total
+(AP Use Only)",,,166104,AIR TRAVEL (UK/EU),AIR TRAVELFALSE,166104,,,AIR TRAVEL,Air Travel
+,,,OTHER,,,,,,,False,,,0,,,166107,AIR TRAVEL (Non UK/EU)),AIR TRAVELTRUE,166107,,,RAIL,Rail
+,,,,,,,,,,False,,,0,,,166110,RAIL (UK/EU),RAILFALSE,166110,,,TAXI,Taxi
+,,,,,,,,,,False,,,0,,,166113,RAIL (Non UK/EU)),RAILTRUE,166113,,,CAR HIRE,Car Hire
+,,,,,,,,,,False,,,0,,,166116,CAR HIRE (UK/EU),CAR HIREFALSE,166116,,,CAR PARKING,Car Parking
+,,,,,,,,,,False,,,0,,,166119,CAR HIRE (Non UK/EU)),CAR HIRETRUE,166119,,,OTHER,Other
+,,,,,,,,,,False,,,0,,,166128,TAXI,TAXIFALSE,166128
+,,SUB-TOTAL: TRAVEL,,,,,,,0,,,,0,,,166128,TAXI,TAXITRUE,166128,,,↓↓↓↓COMMON TYPES↓↓↓↓,↓↓↓↓Common Types↓↓↓↓
+,,ICIS Code,Cost Centre:,,,Activity / Project No.:,,,,,,,,,,166131,OTHER TRAVEL (UK/EU),OTHER TRAVELFLASE,166131,,,BOOKS,Books
+,,,,,,,,,,,,,,,,166134,OTHER TRAVEL (Non UK/EU)),OTHER TRAVELTRUE,166134,,,CONFERENCE FEES,Conference Fees
+,,Travel (car mileage),,,,,,,,,,,,,,166137,CAR PARKING FEES,CAR PARKINGFALSE,166137,,,EQUIPMENT PURCHASE,Equipment Purchase
+,,Date,Number of miles,Return?,From,To,,Cost per mile (£),Sterling total (£) ,"Tick if
+Non UK/EU",Analysis Code,,"Sub Total
+(AP Use Only)",,,166137,CAR PARKING FEES,CAR PARKINGTRUE,166137,,,EXAMINATION FEES,Examination Fees
+,,,,,,,,0.45,,False,,,0,,,166140,TRAVEL - INTER DEPARTMENTAL/SITES (UK),,166140,,,HOTEL / SUBSISTENCE,Hotel / Subsistence
+,,,,,,,,0.45,,False,,,0,,,,,,,,,INTERNET COST,Internet Cost
+,,,,,,,,0.45,,False,,,0,,,,,,,,,LAB SUPPLIES,Lab Supplies
+,,SUB-TOTAL: MILEAGE,,,,,,,0,,,,0,,,,MOTOR MILEAGE,,,,,MEMBERSHIP SUBS.,Membership Subs.
+,,ICIS Code,Cost Centre:,,,Activity / Project No.:,,,,,,,,,,166122,MILEAGE (UK/EU),MILEAGEFALSE,166122,,,MOBILE CALLS/RENT,Mobile Calls/Rent
+,,,,,,,,,,,,,,,,166125,MILEAGE (Non UK/EU)),MILEAGETRUE,166125,,,OFFICE SUNDRIES,Office Sundries
+,,Entertainment/ Hospitality,,,,,,,,,,,,,,,,,,,,PRIZES / AWARDS,Prizes / Awards
+,,Date(s),Name of principal guest,Organisation represented or other description,,Total numbers present,,Foreign Currency,Sterling total (£) ,"Tick if
+Non-College Staff Present",Analysis Code,,"Sub Total
+(AP Use Only)",,,,HOSPITALITY,,,,,RENTS PAYABLE,Rents Payable
+,,,,,,,,,,False,,,0,,,169304,HOSPITALITY-EMPLOYEE ONLY,HOSPITALITYFALSE,169304,,,SAFETY EXPENSES,Safety Expenses
+,,,,,,,,,,False,,,0,,,169307,HOSPITALITY-STUDENTS/GUESTS,HOSPITALITYTRUE,169307,,,SOFTWARE PURCHASES,Software Purchases
+,,,,,,,,,,False,,,0,,,,,,,,,TRAINING / COURSE FEES,Training / Course Fees
+,,,,,,,,,,False,,,0,,,,,,,,,↓↓↓↓↓OTHER TYPES↓↓↓↓↓,↓↓↓↓↓Other Types↓↓↓↓↓
+,,SUB-TOTAL: ENTERTAINMENT / HOSPITALITY,,,,,,,0,,,,0,,,,"HOTEL, ACCOMMODATION & SUBSISTENCE",,,,,AV EQUIPMENT,Av Equipment
+,,ICIS Code,Cost Centre:,,,Activity / Project No.:,,,,,,,,,,166304,"HOTEL, ACCOMMODATION & SUBSISTENCE (UK/EU)",HOTEL / SUBSISTENCEFALSE,166304,,,AV MATERIALS,Av Materials
+,,,,,,,,,,,,,,,,166307,"HOTEL, ACCOMMODATION & SUBSISTENCE (Non UK/EU))",HOTEL / SUBSISTENCETRUE,166307,,,CLEANING MATERIALS,Cleaning Materials
+,,Subsistence / Hotels / Incidentals / Others,,,,,,,,,,,,,,,TRAINING & DEVELOPMENT,,,,,CLOTHING & UNIFORMS,Clothing & Uniforms
+,,Date(s),Expense Type,Description,,,,Foreign Currency,Sterling total (£) ,"Tick if
+Non UK/EU",Analysis Code,,"Sub Total
+(AP Use Only)",,,169204,TRAINING / COURSE FEES,TRAINING / COURSE FEES,169204,,,COMPUTING EQUIP.,Computing Equip.
+,,12/10-15/10/2026,Prizes / Awards,Small grant awarded as approved by funder COST Association ,,,,,1198.53,False,169410,,1198.53,,,169210,CONFERENCE FEES (UK/EU),CONFERENCE FEESFALSE,169210,,,COURIERS / FREIGHT,Couriers / Freight
+,,,,,,,,,,False,,,0,,,169213,CONFERENCE FEES (Non UK/EU)),CONFERENCE FEESTRUE,169213,,,COURSE MATERIAL,Course Material
+,,,,,,,,,,False,,,0,,,,PROFESSIONAL SERVICES,,,,,ELECTRICAL SUPPLIES,Electrical Supplies
+,,,,,,,,,,False,,,0,,,162125,MEMBERSHIP SUBSCRIPTIONS PAYABLE,MEMBERSHIP SUBS.,162125,,,FURNITURE PURCHASE,Furniture Purchase
+,,,,,,,,,,False,,,0,,,162134,HEALTH SCREENING,HEALTH SCREENING,162134,,,GLASSWARE,Glassware
+,,,,,,,,,,False,,,0,,,,COMPUTER  SOFTWARE AND EXPENSES ,,,,,HAND / POWER TOOLS,Hand / Power Tools
+,,,,,,,,,,False,,,0,,,165204,SOFTWARE PURCHASES,SOFTWARE PURCHASES,165204,,,HARDSHIP,Hardship
+,,SUB-TOTAL: SUBSISTENCE / INCIDENTALS / OTHER,,,,,,,1198.53,,,,1198.53,,,165207,SOFTWARE MAINTENANCE & LICENCES,SOFTWARE LICENCES,165207,,,HEALTH SCREENING,Health Screening
+,,ICIS Code,Cost Centre:,PHHE,,Activity / Project No.:,,,I52076,,,,,,,165222,INTERNET COST,INTERNET COST,165222,,,LAUNDRY,Laundry
+,,,,,,,,,,,,,,,,,LABORATORY AND WORKSHOP SUPPLIES,,,,,LIBRARY MUSIC,Library Music
+,OVERALL GROSS TOTAL CLAIMED,,,,,,,,1198.53,,,,1198.53,,,164104,LABORATORY SUPPLIES/CONSUMABLES,LAB SUPPLIES,164104,,,LIBRARY PERIODICALS,Library Periodicals
+,LESS: Advance received (if any),,,,,,,,,,,,0,,,164110,GLASSWARE & PLASTICWARE,GLASSWARE,164110,,,PATENTS/ROYALTIES,Patents/Royalties
+,NET CLAIM / REFUND DUE,,,,,,,,1198.53,,,,1198.53,,,164119,ELECTRICAL / MECHANICAL SUPPLIES,ELECTRICAL SUPPLIES,164119,,,PHOTOCOPYING,Photocopying
+,,,,,,,,,,,,,,,,164125,HAND / POWER TOOLS,HAND / POWER TOOLS,164125,,,PHOTOGRAPHY,Photography
+,Main departmental authorisation,,,,,,,Claimant's declaration,,,,,,,,164128,WORKSHOP MATERIALS,WORKSHOP MATERIALS,164128,,,POSTAGES,Postages
+,I have checked that:,,,,,,,I confirm that:,,,,,,,,,,,,,,PRINTING,Printing
+,"o  income tax issues have been considered and any potentially taxable items marked with a cross in the left hand column, above",,,,,,,"o  expenditure shown above has been incurred by me wholly, necessarily and exclusively for the purposes of the College's business",,,,,,,,,EQUIPMENT AND HARDWARE,,,,,PUBLICATION PRODUCTION,Publication Production
+,o  no private or family component has been charged to the College,,,,,,,o  any monies advanced by the College have been deducted from the final claim,,,,,,,,165107,"EQUIPMENT PURCHASE (under £100, unless approved by departmental manager) ",EQUIPMENT PURCHASE,165107,,,SAFETY TRAINING,Safety Training
+,o  receipts are provided and correspond to the claim,,,,,,,o  re-imbursement only of actual costs is sought; there is no element of profit,,,,,,,,165119,AV & OTHER CONFERENCING EQUIPMENT,AV EQUIPMENT,165119,,,SECURITY CONTRACTS ,Security Contracts 
+,o  the costs claimed do not exceed the published rates / allowances,,,,,,,o  no part of the claim relates to holidays or private business activities,,,,,,,,165125,COMPUTER EQUIPMENT MAINTENANCE,COMPUTING EQUIP.,165125,,,SECURITY EXPENSES,Security Expenses
+,o  the ICIS code(s) are valid and appropriate for expenditure of this type,,,,,,,"o  any cost relating to travel costs for my spouse, partner, family or others who are not employees engaged on College business have been deducted",,,,,,,,,OFFICE EXPENSES,,,,,SOFTWARE LICENCES,Software Licences
+,Name:,Aline Kimony,,Date:,2026-10-21,,,o  nothing included in this claim has been previously claimed from the College or from any other person,,,,,,,,163104,STATIONERY,STATIONERY,163104,,,STATIONERY,Stationery
+,,,,,,,,Name:,Maamar Arbouz,,,Date:,21/10/2026,,,163107,PHOTOCOPYING,PHOTOCOPYING,163107,,,TELEPHONE CALLS/RENT,Telephone Calls/Rent
+,Secondary departmental authorisation (Optional),,,,,,,,,,,,,,,163110,AUDIO-VISUAL MATERIALS,AV MATERIALS,163110,,,VEHICLE EXPENSES,Vehicle Expenses
+,,,,,,,,,,,,,,,,163113,PHOTOGRAPHY,PHOTOGRAPHY,163113,,,WORKSHOP MATERIALS,Workshop Materials
+,Name:,,,Date:,,,,,,,,,,,,163116,PRINTING,PRINTING,163116
+,,,,,,,,,,,,,,,,163119,OFFICE SUNDRIES,OFFICE SUNDRIES,163119
+,,,,,,,,,,,,,,,,163122,NEW COURSE MATERIAL,COURSE MATERIAL,163122
+,,,,,,,,,,,,,,,,,POSTAGE AND TELECOM EXPENSES
+,,,,,,,,,,,,,,,,163204,POSTAGES,POSTAGES,163204
+,,,,,,,,,,,,,,,,163207,GROUP POST / COURIERS / FREIGHT,COURIERS / FREIGHT,163207
+,,,,,,,,,,,,,,,,163210,TELEPHONE CALLS/RENT,TELEPHONE CALLS/RENT,163210
+,,,,,,,,,,,,,,,,163213,MOBILE PHONE CALLS/RENT,MOBILE CALLS/RENT,163213
+,,,,,,,,,,,,,,,,,OTHER EMPLOYEE/STUDENT EXPENSES
+,,,,,,,,,,,,,,,,169410,PRIZES / AWARDS,PRIZES / AWARDS,169410
+,,,,,,,,,,,,,,,,169416,EXAMINATION FEES/EXPENSES,EXAMINATION FEES,169416
+,,,,,,,,,,,,,,,,,VEHICLES
+,,,,,,,,,,,,,,,,165407,VEHICLE EXPENSES,VEHICLE EXPENSES,165407
+,,,,,,,,,,,,,,,,,CLEANING
+,,,,,,,,,,,,,,,,167604,CLEANING MATERIALS,CLEANING MATERIALS,167604
+,,,,,,,,,,,,,,,,167610,CLOTHING & UNIFORMS,CLOTHING & UNIFORMS,167610
+,,,,,,,,,,,,,,,,167613,LAUNDRY,LAUNDRY,167613
+,,,,,,,,,,,,,,,,,FURNITURE
+,,,,,,,,,,,,,,,,165304,FURNITURE PURCHASE,FURNITURE PURCHASE,165304
+,,,,,,,,,,,,,,,,,LIBRARY EXPENDITURE
+,,,,,,,,,,,,,,,,162304,BOOKS,BOOKS,162304
+,,,,,,,,,,,,,,,,162307,LIBRARY PERIODICALS/NEWSPAPERS,LIBRARY PERIODICALS,162307
+,,,,,,,,,,,,,,,,162319,LIBRARY MUSIC CD'S / SCORES,LIBRARY MUSIC,162319
+,,,,,,,,,,,,,,,,162322,PUBLICATION PRODUCTION,PUBLICATION PRODUCTION,162322
+,,,,,,,,,,,,,,,,,SAFETY
+,,,,,,,,,,,,,,,,162404,SAFETY EXPENSES,SAFETY EXPENSES,162404
+,,,,,,,,,,,,,,,,162407,SAFETY TRAINING,SAFETY TRAINING,162407
+,,,,,,,,,,,,,,,,,ESTATES & BUILDINGS
+,,,,,,,,,,,,,,,,167104,RENTS PAYABLE,RENTS PAYABLE,167104
+,,,,,,,,,,,,,,,,,SECURITY
+,,,,,,,,,,,,,,,,162504,SECURITY EXPENSES,SECURITY EXPENSES,162504
+,,,,,,,,,,,,,,,,162507,SECURITY CONTRACTS ,SECURITY CONTRACTS ,162507
+,,,,,,,,,,,,,,,,,MISCELLANEOUS
+,,,,,,,,,,,,,,,,169507,PATENTS/ROYALTIES PAYABLE,PATENTS/ROYALTIES,169507
+,,,,,,,,,,,,,,,,169525,HARDSHIP,HARDSHIP,169525
